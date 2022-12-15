@@ -7,8 +7,8 @@ import java.util.Objects;
 public class Owner {
     public Owner(){};
 
-    public Owner(String id,String name, String mail, String password, String bank_account) {
-        this.id = id;
+    public Owner(String owner_id,String name, String mail, String password, String bank_account) {
+        this.owner_id = owner_id;
         this.name = name;
         this.mail = mail;
         this.password = password;
@@ -16,14 +16,14 @@ public class Owner {
     }
 
     @Id
-    private String id;
+    private String owner_id;
     private String name;
     private String mail;
     private String password;
     private String bank_account;
 
     public String getId() {
-        return id;
+        return owner_id;
     }
 
     public String getName() {
@@ -45,7 +45,7 @@ public class Owner {
     @Override
     public String toString() {
         return "Owner{" +
-                "id='" + id + '\'' +
+                "id='" + owner_id + '\'' +
                 ", name='" + name + '\'' +
                 ", e-mail='" + mail + '\'' +
                 ", password='" + password + '\'' +
@@ -57,11 +57,11 @@ public class Owner {
         if (this == o) return true;
         if (!(o instanceof Owner)) return false;
         Owner that = (Owner) o;
-        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(mail, that.mail) && Objects.equals(password, that.password) && Objects.equals(bank_account, that.bank_account);
+        return owner_id.equals(that.owner_id) && Objects.equals(name, that.name) && Objects.equals(mail, that.mail) && Objects.equals(password, that.password) && Objects.equals(bank_account, that.bank_account);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, mail, password, bank_account);
+        return Objects.hash(owner_id, name, mail, password, bank_account);
     }
 }
