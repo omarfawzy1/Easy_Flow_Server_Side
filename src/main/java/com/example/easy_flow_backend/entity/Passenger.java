@@ -29,6 +29,7 @@ public class Passenger extends User {
         this.first_name = first_name;
     }
     public Passenger(String passenger_id, Wallet wallet_fk, String first_name, String last_name, String phone_number, String type, String city, String gender, Date birth_day) {
+
         this.id = passenger_id;
         this.wallet_fk = wallet_fk;
         this.first_name = first_name;

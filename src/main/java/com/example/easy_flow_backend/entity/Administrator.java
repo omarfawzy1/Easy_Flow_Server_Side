@@ -9,8 +9,6 @@ public class Administrator extends User{
     @Id
     private String id;
     private String name;
-    private String username;
-    private String password;
 
     public Administrator(){};
     public Administrator(String id, String name, String username, String password) {
@@ -19,6 +17,7 @@ public class Administrator extends User{
         this.name = name;
         this.username = username;
         this.password = password;
+        roles = "ADMIN";
 
     }
 
