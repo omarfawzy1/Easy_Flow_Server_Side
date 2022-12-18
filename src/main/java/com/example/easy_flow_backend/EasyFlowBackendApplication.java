@@ -9,5 +9,4 @@ public class EasyFlowBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(EasyFlowBackendApplication.class, args);
     }
-
 }

@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.entiry;
+package com.example.easy_flow_backend.entity;
 import jakarta.persistence.*;
 import java.util.Objects;
 

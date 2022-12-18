@@ -1,32 +1,25 @@
-package com.example.easy_flow_backend.entiry;
+package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
 import java.util.Objects;
 
 @Entity
-public class Administrator {
+public class Administrator extends User{
     @Id
-    private String admin_id;
+    private String id;
     private String name;
     private String username;
     private String password;
 
     public Administrator(){};
-    public Administrator(String admin_id, String name, String username, String password) {
-        this.admin_id = admin_id;
+    public Administrator(String id, String name, String username, String password) {
+        super(username, password);
+        this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
-    }
 
-    public String getAdmin_id() {
-        return admin_id;
-    }
-
-    public void setAdmin_id(String admin_id) {
-        this.admin_id = admin_id;
     }
 
     public String getName() {
@@ -58,11 +51,11 @@ public class Administrator {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Administrator that = (Administrator) o;
-        return Objects.equals(admin_id, that.admin_id) && Objects.equals(name, that.name) && Objects.equals(username, that.username) && Objects.equals(password, that.password);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(username, that.username) && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(admin_id, name, username, password);
+        return Objects.hash(id);
     }
 }

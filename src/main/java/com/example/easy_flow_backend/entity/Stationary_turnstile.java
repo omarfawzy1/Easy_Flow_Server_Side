@@ -1,17 +1,15 @@
-package com.example.easy_flow_backend.entiry;
+package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 import java.util.Objects;
 
 @Entity
-public class Stationary_turnstile {
+public class Stationary_turnstile extends User {
     @Id
-    private String machine_id;
-
+    private String id;
     private String username;
     private String password;
     @ManyToOne
@@ -22,13 +20,6 @@ public class Stationary_turnstile {
     public Stationary_turnstile() {
     }
 
-    public String getMachine_id() {
-        return machine_id;
-    }
-
-    public void setMachine_id(String machine_id) {
-        this.machine_id = machine_id;
-    }
 
     public String getUsername() {
         return username;
@@ -59,11 +50,11 @@ public class Stationary_turnstile {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Stationary_turnstile that = (Stationary_turnstile) o;
-        return Objects.equals(machine_id, that.machine_id) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(Station_fk, that.Station_fk);
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(Station_fk, that.Station_fk);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(machine_id, username, password, Station_fk);
+        return Objects.hash(id, username, password, Station_fk);
     }
 }

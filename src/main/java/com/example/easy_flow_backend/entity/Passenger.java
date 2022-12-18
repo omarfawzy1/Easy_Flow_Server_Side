@@ -1,14 +1,13 @@
-package com.example.easy_flow_backend.entiry;
+package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
-public class Passenger {
+public class Passenger extends User {
     @Id
-    private String passenger_id;
-
+    private String id;
     @ManyToOne
     @JoinColumn(name="wallet_id")
     private Wallet wallet_fk;
@@ -25,8 +24,12 @@ public class Passenger {
 
     public Passenger(){};
 
+    public Passenger(String id, String first_name) {
+        this.id=id;
+        this.first_name = first_name;
+    }
     public Passenger(String passenger_id, Wallet wallet_fk, String first_name, String last_name, String phone_number, String type, String city, String gender, Date birth_day) {
-        this.passenger_id = passenger_id;
+        this.id = passenger_id;
         this.wallet_fk = wallet_fk;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -37,13 +40,6 @@ public class Passenger {
         this.birth_day = birth_day;
     }
 
-    public String getPassenger_id() {
-        return passenger_id;
-    }
-
-    public void setPassenger_id(String passenger_id) {
-        this.passenger_id = passenger_id;
-    }
 
     public Wallet getWallet_fk() {
         return wallet_fk;
@@ -114,11 +110,11 @@ public class Passenger {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        return Objects.equals(passenger_id, passenger.passenger_id) && Objects.equals(wallet_fk, passenger.wallet_fk) && Objects.equals(first_name, passenger.first_name) && Objects.equals(last_name, passenger.last_name) && Objects.equals(phone_number, passenger.phone_number) && Objects.equals(type, passenger.type) && Objects.equals(city, passenger.city) && Objects.equals(gender, passenger.gender) && Objects.equals(birth_day, passenger.birth_day);
+        return Objects.equals(id, passenger.id) && Objects.equals(wallet_fk, passenger.wallet_fk) && Objects.equals(first_name, passenger.first_name) && Objects.equals(last_name, passenger.last_name) && Objects.equals(phone_number, passenger.phone_number) && Objects.equals(type, passenger.type) && Objects.equals(city, passenger.city) && Objects.equals(gender, passenger.gender) && Objects.equals(birth_day, passenger.birth_day);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(passenger_id, wallet_fk, first_name, last_name, phone_number, type, city, gender, birth_day);
+        return Objects.hash(id, wallet_fk, first_name, last_name, phone_number, type, city, gender, birth_day);
     }
 }
