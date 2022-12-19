@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/")
 public class HomeController {
     @GetMapping("index")
     public String index() {
