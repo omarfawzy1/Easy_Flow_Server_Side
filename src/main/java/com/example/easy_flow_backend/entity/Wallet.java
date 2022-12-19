@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -8,23 +9,25 @@ import java.util.Objects;
 @Entity
 public class Wallet {
     @Id
-    private String wallet_id;
+    @Column(name = "wallet_id")
+    private String id;
     private float balance;
-    private String credit_card;
+    @Column(name = "credit_card")
+    private String creditCard;
     public Wallet(){};
 
-    public Wallet(String wallet_id, float balance, String credit_card) {
-        this.wallet_id = wallet_id;
+    public Wallet(String id, float balance, String creditCard) {
+        this.id = id;
         this.balance = balance;
-        this.credit_card = credit_card;
+        this.creditCard = creditCard;
     }
 
-    public String getWallet_id() {
-        return wallet_id;
+    public String getId() {
+        return id;
     }
 
-    public void setWallet_id(String wallet_id) {
-        this.wallet_id = wallet_id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public float getBalance() {
@@ -35,12 +38,12 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public String getCredit_card() {
-        return credit_card;
+    public String getCreditCard() {
+        return creditCard;
     }
 
-    public void setCredit_card(String credit_card) {
-        this.credit_card = credit_card;
+    public void setCreditCard(String creditCard) {
+        this.creditCard = creditCard;
     }
 
     @Override
@@ -48,11 +51,11 @@ public class Wallet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wallet wallet = (Wallet) o;
-        return Float.compare(wallet.balance, balance) == 0 && Objects.equals(wallet_id, wallet.wallet_id) && Objects.equals(credit_card, wallet.credit_card);
+        return Float.compare(wallet.balance, balance) == 0 && Objects.equals(id, wallet.id) && Objects.equals(creditCard, wallet.creditCard);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wallet_id, balance, credit_card);
+        return Objects.hash(id, balance, creditCard);
     }
 }

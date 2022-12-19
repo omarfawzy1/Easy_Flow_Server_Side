@@ -1,9 +1,6 @@
 package com.example.easy_flow_backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -13,35 +10,36 @@ public class LineStations {
     @Id
     @ManyToOne
     @JoinColumn(name= "line_id")
-    private Line line_fk;
+    private Line line;
 
     @Id
     @ManyToOne
     @JoinColumn(name= "station_id")
-    private Line station_fk;
+    private Line station;
 
+    @Column(nullable = false)
     private int station_order;
 
-    public LineStations(Line line_fk, Line station_fk, int station_order) {
-        this.line_fk = line_fk;
-        this.station_fk = station_fk;
+    public LineStations(Line line, Line station, int station_order) {
+        this.line = line;
+        this.station = station;
         this.station_order = station_order;
     }
 
-    public Line getLine_fk() {
-        return line_fk;
+    public Line getLine() {
+        return line;
     }
 
-    public void setLine_fk(Line line_fk) {
-        this.line_fk = line_fk;
+    public void setLine(Line line) {
+        this.line = line;
     }
 
-    public Line getStation_fk() {
-        return station_fk;
+    public Line getStation() {
+        return station;
     }
 
-    public void setStation_fk(Line station_fk) {
-        this.station_fk = station_fk;
+    public void setStation(Line station) {
+        this.station = station;
     }
 
     public int getStation_order() {
@@ -57,11 +55,11 @@ public class LineStations {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LineStations that = (LineStations) o;
-        return station_order == that.station_order && Objects.equals(line_fk, that.line_fk) && Objects.equals(station_fk, that.station_fk);
+        return station_order == that.station_order && Objects.equals(line, that.line) && Objects.equals(station, that.station);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(line_fk, station_fk, station_order);
+        return Objects.hash(line, station, station_order);
     }
 }

@@ -6,72 +6,77 @@ import java.util.Objects;
 
 @Entity
 public class Passenger extends User {
-    @Id
-    private String id;
-    @ManyToOne
-    @JoinColumn(name="wallet_id")
-    private Wallet wallet_fk;
 
-    private String first_name;
-    private String last_name;
-    private String phone_number;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "wallet_id",referencedColumnName ="wallet_id")
+    private Wallet wallet;
+
+    @Column(name = "first_name",nullable = false)
+    private String firstName;
+    @Column(name = "last_name",nullable = false)
+    private String lastName;
+    @Column(name = "phone_number",nullable = false)
+    private String phoneNumber;
     private String type;
     private String city;
+    @Column(nullable = false)
     private String gender;
 
     @Temporal(TemporalType.DATE)
-    private java.util.Date birth_day;
+    @Column(name = "birth_day",nullable = false)
+    private java.util.Date birthDay;
 
     public Passenger(){};
 
-    public Passenger(String id, String first_name) {
+    public Passenger(String id, String firstName) {
         this.id=id;
-        this.first_name = first_name;
+        this.firstName = firstName;
     }
-    public Passenger(String passenger_id, Wallet wallet_fk, String first_name, String last_name, String phone_number, String type, String city, String gender, Date birth_day) {
+    public Passenger(String id, Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, String gender, Date birthDay) {
 
-        this.id = passenger_id;
-        this.wallet_fk = wallet_fk;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.phone_number = phone_number;
+        this.id = id;
+        this.wallet = wallet;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
         this.type = type;
         this.city = city;
         this.gender = gender;
-        this.birth_day = birth_day;
+        this.birthDay = birthDay;
     }
 
 
-    public Wallet getWallet_fk() {
-        return wallet_fk;
+    public Wallet getWallet() {
+        return wallet;
     }
 
-    public void setWallet_fk(Wallet wallet_fk) {
-        this.wallet_fk = wallet_fk;
+    public void setWallet(Wallet wallet_fk) {
+        this.wallet = wallet_fk;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phone_number) {
+        this.phoneNumber = phone_number;
     }
 
     public String getType() {
@@ -98,12 +103,12 @@ public class Passenger extends User {
         this.gender = gender;
     }
 
-    public Date getBirth_day() {
-        return birth_day;
+    public Date getBirthDay() {
+        return birthDay;
     }
 
-    public void setBirth_day(Date birth_day) {
-        this.birth_day = birth_day;
+    public void setBirthDay(Date birth_day) {
+        this.birthDay = birth_day;
     }
 
     @Override
@@ -111,11 +116,11 @@ public class Passenger extends User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        return Objects.equals(id, passenger.id) && Objects.equals(wallet_fk, passenger.wallet_fk) && Objects.equals(first_name, passenger.first_name) && Objects.equals(last_name, passenger.last_name) && Objects.equals(phone_number, passenger.phone_number) && Objects.equals(type, passenger.type) && Objects.equals(city, passenger.city) && Objects.equals(gender, passenger.gender) && Objects.equals(birth_day, passenger.birth_day);
+        return Objects.equals(id, passenger.id) && Objects.equals(wallet, passenger.wallet) && Objects.equals(firstName, passenger.firstName) && Objects.equals(lastName, passenger.lastName) && Objects.equals(phoneNumber, passenger.phoneNumber) && Objects.equals(type, passenger.type) && Objects.equals(city, passenger.city) && Objects.equals(gender, passenger.gender) && Objects.equals(birthDay, passenger.birthDay);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, wallet_fk, first_name, last_name, phone_number, type, city, gender, birth_day);
+        return Objects.hash(id, wallet, firstName, lastName, phoneNumber, type, city, gender, birthDay);
     }
 }

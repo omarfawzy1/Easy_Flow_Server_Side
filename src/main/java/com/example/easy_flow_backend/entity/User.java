@@ -1,6 +1,8 @@
 package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,12 +12,17 @@ import java.util.List;
 public abstract class User {
     @Id
     protected String id;
-    @Column(nullable = true)
+    @Column(nullable = false)
     protected String username;
-    @Column(nullable = true)
+    @Column(nullable = false)
     protected String password;
+    @Column(nullable = false)
     protected boolean active = true; // TODO set to false by default until gmail verification
+    @Column(nullable = false)
+    //@ColumnDefault("")
     protected String roles = "";
+    @Column(nullable = false)
+    //@ColumnDefault("")
     protected String permissions = "";
 
     public User(String id, String username, String password, boolean active, String roles, String permissions) {
@@ -62,10 +69,5 @@ public abstract class User {
         return new ArrayList<>();
     }
 
-    public void setUserDetails(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.active = true;
-    }
 
 }

@@ -1,13 +1,14 @@
 package com.example.easy_flow_backend.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.util.Objects;
 
 @Entity
 public class Administrator extends User{
-    @Id
-    private String id;
+
+    @Column(nullable = false)
     private String name;
 
     public Administrator(){};

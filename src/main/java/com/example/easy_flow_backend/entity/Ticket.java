@@ -8,72 +8,74 @@ import java.util.Objects;
 @Entity
 public class Ticket {
     @Id
-    private String ticket_id;
+    @Column(name = "ticket_id")
+    private String id;
 
     @ManyToOne
-    @JoinColumn(name="passenger_id")
-    private Passenger passenger_fk;
+    @JoinColumn(name="passenger_id",nullable = false)
+    private Passenger passenger;
 
     @ManyToOne
-    @JoinColumn(name="start_station_id",referencedColumnName = "station_id")
-    private Station start_station_id;
+    @JoinColumn(name="start_station_id",referencedColumnName = "station_id",nullable = false)
+    private Station startStation;
 
     @ManyToOne
-    @JoinColumn(name="end_station_id",referencedColumnName = "station_id")
-    private Station end_station_id;
-
+    @JoinColumn(name="end_station_id",referencedColumnName = "station_id",nullable = false)
+    private Station endStation;
+    @JoinColumn(nullable = false)
     @Temporal(TemporalType.DATE)
     private java.util.Date date;
 
+    @JoinColumn(nullable = false)
     @Temporal(TemporalType.TIME)
-    private java.util.Date start_time;
-
+    private java.util.Date startTime;
+    @JoinColumn(nullable = false)
     @Temporal(TemporalType.TIME)
-    private java.util.Date end_time;
-
+    private java.util.Date endTime;
+    @JoinColumn(nullable = false)
     private float price;
     public Ticket(){};
 
-    public Ticket(String ticket_id, Passenger passenger_fk, Station start_station_id, Station end_station_id, Date date, Date start_time, Date end_time, float price) {
-        this.ticket_id = ticket_id;
-        this.passenger_fk = passenger_fk;
-        this.start_station_id = start_station_id;
-        this.end_station_id = end_station_id;
+    public Ticket(String id, Passenger passenger, Station startStation, Station endStation, Date date, Date startTime, Date endTime, float price) {
+        this.id = id;
+        this.passenger = passenger;
+        this.startStation = startStation;
+        this.endStation = endStation;
         this.date = date;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.price = price;
     }
-    public String getTicket_id() {
-        return ticket_id;
+    public String getId() {
+        return id;
     }
 
-    public void setTicket_id(String ticket_id) {
-        this.ticket_id = ticket_id;
+    public void setId(String ticket_id) {
+        this.id = ticket_id;
     }
 
-    public Passenger getPassenger_fk() {
-        return passenger_fk;
+    public Passenger getPassenger() {
+        return passenger;
     }
 
-    public void setPassenger_fk(Passenger passenger_fk) {
-        this.passenger_fk = passenger_fk;
+    public void setPassenger(Passenger passenger_fk) {
+        this.passenger = passenger_fk;
     }
 
-    public Station getStart_station_id() {
-        return start_station_id;
+    public Station getStartStation() {
+        return startStation;
     }
 
-    public void setStart_station_id(Station start_station_id) {
-        this.start_station_id = start_station_id;
+    public void setStartStation(Station start_station_id) {
+        this.startStation = start_station_id;
     }
 
-    public Station getEnd_station_id() {
-        return end_station_id;
+    public Station getEndStation() {
+        return endStation;
     }
 
-    public void setEnd_station_id(Station end_station_id) {
-        this.end_station_id = end_station_id;
+    public void setEndStation(Station end_station_id) {
+        this.endStation = end_station_id;
     }
 
     public Date getDate() {
@@ -84,20 +86,20 @@ public class Ticket {
         this.date = date;
     }
 
-    public Date getStart_time() {
-        return start_time;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEnd_time() {
-        return end_time;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public float getPrice() {
@@ -113,11 +115,11 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return Float.compare(ticket.price, price) == 0 && Objects.equals(ticket_id, ticket.ticket_id) && Objects.equals(passenger_fk, ticket.passenger_fk) && Objects.equals(start_station_id, ticket.start_station_id) && Objects.equals(end_station_id, ticket.end_station_id) && Objects.equals(date, ticket.date) && Objects.equals(start_time, ticket.start_time) && Objects.equals(end_time, ticket.end_time);
+        return Float.compare(ticket.price, price) == 0 && Objects.equals(id, ticket.id) && Objects.equals(passenger, ticket.passenger) && Objects.equals(startStation, ticket.startStation) && Objects.equals(endStation, ticket.endStation) && Objects.equals(date, ticket.date) && Objects.equals(startTime, ticket.startTime) && Objects.equals(endTime, ticket.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticket_id, passenger_fk, start_station_id, end_station_id, date, start_time, end_time, price);
+        return Objects.hash(id, passenger, startStation, endStation, date, startTime, endTime, price);
     }
 }
