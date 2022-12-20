@@ -37,21 +37,21 @@ public class DbInit implements CommandLineRunner {
 
         //Passenger herher =new Passenger("2","harhor");
         //herher.setUserDetails("herher",passwordEncoder.encode("herher123"));
-        //Administrator haridy = new Administrator("1","haridy","haridy",passwordEncoder.encode("haridy"));
+        Administrator haridy = new Administrator("1","haridy","haridy",passwordEncoder.encode("haridy"));
         //haridy.setUserDetails("haridy","haridy123");
         //users.add(new User("haridy", passwordEncoder.encode("haridy123"), "USER", ""));
         //users.add(new User("admin", passwordEncoder.encode("admin123"), "ADMIN", "ACCESS_TEST1,ACCESS_TEST2"));
         //users.add(new User("manager", passwordEncoder.encode("manager123"), "MANAGER", "ACCESS_TEST1"));
 
-        //users.add(haridy);
+        users.add(haridy);
         //users.add(herher);
         //users.add(omar);
 
         //save to database
-//        this.userRepositry.saveAll(users);
-//        User user = userRepositry.findUserByUsername("haridy");
-//        System.out.println(user.getUsername());
-//        List<User> arr = userRepositry.findAll();
-//        user.getUsername();
+        this.userRepositry.saveAll(users);
+        User user = userRepositry.findUserByUsername("haridy");
+        System.out.println(user.getUsername());
+        List<User> arr = userRepositry.findAll();
+        user.getUsername();
     }
 }
