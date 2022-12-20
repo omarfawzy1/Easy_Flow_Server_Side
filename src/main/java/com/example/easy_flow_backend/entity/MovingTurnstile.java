@@ -5,16 +5,17 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Moving_turnstile extends User{
+@Table(name = "Moving_turnstile")
+public class MovingTurnstile extends User{
 
     @ManyToOne
     @JoinColumn(name= "line_id")
     private Line line;
 
-    public Moving_turnstile() {
+    public MovingTurnstile() {
     }
 
-    public Moving_turnstile(String id, String username, String password, Line line) {
+    public MovingTurnstile(String id, String username, String password, Line line) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -57,7 +58,7 @@ public class Moving_turnstile extends User{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Moving_turnstile that = (Moving_turnstile) o;
+        MovingTurnstile that = (MovingTurnstile) o;
         return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(line, that.line);
     }
 
