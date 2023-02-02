@@ -3,8 +3,10 @@ package com.example.easy_flow_backend.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Station {
@@ -13,6 +15,8 @@ public class Station {
     private String id;
     @Column(name = "station_name", nullable = false, unique = true)
     private String stationName;
+    @ManyToMany(mappedBy = "stations")
+    Set<Line> lines;
 
 
     public Station() {

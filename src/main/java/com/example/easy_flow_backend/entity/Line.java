@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.entity;
 import jakarta.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Line {
@@ -13,6 +14,12 @@ public class Line {
     @ManyToOne
     @JoinColumn(name="owner_id")
     private Owner owner;
+    @ManyToMany
+    @JoinTable(
+            name = "line_station",
+            joinColumns = @JoinColumn(name = "station_id"),
+            inverseJoinColumns = @JoinColumn(name = "line_id"))
+    Set<Station> stations;
 
     public Line() {
 
