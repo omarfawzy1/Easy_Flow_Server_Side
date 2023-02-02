@@ -1,15 +1,20 @@
 package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OptimisticLock;
+
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 public class Passenger extends User {
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "wallet_id",referencedColumnName ="wallet_id")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "wallet_id", referencedColumnName ="wallet_id")
+    @Cascade(CascadeType.ALL)
     private Wallet wallet;
 
     @Column(name = "first_name",nullable = false)

@@ -3,6 +3,7 @@ package com.example.easy_flow_backend.service;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.User;
 import com.example.easy_flow_backend.repos.UserRepositry;
+import com.example.easy_flow_backend.repos.WalletRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
@@ -22,6 +23,8 @@ public class DbInit implements CommandLineRunner {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private WalletRepo walletRepo;
     @Override
     public void run(String... args)  {
         //Delete all
@@ -46,13 +49,15 @@ public class DbInit implements CommandLineRunner {
 
 
         // Create a new Passenger object using the constructor
-
-        //Passenger omar = new Passenger("12345", null, "Omar", "Fawzy", "555-555-5555", "Regular", "Cairo", "Male", null,"omar",passwordEncoder.encode("omar"));
+        Wallet wallet = new Wallet("1000",10f,"CC");
+        Date birthDate = new Date(System.currentTimeMillis());
+        walletRepo.save(wallet);
+        Passenger omar = new Passenger("12345", wallet, "Omar", "Fawzy", "555-555-5555", "Regular", "Cairo", "Male",birthDate ,"omar",passwordEncoder.encode("omar"));
 
         users.add(haridy);
 
         //users.add(herher);
-        //users.add(omar);
+        users.add(omar);
 
         //save to database
         this.userRepositry.saveAll(users);
