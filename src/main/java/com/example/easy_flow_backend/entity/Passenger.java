@@ -33,8 +33,9 @@ public class Passenger extends User {
         this.id=id;
         this.firstName = firstName;
     }
-    public Passenger(String id, Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, String gender, Date birthDay) {
-
+    public Passenger(String id, Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, String gender, Date birthDay, String username, String password) {
+        super(username, password);
+        roles = "PASSENGER";
         this.id = id;
         this.wallet = wallet;
         this.firstName = firstName;

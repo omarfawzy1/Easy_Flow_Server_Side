@@ -10,6 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("admin")
 public class AdminController {
 
+    /*
+    Todo 3/2/2023
+        Users Page :
+            Username, Email, Type(Military, Student, etc), Gender, Phone Number
+     */
+
+    /*
+    Todo server side
+        Analytics Module
+        Payment Module
+     */
     @GetMapping("index")
     public String index(){
         return "admin/index";

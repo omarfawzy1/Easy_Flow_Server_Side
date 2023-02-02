@@ -6,7 +6,9 @@ import java.util.Objects;
 @Entity
 @Table(name ="Stationary_turnstile")
 public class StationaryTurnstile extends User {
-
+/*
+    Todo extract the StationaryTurnstile
+ */
     @ManyToOne
     @JoinColumn(name="station_id", nullable = false)
     private Station station;

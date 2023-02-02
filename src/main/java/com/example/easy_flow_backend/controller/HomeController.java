@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @CrossOrigin
 public class HomeController {
+    /*
+    TODO 3/2/2023
+        Passenger API
+            Register
+            History Return Tickets
+            Request Privilege
+     */
     @GetMapping("index")
     public String index() {
         return "index";

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.easy_flow_backend.entity.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,10 +43,19 @@ public class DbInit implements CommandLineRunner {
         //users.add(new User("haridy", passwordEncoder.encode("haridy123"), "USER", ""));
         //users.add(new User("admin", passwordEncoder.encode("admin123"), "ADMIN", "ACCESS_TEST1,ACCESS_TEST2"));
         //users.add(new User("manager", passwordEncoder.encode("manager123"), "MANAGER", "ACCESS_TEST1"));
+        Wallet wallet = new Wallet();
+
+        // Create a new Date object for birthDay
+        Date birthDay = new Date();
+
+        // Create a new Passenger object using the constructor
+
+        Passenger omar = new Passenger("12345", wallet, "Omar", "Fawzy", "555-555-5555", "Regular", "Cairo", "Male", birthDay,"omar",passwordEncoder.encode("omar"));
 
         users.add(haridy);
+
         //users.add(herher);
-        //users.add(omar);
+        users.add(omar);
 
         //save to database
         this.userRepositry.saveAll(users);
