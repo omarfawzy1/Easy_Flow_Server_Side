@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ public class Station {
     public Station(String id, String stationName) {
         this.id = id;
         this.stationName = stationName;
+        lines =new HashSet<>();
     }
 
     public String getId() {
@@ -43,7 +45,18 @@ public class Station {
     public void setStationName(String stationName) {
         this.stationName = stationName;
     }
-
+    public void setLines(Set<Line> line) {
+        this.lines = line;
+    }
+    public void addLine(Line line) {
+        this.lines.add(line);
+    }
+    public void removeLine(Line line){
+        this.lines.remove(line);
+    }
+    public Set<Line> getLines() {
+        return lines;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

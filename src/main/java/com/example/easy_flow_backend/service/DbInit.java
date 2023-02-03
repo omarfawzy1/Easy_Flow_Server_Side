@@ -2,8 +2,7 @@ package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.User;
-import com.example.easy_flow_backend.repos.UserRepositry;
-import com.example.easy_flow_backend.repos.WalletRepo;
+import com.example.easy_flow_backend.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
@@ -25,6 +24,12 @@ public class DbInit implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private WalletRepo walletRepo;
+    @Autowired
+    private OwnerRepo ownerRepo;
+    @Autowired
+    private LineRepo lineRepo;
+    @Autowired
+    private StationRepo stationRepo;
     @Override
     public void run(String... args)  {
         //Delete all
@@ -58,6 +63,20 @@ public class DbInit implements CommandLineRunner {
 
         //users.add(herher);
         users.add(omar);
+
+
+//        //owner
+//        Owner owner1 =new Owner("ow1","ehab","ehab@mail.com","1148 1124 2247 2247");
+//        this.ownerRepo.save(owner1);
+//        //line
+//        Line line1=new Line("li1", 10.0F,owner1);
+//        Station station1=new Station("st1","first station");
+//        this.stationRepo.save(station1);
+//        line1.addStation(station1);
+//        station1.addLine(line1);
+//        System.out.printf("hi");
+//        this.lineRepo.save(line1);
+//        this.stationRepo.save(station1);
 
         //save to database
         this.userRepositry.saveAll(users);

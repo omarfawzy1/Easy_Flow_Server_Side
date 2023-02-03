@@ -1,11 +1,12 @@
 package com.example.easy_flow_backend.entity;
 import jakarta.persistence.*;
-import java.util.Objects;
-import java.util.Set;
+
+import java.util.*;
 
 @Entity
 public class Line {
     @Id
+    @Column(name = "line_id")
     private String id;
 
     @Column(nullable = false)
@@ -19,16 +20,31 @@ public class Line {
             name = "line_station",
             joinColumns = @JoinColumn(name = "station_id"),
             inverseJoinColumns = @JoinColumn(name = "line_id"))
-    Set<Station> stations;
+    Set<Station> stations=null;
 
     public Line() {
 
     }
 
-    public Line(String line, float price, Owner owner) {
-        this.id = line;
+    public Line(String id, float price, Owner owner) {
+        this.id = id;
         this.price = price;
         this.owner = owner;
+        stations=new HashSet<>();
+
+    }
+
+    public void setStations(Set<Station> stations) {
+        this.stations = stations;
+    }
+    public void addStation(Station station) {
+        this.stations.add(station);
+    }
+    public void removeStation(Station station){
+        this.stations.remove(station);
+    }
+    public Set<Station> getStations() {
+        return stations;
     }
 
     public String getId() {
