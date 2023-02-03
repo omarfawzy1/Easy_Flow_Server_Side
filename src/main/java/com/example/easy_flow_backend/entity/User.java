@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -15,6 +16,7 @@ public abstract class User {
     @Column(nullable = false)
     protected String username;
     @Column(nullable = false)
+    @JsonIgnore
     protected String password;
     @Column(nullable = false)
     protected boolean active = true; // TODO set to false by default until gmail verification

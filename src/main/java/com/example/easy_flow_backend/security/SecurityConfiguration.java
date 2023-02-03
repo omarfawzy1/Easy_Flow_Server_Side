@@ -102,6 +102,7 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.POST,"/login").permitAll()
                     .requestMatchers("/api/public/management/*").hasRole("MANAGER")
                     .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
+                    .requestMatchers("/admin/*").hasRole("ADMIN")
                     .anyRequest().authenticated()).headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST, GET"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
