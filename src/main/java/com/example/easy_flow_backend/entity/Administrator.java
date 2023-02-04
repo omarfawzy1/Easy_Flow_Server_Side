@@ -19,12 +19,9 @@ public class Administrator extends User {
     @Column(nullable = false)
     private String name;
 
-    public Administrator(String id, String name, String username, String password) {
+    public Administrator(String name, String username, String password) {
         super(username, password);
-        this.id = id;
         this.name = name;
-        this.username = username;
-        this.password = password;
         roles = "ADMIN";
     }
 

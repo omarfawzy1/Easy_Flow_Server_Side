@@ -30,9 +30,10 @@ public class DbInit implements CommandLineRunner {
     private LineRepo lineRepo;
     @Autowired
     private StationRepo stationRepo;
+
     @Override
-    public void run(String... args)  {
-        //Delete all
+    public void run(String... args) {
+      /*  //Delete all
         //this.userRepositry.deleteAll();
         //creat users and save in database
         ArrayList<User> users = new ArrayList<>();
@@ -46,7 +47,7 @@ public class DbInit implements CommandLineRunner {
 
         //Passenger herher =new Passenger("2","harhor");
         //herher.setUserDetails("herher",passwordEncoder.encode("herher123"));
-        Administrator haridy = new Administrator("1","haridy","haridy",passwordEncoder.encode("haridy"));
+        Administrator haridy = new Administrator("haridy", "haridy", passwordEncoder.encode("haridy"));
         //haridy.setUserDetails("haridy","haridy123");
         //users.add(new User("haridy", passwordEncoder.encode("haridy123"), "USER", ""));
         //users.add(new User("admin", passwordEncoder.encode("admin123"), "ADMIN", "ACCESS_TEST1,ACCESS_TEST2"));
@@ -54,10 +55,10 @@ public class DbInit implements CommandLineRunner {
 
 
         // Create a new Passenger object using the constructor
-        Wallet wallet = new Wallet("1000",10f,"CC");
+        Wallet wallet = new Wallet(10f, "CC");
         Date birthDate = new Date(System.currentTimeMillis());
         walletRepo.save(wallet);
-        Passenger omar = new Passenger("12345", wallet, "Omar", "Fawzy", "555-555-5555", "Regular", "Cairo", "Male",birthDate ,"omar",passwordEncoder.encode("omar"));
+        Passenger omar = new Passenger(wallet, "Omar", "Fawzy", "555-555-5555", "Regular", "Cairo", Gender.M, birthDate, "omar", passwordEncoder.encode("omar"));
 
         users.add(haridy);
 
@@ -84,5 +85,5 @@ public class DbInit implements CommandLineRunner {
         System.out.println(user.getUsername());
         List<User> arr = userRepositry.findAll();
         user.getUsername();
-    }
+*/    }
 }

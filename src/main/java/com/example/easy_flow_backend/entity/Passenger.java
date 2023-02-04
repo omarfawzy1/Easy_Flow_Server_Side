@@ -8,11 +8,11 @@ import org.hibernate.annotations.CascadeType;
 import java.util.Date;
 import java.util.Objects;
 
+@Data
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Passenger extends User {
 
     @OneToOne(optional = false)
@@ -29,16 +29,15 @@ public class Passenger extends User {
     private String type;
     private String city;
     @Column(nullable = false)
-    private String gender;
+    private Gender gender;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
 
-    public Passenger(String id, Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, String gender, Date birthDay, String username, String password) {
+    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password) {
         super(username, password);
         roles = "PASSENGER";
-        this.id = id;
         this.wallet = wallet;
         this.firstName = firstName;
         this.lastName = lastName;

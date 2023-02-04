@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @CrossOrigin
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
     @Autowired
@@ -84,27 +86,28 @@ public class SecurityConfiguration {
         auth.authenticationProvider(authenticationProvider());
 
         http
-            //remove csrf and state because in jwt we do not need them
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            // add jwt filters (first is authentication, second is Authorization)
-            .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
-            .addFilter(new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), this.userRepositry))
-            .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers(HttpMethod.POST,"/login").permitAll()
-                    .requestMatchers("/api/public/management/*").hasRole("MANAGER")
-                    .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
-                    .requestMatchers("/admin/*").hasRole("ADMIN")
-                    .anyRequest().authenticated()).headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
+                //remove csrf and state because in jwt we do not need them
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                // add jwt filters (first is authentication, second is Authorization)
+                .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), this.userRepositry))
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/Register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/api/public/management/*").hasRole("MANAGER")
+                        .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
+                        .requestMatchers("/admin/*").hasRole("ADMIN")
+                        .anyRequest().authenticated()).headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST, GET"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Expose-Headers", "Authorization"))
-                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"));;
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"));
 
-            //config access rules
-                http.cors();
+        //config access rules
+        http.cors();
         return http.build();
     }
 

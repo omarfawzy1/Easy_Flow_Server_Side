@@ -11,4 +11,7 @@ import java.util.List;
 public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     public List<PassagnerDetails> findAllProjectedBy();
+
+    public boolean existsByUsernameIgnoreCase(String username);
+    public boolean existsByPhoneNumber(String phoneNumber);
 }

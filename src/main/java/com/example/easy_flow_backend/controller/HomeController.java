@@ -1,12 +1,18 @@
 package com.example.easy_flow_backend.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.easy_flow_backend.service.HomeService;
+import com.example.easy_flow_backend.view.RegisterModel;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
 public class HomeController {
+    @Autowired
+    private HomeService homeService;
+
     /*
     TODO 3/2/2023
         Passenger API
@@ -18,6 +24,9 @@ public class HomeController {
     public String index() {
         return "index";
     }
-    @GetMapping("login")
-    public String login() {return "login";}
+
+    @PostMapping(value = "Register")
+    public ResponseEntity<String> Register(@Valid @RequestBody RegisterModel registerModel) {
+      return   homeService.Register(registerModel);
+    }
 }
