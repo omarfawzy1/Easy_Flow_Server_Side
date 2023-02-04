@@ -9,10 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Owner {
+    private static long counter = 0;
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+//    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
-    private Long id;
+    private String id;
     @Column(nullable = false)
     private String name;
 
@@ -20,10 +21,12 @@ public class Owner {
 
     @Column(name = "bank_account")
     private String bankAccount;
-    public Owner(String name,String mail, String bankAccount){
-        this.name=name;
-        this.mail=mail;
-        this.bankAccount=bankAccount;
+
+    public Owner(String name, String mail, String bankAccount) {
+        this.id = "Owner-" + ++counter;
+        this.name = name;
+        this.mail = mail;
+        this.bankAccount = bankAccount;
 
     }
 

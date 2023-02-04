@@ -47,7 +47,7 @@ public class DbInit implements CommandLineRunner {
         Wallet wallet = new Wallet("CC");
         Date birthDate = new Date(System.currentTimeMillis());
         walletRepo.save(wallet);
-        Passenger omar = new Passenger(wallet, "Omar", "Fawzy", "555-555-5555", "Regular", "Cairo", "Male",birthDate ,"omar",passwordEncoder.encode("omar"));
+        Passenger omar = new Passenger(wallet, "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M,birthDate ,"omar",passwordEncoder.encode("omar"));
 
         users.add(haridy);
         users.add(omar);

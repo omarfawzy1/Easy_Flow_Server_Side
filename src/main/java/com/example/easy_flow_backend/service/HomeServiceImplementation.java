@@ -25,7 +25,7 @@ public class HomeServiceImplementation implements HomeService {
         } else if (passengersRepo.existsByPhoneNumber(registerModel.getPhoneNum())) {
             return new ResponseEntity<>("The Phone Number already Used", HttpStatus.NOT_FOUND);
         }
-        Passenger passenger = new Passenger(new Wallet(0, "12345675"), registerModel.getUserName(), registerModel.getLastName(), registerModel.getPhoneNum(), "", "", registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUserName(), passwordEncoder.encode(registerModel.getPassword()));
+        Passenger passenger = new Passenger(new Wallet( "12345675"), registerModel.getUserName(), registerModel.getLastName(), registerModel.getPhoneNum(), "", "", registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUserName(), passwordEncoder.encode(registerModel.getPassword()));
         passengersRepo.save(passenger);
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }

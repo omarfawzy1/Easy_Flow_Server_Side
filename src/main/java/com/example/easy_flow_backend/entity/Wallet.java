@@ -11,15 +11,18 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Wallet {
+    private static long counter = 0;
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+//    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "wallet_id")
-    private Long id;
+    private String id;
     private float balance;
     @Column(name = "credit_card")
     private String creditCard;
-    public Wallet(String creditCard){
-        this.balance=0.0f;
-        this.creditCard=creditCard;
+
+    public Wallet(String creditCard) {
+        this.id = "Wallet-" + ++counter;
+        this.balance = 0.0f;
+        this.creditCard = creditCard;
     }
 }
