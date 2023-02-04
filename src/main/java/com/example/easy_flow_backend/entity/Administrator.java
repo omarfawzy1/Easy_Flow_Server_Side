@@ -25,8 +25,6 @@ public class Administrator extends User {
     public Administrator(String name, String username, String password) {
         super(username, password);
         this.name = name;
-        this.username = username;
-        this.password = password;
         roles = "ADMIN";
         id="Administrator-"+ ++counter;
 
