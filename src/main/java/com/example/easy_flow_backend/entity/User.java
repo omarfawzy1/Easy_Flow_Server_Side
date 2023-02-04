@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -30,6 +34,16 @@ public abstract class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+    public List<String> getPermessionList() {
+        if (!this.permissions.isEmpty())
+            return Arrays.asList(this.permissions.split(","));
+        return new ArrayList<>();
+    }
+    public List<String> getRoleList() {
+        if (!this.roles.isEmpty())
+            return Arrays.asList(this.roles.split(","));
+        return new ArrayList<>();
     }
 
 }
