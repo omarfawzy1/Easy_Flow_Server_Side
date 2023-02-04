@@ -1,9 +1,12 @@
 package com.example.easy_flow_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
 import java.util.Objects;
@@ -14,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Passenger extends User {
-
+    static long counter=0;
     @OneToOne(optional = false)
     @JoinColumn(name = "wallet_id", referencedColumnName ="wallet_id")
     @Cascade(CascadeType.ALL)
@@ -35,10 +38,9 @@ public class Passenger extends User {
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
 
-    public Passenger(String id, Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, String gender, Date birthDay, String username, String password) {
+    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, String gender, Date birthDay, String username, String password) {
         super(username, password);
         roles = "PASSENGER";
-        this.id = id;
         this.wallet = wallet;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,6 +49,7 @@ public class Passenger extends User {
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
+        id="Passenger-"+ ++counter;
     }
 
 

@@ -1,11 +1,14 @@
 package com.example.easy_flow_backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Objects;
 
@@ -15,17 +18,18 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Administrator extends User {
-
+    static long counter=0;
     @Column(nullable = false)
     private String name;
 
-    public Administrator(String id, String name, String username, String password) {
+    public Administrator(String name, String username, String password) {
         super(username, password);
-        this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
         roles = "ADMIN";
+        id="Administrator-"+ ++counter;
+
     }
 
 }

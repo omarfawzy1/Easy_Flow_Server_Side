@@ -1,8 +1,12 @@
 package com.example.easy_flow_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.tomcat.util.bcel.Const;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
+
     @Id
+    //@GeneratedValue (strategy = GenerationType.IDENTITY)
     protected String id;
     @Column(nullable = false)
     protected String username;
