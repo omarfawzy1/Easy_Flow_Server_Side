@@ -3,10 +3,13 @@ package com.example.easy_flow_backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.apache.tomcat.util.bcel.Const;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +27,7 @@ public abstract class User {
     //@GeneratedValue (strategy = GenerationType.IDENTITY)
     protected String id;
     @Column(nullable = false)
+
     protected String username;
     @Column(nullable = false)
     @JsonIgnore

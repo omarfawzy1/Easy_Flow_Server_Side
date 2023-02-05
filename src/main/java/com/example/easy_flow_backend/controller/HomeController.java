@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.HomeService;
 import com.example.easy_flow_backend.view.RegisterModel;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public class HomeController {
     }
 
     @PostMapping(value = "Register")
-    public ResponseEntity<String> Register(@Valid @RequestBody RegisterModel registerModel) {
+    public ResponseEntity<String> Register(@Valid @RequestBody RegisterModel registerModel) throws NotFoundException {
       return   homeService.Register(registerModel);
     }
 }

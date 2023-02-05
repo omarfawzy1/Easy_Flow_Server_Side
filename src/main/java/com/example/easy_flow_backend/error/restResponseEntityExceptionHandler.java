@@ -17,5 +17,10 @@ public class restResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ErrorMessage message = new ErrorMessage(HttpStatus.FAILED_DEPENDENCY,exception.getMessage());
         return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(message);
     }*/
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorMessage> RegisterErrorException(NotFoundException exception, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+    }
 
 }
