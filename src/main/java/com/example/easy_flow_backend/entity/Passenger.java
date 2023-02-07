@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
@@ -32,6 +33,7 @@ public class Passenger extends User {
     private Gender gender;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd-mm-yyyy",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
 

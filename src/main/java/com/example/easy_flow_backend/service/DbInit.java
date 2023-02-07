@@ -44,13 +44,15 @@ public class DbInit implements CommandLineRunner {
         Administrator haridy = new Administrator("haridy","haridy",passwordEncoder.encode("haridy"));
 
         // Create a new Passenger object using the constructor
-        Wallet wallet = new Wallet("CC");
-        Date birthDate = new Date(System.currentTimeMillis());
-        walletRepo.save(wallet);
-        Passenger omar = new Passenger(wallet, "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M,birthDate ,"omar",passwordEncoder.encode("omar"));
+        //Wallet wallet = new Wallet("CC");
+        //Date birthDate = new Date(System.currentTimeMillis());
+        //walletRepo.save(wallet);
+        users.add(new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M,new Date(System.currentTimeMillis()) ,"omar",passwordEncoder.encode("omar")));
+        users.add(new Passenger(new Wallet("CC"), "ALy", "Khaled", "01256156165", "Regular", "Cairo", Gender.M,new Date(System.currentTimeMillis()) ,"aLy",passwordEncoder.encode("omar")));
+        users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464", "Regular", "Giza", Gender.M,new Date(System.currentTimeMillis()) ,"waled",passwordEncoder.encode("omar")));
+        users.add(new Passenger(new Wallet("CC"), "Mona", "Mahmoud", "12311561655", "Regular", "Cairo", Gender.F,new Date(System.currentTimeMillis()) ,"mona",passwordEncoder.encode("omar")));
 
         users.add(haridy);
-        users.add(omar);
 
 
         //owner

@@ -25,7 +25,10 @@ public class HomeController {
     public String index() {
         return "index";
     }
-
+    @PostMapping(value = "login")
+    public String login() {
+        return "Login";
+    }
     @PostMapping(value = "Register")
     public ResponseEntity<String> Register(@Valid @RequestBody RegisterModel registerModel) throws NotFoundException {
       return   homeService.Register(registerModel);
