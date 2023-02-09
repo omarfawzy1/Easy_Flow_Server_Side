@@ -23,4 +23,10 @@ public class restResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorMessage> BadRequestException(BadRequestException exception, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+
+    }
 }
