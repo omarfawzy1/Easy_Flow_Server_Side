@@ -2,7 +2,7 @@ package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -12,9 +12,10 @@ import lombok.*;
 @NoArgsConstructor
 public class Ticket {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "ticket_id")
-    private Long id;
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)

@@ -10,8 +10,6 @@ import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.view.AddLineView;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
-import jakarta.validation.constraints.Max;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +92,7 @@ public class AdminServiceImplementation implements AdminService {
         if (!owner.isPresent()) {
             return new ResponseEntity<>("The Owner Not Exists", HttpStatus.BAD_REQUEST);
         }
-        Line tmpLine = new Line(addLineView.getPrice(), owner.get());
+        Line tmpLine = new Line("line2", addLineView.getPrice(), owner.get());
         tmpLine.setName(addLineView.getLineName());
         try {
             lineRepo.save(tmpLine);

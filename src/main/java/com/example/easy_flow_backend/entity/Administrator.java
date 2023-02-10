@@ -18,16 +18,15 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Administrator extends User {
-    static long counter=0;
+
     @Column(nullable = false)
     private String name;
 
     public Administrator(String name, String username, String password) {
         super(username, password);
         this.name = name;
-        roles = "ADMIN";
-        id="Administrator-"+ ++counter;
 
+        roles = "ADMIN";
     }
 
 }

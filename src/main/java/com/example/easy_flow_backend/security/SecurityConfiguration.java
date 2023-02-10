@@ -96,6 +96,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/Register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/api/public/test").permitAll()
                         .requestMatchers("/api/public/management/*").hasRole("MANAGER")
                         .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
                         .requestMatchers("/admin/*").hasRole("ADMIN")

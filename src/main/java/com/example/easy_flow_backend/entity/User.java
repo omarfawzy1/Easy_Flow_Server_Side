@@ -24,7 +24,8 @@ import java.util.List;
 public abstract class User {
 
     @Id
-    //@GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     protected String id;
     @Column(nullable = false)
 

@@ -17,7 +17,6 @@ public class HomeController {
     /*
     TODO 3/2/2023
         Passenger API
-            Register
             History Return Tickets
             Request Privilege
      */

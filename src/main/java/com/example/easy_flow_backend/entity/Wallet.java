@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
 
@@ -11,9 +12,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Wallet {
-    private static long counter = 0;
+
     @Id
-//    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "wallet_id")
     private String id;
     private float balance;
@@ -21,7 +23,6 @@ public class Wallet {
     private String creditCard;
 
     public Wallet(String creditCard) {
-        this.id = "Wallet-" + ++counter;
         this.balance = 0.0f;
         this.creditCard = creditCard;
     }

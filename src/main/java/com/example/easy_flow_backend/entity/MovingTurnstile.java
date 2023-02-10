@@ -12,13 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovingTurnstile extends User{
-    static long counter=0;
 
     @ManyToOne
     @JoinColumn(name= "line_id")
     private Line line;
     public MovingTurnstile(String username, String password) {
         super(username, password);
-        id="MovingTurnstile-"+ ++counter;
     }
 }

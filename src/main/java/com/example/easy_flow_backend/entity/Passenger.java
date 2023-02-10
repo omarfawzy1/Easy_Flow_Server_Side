@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Passenger extends User {
-    static long counter=0;
     @OneToOne(optional = false)
     @JoinColumn(name = "wallet_id", referencedColumnName ="wallet_id")
     @Cascade(CascadeType.ALL)
@@ -48,7 +47,6 @@ public class Passenger extends User {
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
-        id="Passenger-"+ ++counter;
     }
 
 

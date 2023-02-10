@@ -1,12 +1,11 @@
 package com.example.easy_flow_backend.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.*;
 
@@ -16,8 +15,9 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Line {
-    static long counter = 0;
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "line_id")
     protected String id;
 
@@ -37,10 +37,10 @@ public class Line {
             inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "station_id"))
     Set<Station> stations = new HashSet<>();
 
-    public Line(float price, Owner owner) {
+    public Line(String name, float price, Owner owner) {
+        this.name=name;
         this.price = price;
         this.owner = owner;
-        this.id = "line-" + ++counter;
     }
 
     public void addStation(Station station) {
@@ -61,5 +61,18 @@ public class Line {
             stationIds.add(station.getId());
         }
         return stationIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Line line = (Line) o;
+        return Float.compare(line.price, price) == 0 && name.equals(line.name) && owner.equals(line.owner) && Objects.equals(stations, line.stations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, owner, stations);
     }
 }

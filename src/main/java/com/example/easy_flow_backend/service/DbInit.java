@@ -16,6 +16,8 @@ import java.util.List;
 
 @Service
 public class DbInit implements CommandLineRunner {
+    //@GeneratedValue(generator = "uuid")
+    //@GenericGenerator(name = "uuid", strategy = "uuid2")
     @Autowired
     private UserRepositry userRepositry;
 
@@ -59,8 +61,8 @@ public class DbInit implements CommandLineRunner {
         Owner owner1 =new Owner("ehab","ehab@mail.com","1148 1124 2247 2247");
         this.ownerRepo.save(owner1);
         //line and station
-        Line line1=new Line(10.0F,owner1);
-        Line line2=new Line(31.0F,owner1);
+        Line line1=new Line("line1",10.0F,owner1);
+        Line line2=new Line("line2",31.0F,owner1);
         Station station1=new Station("first station");
 
         lines.add(line1);

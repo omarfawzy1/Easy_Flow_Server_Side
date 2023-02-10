@@ -36,7 +36,6 @@ public class AdminController {
     public List<PassagnerDetails> getAllPassengers() {
         return adminService.getAllPassangers();
     }
-
     /*
     Todo:
        make user active by username //Done
