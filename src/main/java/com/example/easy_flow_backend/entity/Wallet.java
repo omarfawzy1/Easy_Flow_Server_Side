@@ -26,4 +26,21 @@ public class Wallet {
         this.balance = 0.0f;
         this.creditCard = creditCard;
     }
+    public Wallet(String creditCard, float balance) {
+        this.creditCard = creditCard;
+        this.balance = balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wallet wallet = (Wallet) o;
+        return Float.compare(wallet.balance, balance) == 0  && creditCard.equals(wallet.creditCard);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, balance, creditCard);
+    }
 }

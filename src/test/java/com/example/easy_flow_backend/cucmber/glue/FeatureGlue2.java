@@ -4,7 +4,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class FeatureGlue2 {
+public class FeatureGlue2 extends GlueConfig {
     @Given("test given")
     public void test_given() {
         // Write code here that turns the phrase above into concrete actions
@@ -15,9 +15,11 @@ public class FeatureGlue2 {
         // Write code here that turns the phrase above into concrete actions
         //throw new io.cucumber.java.PendingException();
     }
+
     @Then("test then")
     public void test_then() {
         // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+//        throw new io.cucumber.java.PendingException();
     }
+
 }

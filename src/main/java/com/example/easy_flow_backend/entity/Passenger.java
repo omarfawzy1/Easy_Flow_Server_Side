@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.joda.time.DateTimeComparator;
 
 
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Setter
@@ -32,7 +35,7 @@ public class Passenger extends User {
     private Gender gender;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-mm-yyyy",shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+00:00",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
 
@@ -48,6 +51,28 @@ public class Passenger extends User {
         this.gender = gender;
         this.birthDay = birthDay;
     }
+    public Passenger( String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password) {
+        super(username, password);
+        roles = "PASSENGER";
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.type = type;
+        this.city = city;
+        this.gender = gender;
+        this.birthDay = birthDay;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Passenger passenger = (Passenger) o;
+        return wallet.equals(passenger.wallet) && firstName.equals(passenger.firstName) && lastName.equals(passenger.lastName) && phoneNumber.equals(passenger.phoneNumber) && type.equals(passenger.type) && city.equals(passenger.city) && gender == passenger.gender && DateTimeComparator.getDateOnlyInstance().compare(birthDay,passenger.birthDay)==0;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(wallet, firstName, lastName, phoneNumber, type, city, gender, birthDay);
+    }
 }
