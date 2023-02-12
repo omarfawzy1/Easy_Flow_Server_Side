@@ -36,14 +36,6 @@ public class AdminController {
     public List<PassagnerDetails> getAllPassengers() {
         return adminService.getAllPassangers();
     }
-    /*
-    Todo:
-       make user active by username //Done
-       send List of line //Done
-       send specific line //Done
-       remove line //Done
-       add line
-    */
     @GetMapping("passenger/{username}")
     public Passenger getPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPassenger(username);

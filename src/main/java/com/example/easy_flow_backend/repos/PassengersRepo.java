@@ -13,6 +13,7 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     List<PassagnerDetails> findAllProjectedBy();
 
+
     Passenger findByUsernameIgnoreCase(String username);
 
     boolean existsByUsernameIgnoreCase(String username);

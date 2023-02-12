@@ -27,20 +27,23 @@ public class RegisterModel {
     private String lastName;
     @NotBlank(message = "User name is mandatory")
     @Length(max = 256)
-    private String userName;
-    @NotBlank(message = "Email is mandatory")
+    private String username;
     @Email
+    @NotBlank(message = "User email is mandatory")
+    @Length(max = 256)
     private String email;
+    @Length(max = 256)
+    private String city;
     @NotBlank(message = "Password is mandatory")
     @Length(min = 8, max = 64)
     private String password;
     @NotBlank(message = "Phone is mandatory")
     @Length(min = 11, max = 11)
     @Pattern(regexp = "(^$|[0-9]{11})")
-    private String phoneNum;
+    private String phoneNumber;
     @NotNull(message = "Gender is mandatory")
     private Gender gender;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthDay;
 
 }

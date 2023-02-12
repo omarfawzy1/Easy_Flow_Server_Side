@@ -13,6 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @CucumberOptions(plugin = {"pretty"}, tags = "",
         features = {
                 "src/test/resources/features/Admin.feature",
-                "src/test/resources/features/feature2.feature"})
+                "src/test/resources/features/Passenger.feature"})
 public class CucmberIT {
 }

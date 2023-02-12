@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.joda.time.DateTimeComparator;
 
 
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Setter
@@ -30,13 +33,15 @@ public class Passenger extends User {
     private String city;
     @Column(nullable = false)
     private Gender gender;
+    @Column(name = "email",nullable = false)
+    private String email;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-mm-yyyy",shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
 
-    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password) {
+    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);
         roles = "PASSENGER";
         this.wallet = wallet;
@@ -47,7 +52,31 @@ public class Passenger extends User {
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
+        this.email=email;
+    }
+    public Passenger( String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
+        super(username, password);
+        roles = "PASSENGER";
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.type = type;
+        this.city = city;
+        this.gender = gender;
+        this.birthDay = birthDay;
+        this.email=email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Passenger passenger = (Passenger) o;
+        return wallet.equals(passenger.wallet) && this.username.equals(passenger.username) ;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(wallet, firstName, lastName, phoneNumber, type, city, gender, birthDay,email);
+    }
 }
