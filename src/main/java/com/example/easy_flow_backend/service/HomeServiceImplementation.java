@@ -22,12 +22,13 @@ public class HomeServiceImplementation implements HomeService {
 
     @Override
     public ResponseEntity<String> Register(RegisterModel registerModel) throws NotFoundException {
-        if (passengersRepo.existsByUsernameIgnoreCase(registerModel.getUserName())) {
+        if (passengersRepo.existsByUsernameIgnoreCase(registerModel.getUsername())) {
             throw new NotFoundException("The username already Used");
-        } else if (passengersRepo.existsByPhoneNumber(registerModel.getPhoneNum())) {
+        } else if (passengersRepo.existsByPhoneNumber(registerModel.getPhoneNumber())) {
             throw new NotFoundException("The Phone already Used");
         }
-        Passenger passenger = new Passenger(new Wallet("12345675"), registerModel.getUserName(), registerModel.getLastName(), registerModel.getPhoneNum(), "", "", registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUserName(), passwordEncoder.encode(registerModel.getPassword()));
+
+        Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(),"", registerModel.getCity(), registerModel.getGender(),registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()),registerModel.getEmail());
         passengersRepo.save(passenger);
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }

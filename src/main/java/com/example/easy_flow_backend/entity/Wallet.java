@@ -18,15 +18,15 @@ public class Wallet {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "wallet_id")
     private String id;
-    private float balance;
+    private Double balance;
     @Column(name = "credit_card")
     private String creditCard;
 
     public Wallet(String creditCard) {
-        this.balance = 0.0f;
+        this.balance = 0.0;
         this.creditCard = creditCard;
     }
-    public Wallet(String creditCard, float balance) {
+    public Wallet(String creditCard, Double balance) {
         this.creditCard = creditCard;
         this.balance = balance;
     }
@@ -36,7 +36,7 @@ public class Wallet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wallet wallet = (Wallet) o;
-        return Float.compare(wallet.balance, balance) == 0  && creditCard.equals(wallet.creditCard);
+        return Double.compare(wallet.balance, wallet.balance) == 0  && creditCard.equals(wallet.creditCard);
     }
 
     @Override

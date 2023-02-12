@@ -27,11 +27,12 @@ public abstract class User {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     protected String id;
-    @Column(nullable = false)
 
+    @Column(nullable = false, unique = true)
     protected String username;
+
     @Column(nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     protected String password;
     @Column(nullable = false)
     protected boolean active = true; // TODO set to false by default until gmail verification

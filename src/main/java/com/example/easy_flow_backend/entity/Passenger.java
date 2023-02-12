@@ -33,13 +33,15 @@ public class Passenger extends User {
     private String city;
     @Column(nullable = false)
     private Gender gender;
+    @Column(name = "email",nullable = false)
+    private String email;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+00:00",shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
 
-    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password) {
+    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);
         roles = "PASSENGER";
         this.wallet = wallet;
@@ -50,8 +52,9 @@ public class Passenger extends User {
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
+        this.email=email;
     }
-    public Passenger( String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password) {
+    public Passenger( String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);
         roles = "PASSENGER";
         this.firstName = firstName;
@@ -61,6 +64,7 @@ public class Passenger extends User {
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
+        this.email=email;
     }
 
     @Override
@@ -68,11 +72,11 @@ public class Passenger extends User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        return wallet.equals(passenger.wallet) && firstName.equals(passenger.firstName) && lastName.equals(passenger.lastName) && phoneNumber.equals(passenger.phoneNumber) && type.equals(passenger.type) && city.equals(passenger.city) && gender == passenger.gender && DateTimeComparator.getDateOnlyInstance().compare(birthDay,passenger.birthDay)==0;
+        return wallet.equals(passenger.wallet) && this.username.equals(passenger.username) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wallet, firstName, lastName, phoneNumber, type, city, gender, birthDay);
+        return Objects.hash(wallet, firstName, lastName, phoneNumber, type, city, gender, birthDay,email);
     }
 }

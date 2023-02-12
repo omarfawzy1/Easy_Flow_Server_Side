@@ -4,7 +4,9 @@ import com.example.easy_flow_backend.cucmber.CucumberConfig;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.UserRepositry;
+import com.example.easy_flow_backend.view.PassagnerDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.core.gherkin.messages.internal.gherkin.internal.com.eclipsesource.json.Json;
 import io.cucumber.java.DataTableType;
@@ -13,6 +15,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.messages.internal.com.google.gson.Gson;
+import io.cucumber.messages.internal.com.google.gson.reflect.TypeToken;
 import jakarta.persistence.EntityManager;
 import net.minidev.json.JSONObject;
 import org.hibernate.Session;
@@ -26,13 +29,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Date;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @ComponentScan({"com.example.easy_flow_backend"})
@@ -40,44 +41,10 @@ import java.util.stream.IntStream;
 
 public class AdminGlue extends GlueConfig {
 
-//    private RestTemplate testRestTemplate =new RestTemplate();
-//    Map<String, String> params = new HashMap<>();
-//    HttpHeaders headers = new HttpHeaders();
-//    String token;
-//
-//    @Autowired
-//    private  ObjectMapper objectMapper;
-//    @Autowired
-//    private UserRepositry userRepositry;
-//    private List<Line> expectedLines;
-//    private List<Line> actualLines;
-//    @Autowired
-//    private LineRepo lineRepo;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
     public AdminGlue(){
     }
-    @DataTableType
-    public Passenger passengerEntry(Map<String, String> entry) {
-        return new Passenger(
-                entry.get("firstName"),
-                entry.get("lastName"),
-                entry.get("phoneNumber"),
-                entry.get("type"),
-                entry.get("city"),
-                Gender.valueOf(entry.get("gender")),
-                Date.valueOf(entry.get("birthDay")),
-                entry.get("username"),
-                passwordEncoder.encode(entry.get("password")));
-    }
-    //String creditCard, float balance
-    @DataTableType
-    public Wallet walletEntry(Map<String, String> entry) {
-        return new Wallet(
-                entry.get("creditCard"),
-                Float.valueOf(entry.get("balance")));
-    }
+
+
 
     @Given("^the admin table in the database contain are the following$")
     public void the_admin_in_the_database_are_the_following(io.cucumber.datatable.DataTable dataTable) {
@@ -93,6 +60,9 @@ public class AdminGlue extends GlueConfig {
     public void the_admin_try_to_log_in(String username, String password) throws URISyntaxException {
         params.put("username",username);
         params.put("password",password);
+
+
+
 //        token=testRestTemplate.
 //                postForEntity(new URI("http://localhost:8080/login"),params
 //                        ,HttpHeaders.class).getHeaders().get("Authorization").get(0);
@@ -119,8 +89,7 @@ public class AdminGlue extends GlueConfig {
         }
         passengersRepo.deleteAll();
         passengersRepo.saveAll(passengerList);
-
-
+        passengerList.clear();
     }
     @And("^the admin logged in with username (.*) and password (.*)$")
     public void the_admin_logged_in_with_username_and_password(String username, String password) throws URISyntaxException {
@@ -154,26 +123,31 @@ public class AdminGlue extends GlueConfig {
         actual.clear();
     }
 
+    @When("the admin request to get all the passengers")
+    public void the_admin_request_to_get_all_the_passengers() throws JsonProcessingException {
+        String response =(testRestTemplate.exchange("http://localhost:8080/admin/passengers",
+                HttpMethod.GET,new HttpEntity<>(headers), String.class, params).getBody());
 
-
-
-
-
-
-
-
-
-//    private void validateLines(){
-//        Assertions.assertEquals(expectedLines.size(), actualLines.size());
-//        IntStream.range(0,actualLines.size())
-//                .forEach(
-//                        index->validateLine(expectedLines.get(index),actualLines.get(index)));
-//
-//    }
-//    private void validateLine(final Line expectedLine, final Line actualLine){
-//        Assertions.assertTrue(expectedLine.equals(actualLine));
-//    }
-
+        //Passenger[] passengerList = gson.fromJson(response, Passenger[].class);
+        Passenger[] passengerList=objectMapper.readValue(response,Passenger[].class);
+        actual.addAll(Arrays.stream(passengerList).toList());
+        headers.clear();
+    }
+    @Then("the server response with the following passengers")
+    public void the_server_response_with_the_following_passengers(List<Passenger> passengers) {
+        expected.addAll(passengers);
+    }
+    @Then("this passengers wallets are")
+    public void this_passengers_wallets_are(List<Wallet> wallets) {
+        List<Passenger> temp=new ArrayList<>();
+        for (int i=0; i<expected.size(); i++){
+            temp.add ((Passenger) expected.get(i));
+            temp.get(i).setWallet(wallets.get(i));
+        }
+        match(actual, Collections.singletonList(temp));
+        expected.clear();
+        actual.clear();
+    }
 
 
 }
