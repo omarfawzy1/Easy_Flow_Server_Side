@@ -10,6 +10,7 @@ import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.view.AddLineView;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +85,7 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseEntity<String> addLine(AddLineView addLineView) {
+    public ResponseEntity<String> addLine( AddLineView addLineView) {
 //        if (lineRepo.existsByNameIgnoreCase(line.getName()))
 //            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
         Optional<Owner> owner = ownerRepo.findById(addLineView.getOwnerId());
@@ -92,8 +93,8 @@ public class AdminServiceImplementation implements AdminService {
         if (!owner.isPresent()) {
             return new ResponseEntity<>("The Owner Not Exists", HttpStatus.BAD_REQUEST);
         }
-        Line tmpLine = new Line("line2", addLineView.getPrice(), owner.get());
-        tmpLine.setName(addLineView.getLineName());
+        Line tmpLine = new Line(addLineView.getLineName(), addLineView.getPrice(), owner.get());
+
         try {
             lineRepo.save(tmpLine);
         } catch (Exception e) {

@@ -4,7 +4,6 @@ import com.example.easy_flow_backend.repos.UserRepositry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -94,14 +93,16 @@ public class SecurityConfiguration {
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), this.userRepositry))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/Register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+//                        .requestMatchers("/Register").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/passenger/**").hasRole("PASSENGER")
-                        .requestMatchers("/api/public/test").permitAll()
-                        .requestMatchers("/api/public/management/*").hasRole("MANAGER")
-                        .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
-                        .requestMatchers("/admin/*").hasRole("ADMIN")
-                        .anyRequest().authenticated()).headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/api/public/test").permitAll()
+//                        .requestMatchers("/api/public/management/*").hasRole("MANAGER")
+//                        .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
+                        .anyRequest().authenticated()).
+        headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST, GET"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))

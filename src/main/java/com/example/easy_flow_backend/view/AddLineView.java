@@ -19,7 +19,7 @@ public class AddLineView {
     String ownerId;
 
     @NotNull
-    float price;
+    double price;
     @NotNull(message = "Line Name Should Not be Null :)")
     @NotBlank(message = "Line Name Should Not be Blank :)")
     String lineName;

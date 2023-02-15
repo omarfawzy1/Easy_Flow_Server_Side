@@ -25,7 +25,7 @@ public class Line {
     @Column(name = "line_name", nullable = true)
     private String name;
     @Column(nullable = false)
-    private float price;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -37,8 +37,8 @@ public class Line {
             inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "station_id"))
     Set<Station> stations = new HashSet<>();
 
-    public Line(String name, float price, Owner owner) {
-        this.name=name;
+    public Line(String name, double price, Owner owner) {
+        this.name = name;
         this.price = price;
         this.owner = owner;
     }
@@ -68,7 +68,7 @@ public class Line {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Line line = (Line) o;
-        return Float.compare(line.price, price) == 0 && name.equals(line.name) && owner.equals(line.owner) && Objects.equals(stations, line.stations);
+        return Double.compare(line.price, price) == 0 && name.equals(line.name) && owner.equals(line.owner) && Objects.equals(stations, line.stations);
     }
 
     @Override

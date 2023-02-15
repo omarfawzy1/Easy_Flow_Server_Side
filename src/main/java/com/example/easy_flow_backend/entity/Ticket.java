@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalTime;
+import java.util.Date;
+
 
 @Entity
 @Setter
@@ -17,6 +20,26 @@ public class Ticket {
     @Column(name = "ticket_id")
     private String id;
 
+    public Ticket(Passenger passenger, Station startStation, Date date, LocalTime startTime, Status status) {
+        this.passenger = passenger;
+        this.startStation = startStation;
+        this.date = date;
+        this.startTime = startTime;
+        this.status = status;
+        this.price = 0;
+    }
+
+    public Ticket(Passenger passenger, Station startStation, Station endStation, Date date, LocalTime startTime, LocalTime endTime, double price, Status status) {
+        this.passenger = passenger;
+        this.startStation = startStation;
+        this.endStation = endStation;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = price;
+        this.status = status;
+    }
+
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
@@ -26,7 +49,7 @@ public class Ticket {
     private Station startStation;
 
     @ManyToOne
-    @JoinColumn(name = "end_station_id", referencedColumnName = "station_id", nullable = false)
+    @JoinColumn(name = "end_station_id", referencedColumnName = "station_id", nullable = true)
     private Station endStation;
     @JoinColumn(nullable = false)
     @Temporal(TemporalType.DATE)
@@ -34,10 +57,15 @@ public class Ticket {
 
     @JoinColumn(nullable = false)
     @Temporal(TemporalType.TIME)
-    private java.util.Date startTime;
-    @JoinColumn(nullable = false)
+    private LocalTime startTime;
+    @JoinColumn(nullable = true)
     @Temporal(TemporalType.TIME)
-    private java.util.Date endTime;
+    private LocalTime endTime;
     @JoinColumn(nullable = false)
-    private float price;
+    private double price;
+
+    @JoinColumn(nullable = false)
+    private Status status;
+
+
 }

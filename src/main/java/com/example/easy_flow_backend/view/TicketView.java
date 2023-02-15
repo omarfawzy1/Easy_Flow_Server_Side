@@ -1,10 +1,13 @@
 package com.example.easy_flow_backend.view;
 
+import com.example.easy_flow_backend.entity.Status;
+
+import java.time.LocalTime;
 import java.util.Date;
 
 public interface TicketView {
 
-    Long getId();
+    String getId();
 
     UserDetails getPassenger();
 
@@ -14,10 +17,12 @@ public interface TicketView {
 
     Date getDate();
 
-    Date getStartTime();
+    LocalTime getStartTime();
 
-    Date getEndTime();
+    LocalTime getEndTime();
 
-    float getPrice();
+    double getPrice();
+
+    Status getStatus();
 
 }
