@@ -1,16 +1,25 @@
 package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ErrorMessage;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.AdminService;
 import com.example.easy_flow_backend.view.AddLineView;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -67,7 +76,7 @@ public class AdminController {
     }
 
     @PostMapping("line")
-    public ResponseEntity<String> addLine(@RequestBody AddLineView addLineView) {
+    public ResponseEntity<String> addLine(@Valid @RequestBody AddLineView addLineView) {
         return adminService.addLine(addLineView);
     }
 

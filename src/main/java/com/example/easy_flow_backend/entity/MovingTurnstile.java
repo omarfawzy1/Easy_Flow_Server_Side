@@ -18,5 +18,6 @@ public class MovingTurnstile extends User{
     private Line line;
     public MovingTurnstile(String username, String password) {
         super(username, password);
+        roles = "TURNSTILE";
     }
 }

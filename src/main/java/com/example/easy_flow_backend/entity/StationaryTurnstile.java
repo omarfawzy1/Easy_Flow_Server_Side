@@ -16,6 +16,7 @@ public class StationaryTurnstile extends User {
     private Station station;
     public StationaryTurnstile(String username, String password) {
         super(username, password);
+        roles = "TURNSTILE";
     }
 
 

@@ -24,6 +24,9 @@ public class HomeController {
     public String index() {
         return "index";
     }
+    /*
+    * Don't Remove (blocks post request to log in)
+    */
     @PostMapping(value = "login")
     public String login() {
         return "Login";
