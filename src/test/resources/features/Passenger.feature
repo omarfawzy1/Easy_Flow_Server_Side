@@ -16,11 +16,11 @@ Feature: passenger access api
     Scenario: the passenger request is valid
       When the passenger send register request with the following data
         |firstName|lastName|phoneNumber|type   |city |gender|birthDay  |username|password    |email         |
-        |tony     |tony    |01270618534|Regular|Giza |M     |2023-02-11|tony    |tonyPassword|tony@gmail.com|
+        |tony     |tony    |01270618534|       |Giza |M     |2023-02-11|tony    |tonyPassword|tony@gmail.com|
       Then the server response with status 200
     Scenario: the passenger request to register with the used username
       When the passenger send register request with the following data
         |firstName|lastName|phoneNumber|type   |city |gender|birthDay  |username|password    |email          |
-        |Mona     |tony    |01270618534|Regular|Giza |M     |2023-02-11|Mona    |tonyPassword|tony@gmail.com|
+        |Mona     |tony    |01270618534|       |Giza |M     |2023-02-11|Mona    |tonyPassword|tony@gmail.com|
       Then the server response with status 404
 

@@ -6,6 +6,7 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.view.AddLineView;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
+import com.example.easy_flow_backend.view.TimePeriod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -28,4 +29,10 @@ public interface AdminService {
     ResponseEntity<String> deleteLine(String id) throws NotFoundException;
 
     ResponseEntity<String> addLine(AddLineView addLineView);
+
+    int getAllPassangersCount();
+
+    int getAllPassangersCountWithType(String type);
+
+    long getRevenue(TimePeriod timePeriod);
 }

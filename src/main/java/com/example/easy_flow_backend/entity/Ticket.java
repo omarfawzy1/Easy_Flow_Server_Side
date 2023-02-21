@@ -19,27 +19,6 @@ public class Ticket {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "ticket_id")
     private String id;
-
-    public Ticket(Passenger passenger, Station startStation, Date date, LocalTime startTime, Status status) {
-        this.passenger = passenger;
-        this.startStation = startStation;
-        this.date = date;
-        this.startTime = startTime;
-        this.status = status;
-        this.price = 0;
-    }
-
-    public Ticket(Passenger passenger, Station startStation, Station endStation, Date date, LocalTime startTime, LocalTime endTime, double price, Status status) {
-        this.passenger = passenger;
-        this.startStation = startStation;
-        this.endStation = endStation;
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.price = price;
-        this.status = status;
-    }
-
     @ManyToOne
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
@@ -66,6 +45,25 @@ public class Ticket {
 
     @JoinColumn(nullable = false)
     private Status status;
+    public Ticket(Passenger passenger, Station startStation, Date date, LocalTime startTime, Status status) {
+        this.passenger = passenger;
+        this.startStation = startStation;
+        this.date = date;
+        this.startTime = startTime;
+        this.status = status;
+        this.price = 0;
+    }
+
+    public Ticket(Passenger passenger, Station startStation, Station endStation, Date date, LocalTime startTime, LocalTime endTime, double price, Status status) {
+        this.passenger = passenger;
+        this.startStation = startStation;
+        this.endStation = endStation;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = price;
+        this.status = status;
+    }
 
 
 }

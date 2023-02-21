@@ -7,10 +7,11 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
+import com.example.easy_flow_backend.repos.TicketRepo;
 import com.example.easy_flow_backend.view.AddLineView;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
-import jakarta.validation.Valid;
+import com.example.easy_flow_backend.view.TimePeriod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,8 @@ public class AdminServiceImplementation implements AdminService {
     private LineRepo lineRepo;
     @Autowired
     private OwnerRepo ownerRepo;
+    @Autowired
+    private TicketRepo ticketRepo;
 
     @Override
     public List<LineView> getAllLines() {
@@ -101,6 +104,21 @@ public class AdminServiceImplementation implements AdminService {
             throw new RuntimeException(e.getMessage());
         }
         return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
+
+    @Override
+    public int getAllPassangersCount() {
+        return (int) passengerRepo.count();
+    }
+
+    @Override
+    public int getAllPassangersCountWithType(String type) {
+        return passengerRepo.getAllPassangersCountWithType(type);
+    }
+
+    @Override
+    public long  getRevenue(TimePeriod timePeriod) {
+        return ticketRepo.getRevenue(timePeriod.getStart(),timePeriod.getEnd());
     }
 
 

@@ -6,6 +6,7 @@ import com.example.easy_flow_backend.service.AdminService;
 import com.example.easy_flow_backend.view.AddLineView;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
+import com.example.easy_flow_backend.view.TimePeriod;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +72,34 @@ public class AdminController {
     public ResponseEntity<String> addLine(@Valid @RequestBody AddLineView addLineView) {
         return adminService.addLine(addLineView);
     }
+    @GetMapping("passengers/count")
+    public int getPassengersCount() {
+        return adminService.getAllPassangersCount();
+    }
+    @GetMapping("passengers/count/{type}")
+    public int getPassengersCountWithType(@PathVariable String type) {
+        return adminService.getAllPassangersCountWithType(type);
+    }
+    //return null no ticket in the system
+//    @GetMapping("revenue")
+//    public long getRevenue(@Valid @RequestBody TimePeriod timePeriod) {
+//        return adminService.getRevenue(timePeriod);
+//    }
+//ToDo{Admin can view the total number of passengers on a specific line (Bus) and at a specific station for a given period .
+//Admin can view the total number of passengers on a specific station for a given period.
+//Admin can view the average number of passengers on a specific line (Bus) and at a specific station for a given period.
+//Admin can view the peak hours for a specific line and at a specific station.
+//Admin can view the trend of passenger numbers over time for a specific line and at a specific station.
+//
+//View system-wide statistics:
+//Admin can view the total number of transactions in the system (e.g. ticket purchases, wallet recharges).
+//Admin can view the average revenue per passenger for a given period.
+//Admin can view the number of users with negative balances.
+//Admin can view the number of users with low balances (below a certain threshold).
+//Admin can view the number of active turnstile machines and their status (online/offline/out of service).
+//Admin can view the system logs to monitor any errors or issues in the system.}
+
+
 
 
 }
