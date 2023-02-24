@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.view;
+package com.example.easy_flow_backend.Dto.Models;
 
 import com.example.easy_flow_backend.entity.Gender;
 import com.fasterxml.jackson.annotation.JsonFormat;

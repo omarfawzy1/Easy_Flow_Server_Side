@@ -1,40 +1,21 @@
 package com.example.easy_flow_backend.cucmber.glue;
 
-import com.example.easy_flow_backend.cucmber.CucumberConfig;
 import com.example.easy_flow_backend.entity.*;
-import com.example.easy_flow_backend.repos.LineRepo;
-import com.example.easy_flow_backend.repos.UserRepositry;
-import com.example.easy_flow_backend.view.PassagnerDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.core.gherkin.messages.internal.gherkin.internal.com.eclipsesource.json.Json;
-import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.messages.internal.com.google.gson.Gson;
-import io.cucumber.messages.internal.com.google.gson.reflect.TypeToken;
-import jakarta.persistence.EntityManager;
-import net.minidev.json.JSONObject;
-import org.hibernate.Session;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Date;
 import java.util.*;
-import java.util.stream.IntStream;
 
 @ComponentScan({"com.example.easy_flow_backend"})
 @SpringBootTest

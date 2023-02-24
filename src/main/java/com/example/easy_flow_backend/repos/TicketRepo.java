@@ -1,9 +1,8 @@
 package com.example.easy_flow_backend.repos;
 
-import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Status;
 import com.example.easy_flow_backend.entity.Ticket;
-import com.example.easy_flow_backend.view.TicketView;
+import com.example.easy_flow_backend.Dto.Views.TicketView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,8 +1,7 @@
-package com.example.easy_flow_backend.view;
+package com.example.easy_flow_backend.Dto.Views;
 
 import com.example.easy_flow_backend.entity.Gender;
 import com.example.easy_flow_backend.entity.Wallet;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 

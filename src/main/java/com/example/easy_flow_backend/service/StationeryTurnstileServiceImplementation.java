@@ -8,7 +8,8 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TicketRepo;
-import com.example.easy_flow_backend.view.RideModel;
+import com.example.easy_flow_backend.Dto.Models.RideModel;
+import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.Random;
 
 @Service
-public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService {
+public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService, TurnStileService {
     @Autowired
     private TicketRepo ticketRepo;
     @Autowired
@@ -26,26 +27,9 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     @Autowired
     private StationaryTurnstileRepo stationaryTurnstileRepo;
 
-    static public void validateRideRequest(@NotNull RideModel rideModel) throws BadRequestException {
-        if (rideModel.getMachineId() == null) {
-            throw new BadRequestException("The machine id must not null");
-        } else if (rideModel.getUsername() == null) {
-            throw new BadRequestException("Username not null");
-        } else if (rideModel.getTime() == null) {
-            throw new BadRequestException("Time must not null");
-        } else if (rideModel.getMachineId().isEmpty()) {
-            throw new BadRequestException("machine id must not Blank");
-        } else if (rideModel.getUsername().isEmpty()) {
-            throw new BadRequestException("Username must not Blank");
-        } else if (rideModel.getTime().isAfter(LocalTime.now())) {
-            throw new BadRequestException("The Date is invalid");
-        }
-    }
-
 
     @Override
     public String inRide(RideModel rideModel) throws BadRequestException {
-        validateRideRequest(rideModel);
         if (ticketRepo.existsByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending)) {
             throw new BadRequestException("You Can not make Ride as you have pending Request");
         } else if (!passengersRepo.existsByUsernameIgnoreCase(rideModel.getUsername())) {
@@ -66,7 +50,6 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
     @Override
     public String outRide(RideModel rideModel) throws BadRequestException {
-        validateRideRequest(rideModel);
 
         if (!ticketRepo.existsByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending)) {
             throw new BadRequestException("Failed No Binding Tickets");

@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.view;
+package com.example.easy_flow_backend.Dto.Models;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

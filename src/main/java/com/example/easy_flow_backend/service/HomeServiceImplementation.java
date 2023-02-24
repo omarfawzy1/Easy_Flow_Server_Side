@@ -4,13 +4,12 @@ import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Wallet;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.view.RegisterModel;
+import com.example.easy_flow_backend.Dto.Models.RegisterModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 

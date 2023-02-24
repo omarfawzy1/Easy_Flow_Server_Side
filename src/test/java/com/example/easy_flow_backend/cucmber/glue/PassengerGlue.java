@@ -1,20 +1,9 @@
 package com.example.easy_flow_backend.cucmber.glue;
 
-import com.example.easy_flow_backend.entity.Gender;
 import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.view.RegisterModel;
-import io.cucumber.java.DataTableType;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-
-import java.sql.Date;
-import java.util.Arrays;
-import java.util.Map;
 
 public class PassengerGlue extends GlueConfig {
 

@@ -63,6 +63,9 @@ public class DbInit implements CommandLineRunner {
         stationaryTurnstile.setStation(station1);
         users.add(stationaryTurnstile);
         line2Init();
+        MovingTurnstile movingTurnstile = new MovingTurnstile("mTurnstile1", passwordEncoder.encode("mTurnstile1"));
+        movingTurnstile.setLine(line1);
+        users.add(movingTurnstile);
         // save to database
         userRepositry.saveAll(users);
         // test database
@@ -96,9 +99,15 @@ public class DbInit implements CommandLineRunner {
         Station operaStation = new Station("Opera");
 
         ArrayList<Station> line2Stations = new ArrayList<>();
-        line2Stations.add(elMonibStation);line2Stations.add(sakiatMekkiStation);line2Stations.add(ommElMisryeenStation);
-        line2Stations.add(gizaStation);line2Stations.add(faysalStation);line2Stations.add(cairoUniversityStation);
-        line2Stations.add(elBohoosStation);line2Stations.add(dokkiStation);line2Stations.add(operaStation);
+        line2Stations.add(elMonibStation);
+        line2Stations.add(sakiatMekkiStation);
+        line2Stations.add(ommElMisryeenStation);
+        line2Stations.add(gizaStation);
+        line2Stations.add(faysalStation);
+        line2Stations.add(cairoUniversityStation);
+        line2Stations.add(elBohoosStation);
+        line2Stations.add(dokkiStation);
+        line2Stations.add(operaStation);
 
         lineRepo.save(line2);
         stationRepo.saveAll(line2Stations);
@@ -107,10 +116,10 @@ public class DbInit implements CommandLineRunner {
 
         line2Stations.forEach((station -> {
             StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(
-                    String.format("%s_%d_in",station.getStationName().toLowerCase().replaceAll(" ",""),userRepositry.count())
+                    String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count())
                     , passwordEncoder.encode("1234"));
-                stationaryTurnstile.setStation(station);
-                userRepositry.save(stationaryTurnstile);
+            stationaryTurnstile.setStation(station);
+            userRepositry.save(stationaryTurnstile);
         }));
 
     }

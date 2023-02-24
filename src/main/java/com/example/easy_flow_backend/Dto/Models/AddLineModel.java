@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.view;
+package com.example.easy_flow_backend.Dto.Models;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,13 +14,13 @@ import lombok.Setter;
 
 public class AddLineModel {
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Owner id Should Not be Blank")
+    @NotNull(message = "Owner id Should Not be Null")
     String ownerId;
 
-    @NotNull
+    @NotNull(message = "Price Should Not be Null")
     double price;
-    @NotNull(message = "Line Name Should Not be Null :)")
-    @NotBlank(message = "Line Name Should Not be Blank :)")
+    @NotNull(message = "Line Name Should Not be Null")
+    @NotBlank(message = "Line Name Should Not be Blank ")
     String lineName;
 }
