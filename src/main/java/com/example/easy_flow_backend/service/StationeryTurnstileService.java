@@ -1,10 +1,9 @@
 package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.error.BadRequestException;
-import com.example.easy_flow_backend.view.RideView;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.easy_flow_backend.view.RideModel;
 
 public interface StationeryTurnstileService {
-    String inRide(RideView rideView) throws BadRequestException;
-    String outRide(RideView rideView) throws BadRequestException;
+    String inRide(RideModel rideModel) throws BadRequestException;
+    String outRide(RideModel rideModel) throws BadRequestException;
 }

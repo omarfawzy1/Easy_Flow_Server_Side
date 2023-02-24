@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -24,7 +25,10 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     void deleteByUsernameIgnoreCase(String username);
 
+    PassagnerDetails findProjectedByUsername(String passenger_username);
+
     int findByTypeIgnoreCase(String type);
+
     @Query("SELECT COUNT (passenger) FROM Passenger  passenger WHERE passenger.type = :type")
-    int getAllPassangersCountWithType(@Param("type") String type) ;
+    int getAllPassangersCountWithType(@Param("type") String type);
 }

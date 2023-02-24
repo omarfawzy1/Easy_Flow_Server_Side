@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.view;
 
+import com.example.easy_flow_backend.entity.Gender;
 import com.example.easy_flow_backend.entity.Wallet;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ public interface PassagnerDetails extends UserDetails {
     String getLastName();
     String getCity();
      String getType();
-    String getGender();
+    Gender getGender();
      String getPhoneNumber();
      Date getBirthDay();
      boolean getActive();

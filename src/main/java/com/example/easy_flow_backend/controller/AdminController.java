@@ -3,7 +3,7 @@ package com.example.easy_flow_backend.controller;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.AdminService;
-import com.example.easy_flow_backend.view.AddLineView;
+import com.example.easy_flow_backend.view.AddLineModel;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
 import com.example.easy_flow_backend.view.TimePeriod;
@@ -69,8 +69,8 @@ public class AdminController {
     }
 
     @PostMapping("line")
-    public ResponseEntity<String> addLine(@Valid @RequestBody AddLineView addLineView) {
-        return adminService.addLine(addLineView);
+    public ResponseEntity<String> addLine(@Valid @RequestBody AddLineModel addLineModel) {
+        return adminService.addLine(addLineModel);
     }
     @GetMapping("passengers/count")
     public int getPassengersCount() {

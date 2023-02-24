@@ -1,9 +1,8 @@
 package com.example.easy_flow_backend.service;
 
-import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.NotFoundException;
-import com.example.easy_flow_backend.view.AddLineView;
+import com.example.easy_flow_backend.view.AddLineModel;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
 import com.example.easy_flow_backend.view.TimePeriod;
@@ -28,7 +27,7 @@ public interface AdminService {
 
     ResponseEntity<String> deleteLine(String id) throws NotFoundException;
 
-    ResponseEntity<String> addLine(AddLineView addLineView);
+    ResponseEntity<String> addLine(AddLineModel addLineModel);
 
     int getAllPassangersCount();
 

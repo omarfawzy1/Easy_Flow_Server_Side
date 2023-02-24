@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class AddLineView {
+public class AddLineModel {
 
     @NotBlank
     @NotNull

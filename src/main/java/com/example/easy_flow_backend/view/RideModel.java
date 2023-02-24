@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RideView {
+public class RideModel {
 
     String username;
     String machineId;

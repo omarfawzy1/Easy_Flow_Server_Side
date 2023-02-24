@@ -8,7 +8,7 @@ import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TicketRepo;
-import com.example.easy_flow_backend.view.AddLineView;
+import com.example.easy_flow_backend.view.AddLineModel;
 import com.example.easy_flow_backend.view.LineView;
 import com.example.easy_flow_backend.view.PassagnerDetails;
 import com.example.easy_flow_backend.view.TimePeriod;
@@ -88,15 +88,15 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseEntity<String> addLine( AddLineView addLineView) {
+    public ResponseEntity<String> addLine( AddLineModel addLineModel) {
 //        if (lineRepo.existsByNameIgnoreCase(line.getName()))
 //            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
-        Optional<Owner> owner = ownerRepo.findById(addLineView.getOwnerId());
+        Optional<Owner> owner = ownerRepo.findById(addLineModel.getOwnerId());
 
         if (!owner.isPresent()) {
             return new ResponseEntity<>("The Owner Not Exists", HttpStatus.BAD_REQUEST);
         }
-        Line tmpLine = new Line(addLineView.getLineName(), addLineView.getPrice(), owner.get());
+        Line tmpLine = new Line(addLineModel.getLineName(), addLineModel.getPrice(), owner.get());
 
         try {
             lineRepo.save(tmpLine);
