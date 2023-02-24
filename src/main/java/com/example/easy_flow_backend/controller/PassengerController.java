@@ -2,8 +2,8 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.service.PassengerService;
-import com.example.easy_flow_backend.Dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.Dto.Views.TicketView;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.TicketView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;

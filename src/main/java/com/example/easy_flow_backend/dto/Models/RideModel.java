@@ -1,9 +1,8 @@
-package com.example.easy_flow_backend.Dto.Models;
+package com.example.easy_flow_backend.dto.Models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

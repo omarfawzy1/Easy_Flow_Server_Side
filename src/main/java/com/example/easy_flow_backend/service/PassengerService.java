@@ -1,8 +1,8 @@
 package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.error.BadRequestException;
-import com.example.easy_flow_backend.Dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.Dto.Views.TicketView;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.TicketView;
 
 import java.util.Date;
 import java.util.List;

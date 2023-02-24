@@ -2,10 +2,10 @@ package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.NotFoundException;
-import com.example.easy_flow_backend.Dto.Models.AddLineModel;
-import com.example.easy_flow_backend.Dto.Views.LineView;
-import com.example.easy_flow_backend.Dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.Dto.Models.TimePeriod;
+import com.example.easy_flow_backend.dto.Models.AddLineModel;
+import com.example.easy_flow_backend.dto.Views.LineView;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

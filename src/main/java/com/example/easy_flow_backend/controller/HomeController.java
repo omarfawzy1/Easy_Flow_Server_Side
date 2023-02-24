@@ -2,7 +2,7 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.HomeService;
-import com.example.easy_flow_backend.Dto.Models.RegisterModel;
+import com.example.easy_flow_backend.dto.Models.RegisterModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

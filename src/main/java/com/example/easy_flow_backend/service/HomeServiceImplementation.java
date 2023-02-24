@@ -4,7 +4,7 @@ import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Wallet;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.Dto.Models.RegisterModel;
+import com.example.easy_flow_backend.dto.Models.RegisterModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

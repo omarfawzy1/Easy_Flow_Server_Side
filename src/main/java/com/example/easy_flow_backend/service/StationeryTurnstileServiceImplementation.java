@@ -8,9 +8,7 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TicketRepo;
-import com.example.easy_flow_backend.Dto.Models.RideModel;
-import jakarta.validation.Valid;
-import org.jetbrains.annotations.NotNull;
+import com.example.easy_flow_backend.dto.Models.RideModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ import java.util.Date;
 import java.util.Random;
 
 @Service
-public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService, TurnStileService {
+public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService, TurnstileService {
     @Autowired
     private TicketRepo ticketRepo;
     @Autowired

@@ -1,13 +1,12 @@
 package com.example.easy_flow_backend.service;
 
-import com.example.easy_flow_backend.Dto.Models.RideModel;
+import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationRepo;
 import com.example.easy_flow_backend.repos.TicketRepo;
-import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

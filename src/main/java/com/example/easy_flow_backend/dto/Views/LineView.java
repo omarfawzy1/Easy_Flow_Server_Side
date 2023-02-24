@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.Dto.Views;
+package com.example.easy_flow_backend.dto.Views;
 
 import com.example.easy_flow_backend.entity.Owner;
 

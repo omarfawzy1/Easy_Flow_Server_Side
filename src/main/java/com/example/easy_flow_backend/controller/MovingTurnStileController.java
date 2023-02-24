@@ -1,6 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
-import com.example.easy_flow_backend.Dto.Models.RideModel;
+import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.service.MovingTurnstileService;
 import jakarta.validation.Valid;

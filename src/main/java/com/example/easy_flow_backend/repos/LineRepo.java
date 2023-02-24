@@ -1,7 +1,7 @@
 package com.example.easy_flow_backend.repos;
 
 import com.example.easy_flow_backend.entity.Line;
-import com.example.easy_flow_backend.Dto.Views.LineView;
+import com.example.easy_flow_backend.dto.Views.LineView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
