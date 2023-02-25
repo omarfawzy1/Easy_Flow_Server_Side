@@ -22,7 +22,6 @@ public class RideModel {
     @NotNull(message = "Machine id should not be null")
     String machineId;
     @NotNull(message = "Time should not be null")
-//    @NotBlank()
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:MM:SS")
     LocalTime time;
 

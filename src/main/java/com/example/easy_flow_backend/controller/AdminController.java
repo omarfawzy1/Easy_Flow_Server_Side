@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.AdminService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -79,11 +81,31 @@ public class AdminController {
     public int getPassengersCountWithType(@PathVariable String type) {
         return adminService.getAllPassangersCountWithType(type);
     }
-    //return null no ticket in the system
-//    @GetMapping("revenue")
-//    public long getRevenue(@Valid @RequestBody TimePeriod timePeriod) {
-//        return adminService.getRevenue(timePeriod);
-//    }
+    @GetMapping("revenue")
+    public long getRevenue(@Valid @RequestBody TimePeriod timePeriod) {
+        return adminService.getRevenue(timePeriod);
+    }
+    @GetMapping("revenueAvg")
+    public long getRevenueAvg(@Valid @RequestBody TimePeriod timePeriod) {
+        return adminService.getRevenueAvg(timePeriod);
+    }
+    @GetMapping("{passengerId}/revenueAvg")
+    public long getRevenueAvgByPassenger(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String passengerId) {
+        return adminService.getRevenueAvgByPassenger(timePeriod, passengerId);
+    }
+    @GetMapping("passenger/negativeBalanceCount")
+    public int getNegativePassengerCount() {
+        return adminService.getNegativePassengerCount();
+    }
+    @GetMapping("passenger/belowThresholdCount/{threshold}")
+    public int getBelowThresholdCount(@PathVariable long threshold) {
+        return adminService.getBelowThresholdCount(threshold);
+    }
+    //ToDo
+    @GetMapping("turnstile/status")
+    public Object getTurnstilesStatus() {
+        return adminService.getTurnstilesStatus();
+    }
 //ToDo{Admin can view the total number of passengers on a specific line (Bus) and at a specific station for a given period .
 //Admin can view the total number of passengers on a specific station for a given period.
 //Admin can view the average number of passengers on a specific line (Bus) and at a specific station for a given period.
@@ -92,10 +114,6 @@ public class AdminController {
 //
 //View system-wide statistics:
 //Admin can view the total number of transactions in the system (e.g. ticket purchases, wallet recharges).
-//Admin can view the average revenue per passenger for a given period.
-//Admin can view the number of users with negative balances.
-//Admin can view the number of users with low balances (below a certain threshold).
-//Admin can view the number of active turnstile machines and their status (online/offline/out of service).
 //Admin can view the system logs to monitor any errors or issues in the system.}
 
 

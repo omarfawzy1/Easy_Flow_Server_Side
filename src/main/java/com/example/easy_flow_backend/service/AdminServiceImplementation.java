@@ -4,10 +4,7 @@ import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.NotFoundException;
-import com.example.easy_flow_backend.repos.LineRepo;
-import com.example.easy_flow_backend.repos.OwnerRepo;
-import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.repos.TicketRepo;
+import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
@@ -17,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,6 +29,9 @@ public class AdminServiceImplementation implements AdminService {
     private OwnerRepo ownerRepo;
     @Autowired
     private TicketRepo ticketRepo;
+    @Autowired
+    private UserRepositry userRepositry;
+
 
     @Override
     public List<LineView> getAllLines() {
@@ -118,7 +120,42 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public long  getRevenue(TimePeriod timePeriod) {
-        return ticketRepo.getRevenue(timePeriod.getStart(),timePeriod.getEnd());
+        Optional<Long> revenue= ticketRepo.getRevenue(timePeriod.getStart(),timePeriod.getEnd());
+        if(revenue.isEmpty())
+            return 0;
+        return revenue.get();
+    }
+
+    @Override
+    public long getRevenueAvg(TimePeriod timePeriod) {
+        Optional<Long> revenue= ticketRepo.getRevenueAvg(timePeriod.getStart(),timePeriod.getEnd());
+        if(revenue.isEmpty())
+            return 0;
+        return revenue.get();
+    }
+
+    @Override
+    public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId) {
+        Optional<Long> revenue= ticketRepo.getRevenueAvgByPassenger(timePeriod.getStart(),timePeriod.getEnd(),passengerId);
+        if(revenue.isEmpty())
+            return 0;
+        return revenue.get();
+    }
+
+    @Override
+    public int getNegativePassengerCount() {
+        return ticketRepo.getNegativePassengerCount();
+    }
+
+    @Override
+    public int getBelowThresholdCount(long threshold) {
+        return ticketRepo.getBelowThresholdCount(threshold);
+    }
+
+    @Override
+    public Object getTurnstilesStatus() {
+        Map<String, Integer> result=new HashMap<>();
+        return userRepositry.getTurnstilesStatus();
     }
 
 

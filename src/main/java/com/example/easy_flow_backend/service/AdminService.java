@@ -9,6 +9,7 @@ import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminService {
 
@@ -34,4 +35,14 @@ public interface AdminService {
     int getAllPassangersCountWithType(String type);
 
     long getRevenue(TimePeriod timePeriod);
+
+    long getRevenueAvg(TimePeriod timePeriod);
+
+    long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId);
+
+    int getNegativePassengerCount();
+
+    int getBelowThresholdCount(long threshold);
+
+   Object getTurnstilesStatus();
 }
