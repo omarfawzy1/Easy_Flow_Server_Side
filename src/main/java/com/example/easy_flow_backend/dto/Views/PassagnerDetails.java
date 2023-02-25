@@ -8,12 +8,23 @@ import java.util.Date;
 public interface PassagnerDetails extends UserDetails {
 
     String getFirstName();
+
     String getLastName();
+
     String getCity();
-     String getType();
+
+    String getType();
+
     Gender getGender();
-     String getPhoneNumber();
-     Date getBirthDay();
-     boolean getActive();
-     Wallet getWallet();
+
+    String getPhoneNumber();
+
+    String getEmail();
+
+    Date getBirthDay();
+
+    boolean getActive();
+
+    Wallet getWallet();
+
 }
