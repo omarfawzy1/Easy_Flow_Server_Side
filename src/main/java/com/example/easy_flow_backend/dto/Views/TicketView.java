@@ -16,7 +16,7 @@ public interface TicketView {
     StationView getEndTurnstile();
 
 
-    LocalTime getStartTime();
+    Date getStartTime();
 
     Date getEndTime();
 

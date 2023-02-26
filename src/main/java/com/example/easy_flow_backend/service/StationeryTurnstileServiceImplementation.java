@@ -12,6 +12,8 @@ import com.example.easy_flow_backend.dto.Models.RideModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Random;
 
@@ -59,8 +61,8 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
         Random rand = new Random();
         ticket.setPrice(rand.nextDouble());
-        ticket.setEndStation(machine.getStation());
-        ticket.setEndTime(LocalTime.now());
+        ticket.setEndTurnstile(machine);
+        ticket.setEndTime(Date.valueOf("2010-2-2"));
         ticket.setStatus(Status.Closed);
         ticketRepo.save(ticket);
         return "Success";

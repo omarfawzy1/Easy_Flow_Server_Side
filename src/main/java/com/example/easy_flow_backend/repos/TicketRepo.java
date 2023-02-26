@@ -19,7 +19,7 @@ public interface TicketRepo extends JpaRepository<Ticket, String> {
 
     List<TicketView> findAllProjectedByPassengerUsername(String passenger_username);
 
-    List<TicketView> findAllProjectedByPassengerUsernameAndDateGreaterThanEqual(String passenger_username, Date date);
+    List<TicketView> findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(String passenger_username, Date start_time);
 
     boolean existsByPassengerUsernameAndStatus(String passengerUsername, Status status);
 
@@ -27,18 +27,18 @@ public interface TicketRepo extends JpaRepository<Ticket, String> {
 
     @Query("SELECT SUM (ticket.price) " +
             "FROM Ticket ticket " +
-            "WHERE ticket.date>= :start AND ticket.date<= :end ")
+            "WHERE ticket.startTime>= :start AND ticket.endTime<= :end ")
     Optional<Long> getRevenue(@Param("start") Date start, @Param("end") Date end);
 
     @Query("SELECT AVG(avgRevenue) FROM " +
             "(SELECT AVG(ticket.price) as avgRevenue " +
             "FROM Ticket ticket " +
-            "WHERE ticket.date>= :start AND ticket.date<= :end GROUP BY ticket.passenger)")
+            "WHERE ticket.startTime>= :start AND ticket.endTime<= :end GROUP BY ticket.passenger)")
     Optional<Long> getRevenueAvg(@Param("start") Date start, @Param("end") Date end);
 
     @Query("select avg (ticket.price)" +
         "From Ticket ticket " +
-        "WHERE ticket.date>= :start AND ticket.date<= :end AND ticket.passenger.id= :passengerId ")
+        "WHERE ticket.startTime>= :start AND ticket.endTime<= :end AND ticket.passenger.id= :passengerId ")
     Optional<Long> getRevenueAvgByPassenger(@Param("start") Date start, @Param("end") Date end,
                                             @Param("passengerId") String passengerId);
     @Query("select COUNT (passenger.id)" +

@@ -15,8 +15,7 @@ import java.util.HashMap;
 
 @Service
 public class DbInit implements CommandLineRunner {
-    //@GeneratedValue(generator = "uuid")
-    //@GenericGenerator(name = "uuid", strategy = "uuid2")
+
     @Autowired
     private UserRepositry userRepositry;
 @Autowired
@@ -65,16 +64,8 @@ private PassengersRepo passengersRepo;
         line1.addStation(station2);
         lineRepo.saveAll(lines);
 
-        // StationaryTurnstile
-        StationaryTurnstile stationaryTurnstile = new StationaryTurnstile("sTurnstile1", passwordEncoder.encode("sTurnstile1"));
-        stationaryTurnstile.setStation(station1);
-        users.add(stationaryTurnstile);
         line2Init();
-        MovingTurnstile movingTurnstile = new MovingTurnstile("mTurnstile1", passwordEncoder.encode("mTurnstile1"));
-        movingTurnstile.setLine(line1);
-        users.add(movingTurnstile);
-        // save to database
-        userRepositry.saveAll(users);
+
         // test database
         System.out.println(userRepositry.findUserByUsername("haridy").getUsername());
     }
@@ -89,6 +80,7 @@ private PassengersRepo passengersRepo;
         return users;
     }
 
+    @SneakyThrows
     void line2Init() {
         // Create and save the owner of the line
         Owner cairoGovernment = new Owner("Cairo Government", "government@government.gov", "0000 0000 0000 0000");
