@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.MovingTurnstileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class MovingTurnStileController {
     MovingTurnstileService movingTurnstileService;
 
     @PostMapping("in-ride")
-    public String inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
+    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
         return movingTurnstileService.inRide(rideModel);
     }
 

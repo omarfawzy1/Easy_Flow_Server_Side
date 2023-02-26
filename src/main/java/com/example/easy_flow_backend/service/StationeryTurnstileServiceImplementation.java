@@ -5,11 +5,13 @@ import com.example.easy_flow_backend.entity.StationaryTurnstile;
 import com.example.easy_flow_backend.entity.Status;
 import com.example.easy_flow_backend.entity.Ticket;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TicketRepo;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -28,7 +30,7 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
 
     @Override
-    public String inRide(RideModel rideModel) throws BadRequestException {
+    public ResponseMessage inRide(RideModel rideModel) throws BadRequestException {
         if (ticketRepo.existsByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending)) {
             throw new BadRequestException("You Can not make Ride as you have pending Request");
         } else if (!passengersRepo.existsByUsernameIgnoreCase(rideModel.getUsername())) {
@@ -43,11 +45,11 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         //Todo check for minimum charge
         Ticket pendingTicket = new Ticket(passenger, machine, Date.valueOf("2020-2-2"), Status.Pending);
         ticketRepo.save(pendingTicket);
-        return "Success";
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
-    public String outRide(RideModel rideModel) throws BadRequestException {
+    public ResponseMessage outRide(RideModel rideModel) throws BadRequestException {
 
         if (!ticketRepo.existsByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending)) {
             throw new BadRequestException("Failed No Binding Tickets");
@@ -65,6 +67,6 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         ticket.setEndTime(Date.valueOf("2010-2-2"));
         ticket.setStatus(Status.Closed);
         ticketRepo.save(ticket);
-        return "Success";
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 }

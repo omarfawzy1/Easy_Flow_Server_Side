@@ -3,11 +3,13 @@ package com.example.easy_flow_backend.service;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationRepo;
 import com.example.easy_flow_backend.repos.TicketRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,7 +26,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     private StationRepo stationRepo;
 
     @Override
-    public String inRide(RideModel rideModel) throws BadRequestException {
+    public ResponseMessage inRide(RideModel rideModel) throws BadRequestException {
         if (!passengersRepo.existsByUsernameIgnoreCase(rideModel.getUsername())) {
             throw new BadRequestException("Passenger Not found!");
         } else if (!movingTurnstileRepo.existsById(rideModel.getMachineId())) {
@@ -37,7 +39,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         //Ticket closedTicket = new Ticket(passenger,)
         //Ticket closedTicket = new Ticket(passenger, stationRepo.findAll().get(0), stationRepo.findAll().get(1), new Date(), rideModel.getTime(), rideModel.getTime(), 0, Status.Closed);
         //ticketRepo.save(closedTicket);
-        return "Success";
+        return new ResponseMessage("Success", HttpStatus.OK);
 
     }
 }

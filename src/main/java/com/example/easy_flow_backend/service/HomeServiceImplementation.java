@@ -3,6 +3,7 @@ package com.example.easy_flow_backend.service;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Wallet;
 import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.dto.Models.RegisterModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class HomeServiceImplementation implements HomeService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<String> Register(RegisterModel registerModel) throws NotFoundException {
+    public ResponseMessage Register(RegisterModel registerModel) throws NotFoundException {
         if (passengersRepo.existsByUsernameIgnoreCase(registerModel.getUsername())) {
             throw new NotFoundException("The username already Used");
         } else if (passengersRepo.existsByPhoneNumber(registerModel.getPhoneNumber())) {
@@ -29,6 +30,6 @@ public class HomeServiceImplementation implements HomeService {
 
         Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(),"Regular", registerModel.getCity(), registerModel.getGender(),registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()),registerModel.getEmail());
         passengersRepo.save(passenger);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 }

@@ -3,7 +3,9 @@ package com.example.easy_flow_backend.service;
 import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
@@ -53,23 +55,23 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseEntity<String> deletePassenger(String username) throws NotFoundException {
+    public ResponseMessage deletePassenger(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
             throw new NotFoundException("Passenger Not Found");
         passengerRepo.deleteByUsernameIgnoreCase(username);
-        return new ResponseEntity<>("Passenger deleted Successfully", HttpStatus.OK);
+        return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> passengerStatus(String username) throws NotFoundException {
+    public ResponseMessage passengerStatus(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
             throw new NotFoundException("Passenger Not Found");
 
         passenger.setActive(!passenger.isActive());
         passengerRepo.save(passenger);
-        return new ResponseEntity<>("Accept", HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
@@ -82,21 +84,21 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseEntity<String> deleteLine(String id) throws NotFoundException {
+    public ResponseMessage deleteLine(String id) throws NotFoundException {
         if (!lineRepo.existsById(id))
             throw new NotFoundException("The Line Does Not Exist");
         lineRepo.deleteById(id);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> addLine( AddLineModel addLineModel) {
+    public ResponseMessage addLine(AddLineModel addLineModel) throws BadRequestException {
 //        if (lineRepo.existsByNameIgnoreCase(line.getName()))
 //            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
         Optional<Owner> owner = ownerRepo.findById(addLineModel.getOwnerId());
 
         if (!owner.isPresent()) {
-            return new ResponseEntity<>("The Owner Not Exists", HttpStatus.BAD_REQUEST);
+        throw new BadRequestException("The Owner Not Exists");
         }
         Line tmpLine = new Line(addLineModel.getLineName(), addLineModel.getPrice(), owner.get());
 
@@ -105,7 +107,7 @@ public class AdminServiceImplementation implements AdminService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
@@ -119,25 +121,25 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public long  getRevenue(TimePeriod timePeriod) {
-        Optional<Long> revenue= ticketRepo.getRevenue(timePeriod.getStart(),timePeriod.getEnd());
-        if(revenue.isEmpty())
+    public long getRevenue(TimePeriod timePeriod) {
+        Optional<Long> revenue = ticketRepo.getRevenue(timePeriod.getStart(), timePeriod.getEnd());
+        if (revenue.isEmpty())
             return 0;
         return revenue.get();
     }
 
     @Override
     public long getRevenueAvg(TimePeriod timePeriod) {
-        Optional<Long> revenue= ticketRepo.getRevenueAvg(timePeriod.getStart(),timePeriod.getEnd());
-        if(revenue.isEmpty())
+        Optional<Long> revenue = ticketRepo.getRevenueAvg(timePeriod.getStart(), timePeriod.getEnd());
+        if (revenue.isEmpty())
             return 0;
         return revenue.get();
     }
 
     @Override
     public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId) {
-        Optional<Long> revenue= ticketRepo.getRevenueAvgByPassenger(timePeriod.getStart(),timePeriod.getEnd(),passengerId);
-        if(revenue.isEmpty())
+        Optional<Long> revenue = ticketRepo.getRevenueAvgByPassenger(timePeriod.getStart(), timePeriod.getEnd(), passengerId);
+        if (revenue.isEmpty())
             return 0;
         return revenue.get();
     }
@@ -154,7 +156,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public Object getTurnstilesStatus() {
-        Map<String, Integer> result=new HashMap<>();
+        Map<String, Integer> result = new HashMap<>();
         return userRepositry.getTurnstilesStatus();
     }
 

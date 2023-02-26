@@ -1,11 +1,13 @@
 package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,15 +22,15 @@ public interface AdminService {
 
     Passenger getPassenger(String username) throws NotFoundException;
 
-    ResponseEntity<String> deletePassenger(String username) throws NotFoundException;
+    ResponseMessage deletePassenger(String username) throws NotFoundException;
 
-    ResponseEntity<String> passengerStatus(String username) throws NotFoundException;
+    ResponseMessage passengerStatus(String username) throws NotFoundException;
 
     LineView getLine(String id) throws NotFoundException;
 
-    ResponseEntity<String> deleteLine(String id) throws NotFoundException;
+    ResponseMessage deleteLine(String id) throws NotFoundException;
 
-    ResponseEntity<String> addLine(AddLineModel addLineModel);
+    ResponseMessage addLine(AddLineModel addLineModel) throws BadRequestException;
 
     int getAllPassangersCount();
 

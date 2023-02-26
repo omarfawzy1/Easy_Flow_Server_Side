@@ -2,7 +2,9 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.AdminService;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
@@ -45,12 +47,12 @@ public class AdminController {
     }
 
     @DeleteMapping("passenger/{username}")
-    public ResponseEntity<String> deletePassenger(@PathVariable String username) throws NotFoundException {
+    public ResponseMessage deletePassenger(@PathVariable String username) throws NotFoundException {
         return adminService.deletePassenger(username);
     }
 
     @PutMapping("passenger/active/{username}")
-    public ResponseEntity<String> passengerStatus(@PathVariable String username) throws NotFoundException {
+    public ResponseMessage passengerStatus(@PathVariable String username) throws NotFoundException {
         return adminService.passengerStatus(username);
     }
 
@@ -65,12 +67,12 @@ public class AdminController {
     }
 
     @DeleteMapping("line/{id}")
-    public ResponseEntity<String> deleteLine(@PathVariable String id) throws NotFoundException {
+    public ResponseMessage deleteLine(@PathVariable String id) throws NotFoundException {
         return adminService.deleteLine(id);
     }
 
     @PostMapping("line")
-    public ResponseEntity<String> addLine(@Valid @RequestBody AddLineModel addLineModel) {
+    public ResponseMessage addLine(@Valid @RequestBody AddLineModel addLineModel) throws BadRequestException {
         return adminService.addLine(addLineModel);
     }
     @GetMapping("passengers/count")

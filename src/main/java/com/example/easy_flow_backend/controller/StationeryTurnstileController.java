@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.StationeryTurnstileService;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import jakarta.validation.Valid;
@@ -15,14 +16,14 @@ public class StationeryTurnstileController {
     StationeryTurnstileService stationeryTurnstileService;
 
     @PostMapping("in-ride")
-    public String inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
+    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
 
         return stationeryTurnstileService.inRide(rideModel);
 
     }
 
     @PostMapping("out-ride")
-    public String outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
+    public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
         return stationeryTurnstileService.outRide(rideModel);
     }
 }
