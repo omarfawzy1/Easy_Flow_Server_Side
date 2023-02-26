@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Map;
 
 @Repository
-public interface MovingTurnstileRepo extends JpaRepository<MovingTurnstile, String> {
+public interface MovingTurnstileRepo extends TurnstileRepo<MovingTurnstile>{
 
 
 }

@@ -1,18 +1,17 @@
 package com.example.easy_flow_backend.service;
 
-import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.User;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.repos.*;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.easy_flow_backend.entity.*;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
 @Service
 public class DbInit implements CommandLineRunner {
@@ -20,18 +19,26 @@ public class DbInit implements CommandLineRunner {
     //@GenericGenerator(name = "uuid", strategy = "uuid2")
     @Autowired
     private UserRepositry userRepositry;
-
+@Autowired
+private PassengersRepo passengersRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private WalletRepo walletRepo;
+
+    @Autowired
+    private StationaryTurnstileRepo stationaryTurnstileRepo;
     @Autowired
     private OwnerRepo ownerRepo;
     @Autowired
     private LineRepo lineRepo;
     @Autowired
     private StationRepo stationRepo;
+    @Autowired
+    private TicketRepo ticketRepository;
+    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
 
     @Override
     public void run(String... args) {
@@ -47,7 +54,7 @@ public class DbInit implements CommandLineRunner {
         Line line2 = new Line("line2", 31.0F, owner1);
         Station station1 = new Station("first station");
         Station station2 = new Station("second station");
-
+        userRepositry.saveAll(users);
         lines.add(line1);
         lines.add(line2);
         lineRepo.saveAll(lines);
@@ -76,18 +83,19 @@ public class DbInit implements CommandLineRunner {
         ArrayList<User> users = new ArrayList<>();
         users.add(new Administrator("haridy", "haridy", passwordEncoder.encode("haridy")));
         users.add(new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "omar", passwordEncoder.encode("omar"), "omar@gmail.com"));
-        users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aLy", passwordEncoder.encode("omar"), "aly@gmail.com"));
+        users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aly", passwordEncoder.encode("omar"), "aly@gmail.com"));
         users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464", "Regular", "Giza", Gender.M, new Date(System.currentTimeMillis()), "waled", passwordEncoder.encode("omar"), "waled@gmail.com"));
         users.add(new Passenger(new Wallet("CC"), "Mona", "Mahmoud", "12311561655", "Regular", "Cairo", Gender.F, new Date(System.currentTimeMillis()), "mona", passwordEncoder.encode("omar"), "mona@gmail.com"));
-        //users.add(new StationaryTurnstile("giza_1_in",passwordEncoder.encode("1234")));
         return users;
     }
 
     void line2Init() {
-        Owner cairoGovernment = new Owner("Cairo Government", "goverment@goverment.gov", "0000 0000 0000 0000");
+        // Create and save the owner of the line
+        Owner cairoGovernment = new Owner("Cairo Government", "government@government.gov", "0000 0000 0000 0000");
         ownerRepo.save(cairoGovernment);
-        Line line2 = new Line("Line 2", 10, cairoGovernment);
 
+        // Create the line and its stations
+        Line line2 = new Line("Line 2", 10, cairoGovernment);
         Station elMonibStation = new Station("El Monib");
         Station sakiatMekkiStation = new Station("Sakiat Mekki");
         Station ommElMisryeenStation = new Station("Omm el Misryeen");
@@ -98,6 +106,7 @@ public class DbInit implements CommandLineRunner {
         Station dokkiStation = new Station("Dokki");
         Station operaStation = new Station("Opera");
 
+        // Add the stations to the line and save them
         ArrayList<Station> line2Stations = new ArrayList<>();
         line2Stations.add(elMonibStation);
         line2Stations.add(sakiatMekkiStation);
@@ -108,21 +117,113 @@ public class DbInit implements CommandLineRunner {
         line2Stations.add(elBohoosStation);
         line2Stations.add(dokkiStation);
         line2Stations.add(operaStation);
-
-        lineRepo.save(line2);
         stationRepo.saveAll(line2Stations);
         line2Stations.forEach(line2::addStation);
         lineRepo.save(line2);
 
-        line2Stations.forEach((station -> {
-            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(
-                    String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count())
-                    , passwordEncoder.encode("1234"));
+        // Create and save stationary turnstiles for each station
+        HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
+        for (Station station : line2Stations) {
+            String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
+            String password = passwordEncoder.encode("1234");
+            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password);
             stationaryTurnstile.setStation(station);
+            stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
             userRepositry.save(stationaryTurnstile);
-        }));
+        }
+
+        // Create some passengers
+        Passenger omar = passengersRepo.findUserByUsername("omar");
+        Passenger waled = passengersRepo.findUserByUsername("waled");
+        Passenger aly = passengersRepo.findUserByUsername("aly");
+        Passenger mona = passengersRepo.findUserByUsername("mona");
+
+        // Create some tickets
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        tickets.add(new Ticket(
+                omar,
+                stationaryTurnstiles.get(gizaStation.getStationName()),
+                stationaryTurnstiles.get(elMonibStation.getStationName()),
+                simpleDateFormat.parse("2023-11-01 09:54:31"),
+                simpleDateFormat.parse("2023-11-01 11:40:22"),
+                40f,
+                Status.Closed)
+        );
+
+        // Ticket for Aly
+        tickets.add(new Ticket(
+                aly,
+                stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
+                stationaryTurnstiles.get(dokkiStation.getStationName()),
+                simpleDateFormat.parse("2023-11-02 08:30:00"),
+                simpleDateFormat.parse("2023-11-02 09:15:00"),
+                20f,
+                Status.Closed)
+        );
+
+        // Ticket for Waled
+        tickets.add(new Ticket(
+                waled,
+                stationaryTurnstiles.get(elBohoosStation.getStationName()),
+                stationaryTurnstiles.get(faysalStation.getStationName()),
+                simpleDateFormat.parse("2023-11-03 12:45:00"),
+                simpleDateFormat.parse("2023-11-03 13:20:00"),
+                10f,
+                Status.Closed)
+        );
+
+        // Ticket for Mona
+        tickets.add(new Ticket(
+                mona,
+                stationaryTurnstiles.get(gizaStation.getStationName()),
+                stationaryTurnstiles.get(ommElMisryeenStation.getStationName()),
+                simpleDateFormat.parse("2023-11-04 17:30:00"),
+                simpleDateFormat.parse("2023-11-04 18:10:00"),
+                15f,
+                Status.Closed)
+        );
+
+        // Ticket for Omar
+        tickets.add(new Ticket(
+                omar,
+                stationaryTurnstiles.get(operaStation.getStationName()),
+                stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
+                simpleDateFormat.parse("2023-11-05 10:00:00"),
+                simpleDateFormat.parse("2023-11-05 10:45:00"),
+                20f,
+                Status.Closed)
+        );
+        ticketRepository.saveAll(tickets);
+
+        tickets.add(new Ticket(
+                waled,
+                stationaryTurnstiles.get(cairoUniversityStation.getStationName()),
+                stationaryTurnstiles.get(elBohoosStation.getStationName()),
+                simpleDateFormat.parse("2023-03-10 08:30:00"),
+                simpleDateFormat.parse("2023-03-10 09:00:00"),
+                10f,
+                Status.Closed)
+        );
+
+        tickets.add(new Ticket(
+                aly,
+                stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
+                stationaryTurnstiles.get(operaStation.getStationName()),
+                simpleDateFormat.parse("2023-04-02 17:15:00"),
+                simpleDateFormat.parse("2023-04-02 18:05:00"),
+                7f,
+                Status.Closed)
+        );
+
+        tickets.add(new Ticket(
+                mona,
+                stationaryTurnstiles.get(ommElMisryeenStation.getStationName()),
+                stationaryTurnstiles.get(dokkiStation.getStationName()),
+                simpleDateFormat.parse("2023-05-21 13:40:00"),
+                simpleDateFormat.parse("2023-05-21 14:15:00"),
+                5f,
+                Status.Closed)
+        );
 
     }
-
-
 }

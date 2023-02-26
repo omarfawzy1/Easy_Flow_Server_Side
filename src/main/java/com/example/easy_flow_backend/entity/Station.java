@@ -23,19 +23,22 @@ public class Station {
     @Column(name = "station_name", nullable = false, unique = true)
     private String stationName;
     @ManyToMany(mappedBy = "stations", fetch = FetchType.LAZY)
-    Set<Line> lines=new HashSet<>();
+    Set<Line> lines = new HashSet<>();
 
-    public Station(String stationName){
+    public Station(String stationName) {
 
-        this.stationName=stationName;
+        this.stationName = stationName;
     }
-    public void addLine(Line line){
+
+    public void addLine(Line line) {
         lines.add(line);
     }
-    public void removeStation(Line line){
+
+    public void removeStation(Line line) {
         lines.remove(line);
     }
-    public Set<Line> getLines(){
+
+    public Set<Line> getLines() {
         return lines;
     }
 
@@ -46,10 +49,11 @@ public class Station {
         Station station = (Station) o;
         return stationName.equals(station.stationName) && equalsLines((Line[]) ((Station) o).getLines().toArray());
     }
-    private boolean equalsLines(Line[] lines){
-        if(lines.length!=this.lines.size())return false;
-        for(int i=0;i<this.lines.size();i++){
-            if(!this.lines.contains(lines[i]))return false;
+
+    private boolean equalsLines(Line[] lines) {
+        if (lines.length != this.lines.size()) return false;
+        for (int i = 0; i < this.lines.size(); i++) {
+            if (!this.lines.contains(lines[i])) return false;
         }
         return true;
     }

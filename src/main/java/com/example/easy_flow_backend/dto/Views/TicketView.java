@@ -2,8 +2,8 @@ package com.example.easy_flow_backend.dto.Views;
 
 import com.example.easy_flow_backend.entity.Status;
 
-import java.time.LocalTime;
-import java.util.Date;
+import java.sql.Date;
+
 
 public interface TicketView {
 
@@ -11,15 +11,14 @@ public interface TicketView {
 
     UserDetails getPassenger();
 
-    StationView getStartStation();
+    StationView getStartTurnstile();
 
-    StationView getEndStation();
+    StationView getEndTurnstile();
 
-    Date getDate();
 
     LocalTime getStartTime();
 
-    LocalTime getEndTime();
+    Date getEndTime();
 
     double getPrice();
 

@@ -34,8 +34,9 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         MovingTurnstile machine = movingTurnstileRepo.findById(rideModel.getMachineId()).get();
         //Todo get Price,Get start Station
         //Todo check for the availability of money
-        Ticket closedTicket = new Ticket(passenger, stationRepo.findAll().get(0), stationRepo.findAll().get(1), new Date(), rideModel.getTime(), rideModel.getTime(), 0, Status.Closed);
-        ticketRepo.save(closedTicket);
+        //Ticket closedTicket = new Ticket(passenger,)
+        //Ticket closedTicket = new Ticket(passenger, stationRepo.findAll().get(0), stationRepo.findAll().get(1), new Date(), rideModel.getTime(), rideModel.getTime(), 0, Status.Closed);
+        //ticketRepo.save(closedTicket);
         return "Success";
 
     }

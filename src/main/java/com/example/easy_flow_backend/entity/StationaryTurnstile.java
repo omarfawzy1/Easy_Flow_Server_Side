@@ -9,14 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Stationary_turnstile")
-public class StationaryTurnstile extends User {
+public class StationaryTurnstile extends Turnstile {
 
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
     public StationaryTurnstile(String username, String password) {
         super(username, password);
-        roles = "TURNSTILE";
     }
 
 

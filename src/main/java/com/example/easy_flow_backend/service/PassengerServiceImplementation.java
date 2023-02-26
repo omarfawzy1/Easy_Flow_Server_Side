@@ -40,7 +40,7 @@ public class PassengerServiceImplementation implements PassengerService {
         if (username == null || username.equalsIgnoreCase("anonymous")) {
             throw new BadRequestException("Not Authenticated");
         }
-        return ticketRepo.findAllProjectedByPassengerUsernameAndDateGreaterThanEqual(username, date);
+        return ticketRepo.findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(username, date);
 
     }
 

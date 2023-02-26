@@ -24,41 +24,41 @@ public class Ticket {
     private Passenger passenger;
 
     @ManyToOne
-    @JoinColumn(name = "start_station_id", referencedColumnName = "station_id", nullable = false)
-    private Station startStation;
+    @JoinColumn(name = "start_turnstile_id", nullable = false)
+    private Turnstile startTurnstile;
 
     @ManyToOne
-    @JoinColumn(name = "end_station_id", referencedColumnName = "station_id", nullable = true)
-    private Station endStation;
-    @JoinColumn(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private java.util.Date date;
+    @JoinColumn(name = "end_turnstile_id", nullable = true)
+    private Turnstile endTurnstile;
+    @JoinColumn(name = "start_time",nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date startTime;
 
-    @JoinColumn(nullable = false)
-    @Temporal(TemporalType.TIME)
-    private LocalTime startTime;
-    @JoinColumn(nullable = true)
-    @Temporal(TemporalType.TIME)
-    private LocalTime endTime;
+    @JoinColumn(name = "end_time",nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date endTime;
+
+    @Enumerated
+    @Column(name= "transportation_type")
+    private TransportationType transportationType;
+
     @JoinColumn(nullable = false)
     private double price;
 
     @JoinColumn(nullable = false)
     private Status status;
-    public Ticket(Passenger passenger, Station startStation, Date date, LocalTime startTime, Status status) {
+    public Ticket(Passenger passenger, Turnstile startTurnstile, Date startTime, Status status) {
         this.passenger = passenger;
-        this.startStation = startStation;
-        this.date = date;
+        this.startTurnstile = startTurnstile;
         this.startTime = startTime;
         this.status = status;
         this.price = 0;
     }
 
-    public Ticket(Passenger passenger, Station startStation, Station endStation, Date date, LocalTime startTime, LocalTime endTime, double price, Status status) {
+    public Ticket(Passenger passenger, Turnstile startTurnstile, Turnstile endTurnstile, Date startTime, Date endTime, double price, Status status) {
         this.passenger = passenger;
-        this.startStation = startStation;
-        this.endStation = endStation;
-        this.date = date;
+        this.startTurnstile = startTurnstile;
+        this.endTurnstile = endTurnstile;
         this.startTime = startTime;
         this.endTime = endTime;
         this.price = price;

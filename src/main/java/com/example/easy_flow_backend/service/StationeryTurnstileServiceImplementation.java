@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -40,8 +39,7 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
         StationaryTurnstile machine = stationaryTurnstileRepo.findById(rideModel.getMachineId()).get();
         //Todo check for minimum charge
-        Ticket pendingTicket = new Ticket(passenger, machine.getStation(), new Date(),
-                rideModel.getTime(), Status.Pending);
+        Ticket pendingTicket = new Ticket(passenger, machine, Date.valueOf("2020-2-2"), Status.Pending);
         ticketRepo.save(pendingTicket);
         return "Success";
     }
