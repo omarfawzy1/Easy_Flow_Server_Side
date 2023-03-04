@@ -7,7 +7,7 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationRepo;
-import com.example.easy_flow_backend.repos.TicketRepo;
+import com.example.easy_flow_backend.repos.TripRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Date;
 @Service
 public class MovingTurnstileServiceImplementation implements MovingTurnstileService {
     @Autowired
-    private TicketRepo ticketRepo;
+    private TripRepo tripRepo;
     @Autowired
     private PassengersRepo passengersRepo;
     @Autowired
@@ -36,9 +36,9 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         MovingTurnstile machine = movingTurnstileRepo.findById(rideModel.getMachineId()).get();
         //Todo get Price,Get start Station
         //Todo check for the availability of money
-        //Ticket closedTicket = new Ticket(passenger,)
-        //Ticket closedTicket = new Ticket(passenger, stationRepo.findAll().get(0), stationRepo.findAll().get(1), new Date(), rideModel.getTime(), rideModel.getTime(), 0, Status.Closed);
-        //ticketRepo.save(closedTicket);
+        //trip closedtrip = new trip(passenger,)
+        //trip closedtrip = new trip(passenger, stationRepo.findAll().get(0), stationRepo.findAll().get(1), new Date(), rideModel.getTime(), rideModel.getTime(), 0, Status.Closed);
+        //tripRepo.save(closedtrip);
         return new ResponseMessage("Success", HttpStatus.OK);
 
     }

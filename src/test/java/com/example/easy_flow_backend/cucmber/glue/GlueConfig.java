@@ -57,7 +57,7 @@ public class GlueConfig {
     @Autowired
     protected StationRepo stationRepo;
     @Autowired
-    protected TicketRepo ticketRepo;
+    protected TripRepo tripRepo;
     @Autowired
     protected UserRepositry userRepositry;
     @Autowired

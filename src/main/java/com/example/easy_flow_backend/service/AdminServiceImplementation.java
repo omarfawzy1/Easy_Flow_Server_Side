@@ -30,7 +30,7 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private OwnerRepo ownerRepo;
     @Autowired
-    private TicketRepo ticketRepo;
+    private TripRepo tripRepo;
     @Autowired
     private UserRepositry userRepositry;
 
@@ -122,7 +122,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public long getRevenue(TimePeriod timePeriod) {
-        Optional<Long> revenue = ticketRepo.getRevenue(timePeriod.getStart(), timePeriod.getEnd());
+        Optional<Long> revenue = tripRepo.getRevenue(timePeriod.getStart(), timePeriod.getEnd());
         if (revenue.isEmpty())
             return 0;
         return revenue.get();
@@ -130,7 +130,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public long getRevenueAvg(TimePeriod timePeriod) {
-        Optional<Long> revenue = ticketRepo.getRevenueAvg(timePeriod.getStart(), timePeriod.getEnd());
+        Optional<Long> revenue = tripRepo.getRevenueAvg(timePeriod.getStart(), timePeriod.getEnd());
         if (revenue.isEmpty())
             return 0;
         return revenue.get();
@@ -138,7 +138,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId) {
-        Optional<Long> revenue = ticketRepo.getRevenueAvgByPassenger(timePeriod.getStart(), timePeriod.getEnd(), passengerId);
+        Optional<Long> revenue = tripRepo.getRevenueAvgByPassenger(timePeriod.getStart(), timePeriod.getEnd(), passengerId);
         if (revenue.isEmpty())
             return 0;
         return revenue.get();
@@ -146,12 +146,12 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public int getNegativePassengerCount() {
-        return ticketRepo.getNegativePassengerCount();
+        return tripRepo.getNegativePassengerCount();
     }
 
     @Override
     public int getBelowThresholdCount(long threshold) {
-        return ticketRepo.getBelowThresholdCount(threshold);
+        return tripRepo.getBelowThresholdCount(threshold);
     }
 
     @Override

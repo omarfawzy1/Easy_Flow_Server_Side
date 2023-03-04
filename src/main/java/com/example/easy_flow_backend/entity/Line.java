@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.*;
@@ -36,6 +37,11 @@ public class Line {
             joinColumns = @JoinColumn(name = "line_id", referencedColumnName = "line_id"),
             inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "station_id"))
     Set<Station> stations = new HashSet<>();
+
+    @OneToOne(optional = true)
+    @JoinColumn(name = "graph_id", referencedColumnName ="graph_id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Graph graph;
 
     public Line(String name, double price, Owner owner) {
         this.name = name;

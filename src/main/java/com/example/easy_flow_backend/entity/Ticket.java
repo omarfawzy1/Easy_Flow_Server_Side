@@ -1,69 +1,32 @@
 package com.example.easy_flow_backend.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalTime;
-import java.util.Date;
-
+import java.sql.Date;
 
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Ticket {
+
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "ticket_id")
-    private String id;
     @ManyToOne
-    @JoinColumn(name = "passenger_id", nullable = false)
-    private Passenger passenger;
-
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+    @Id
     @ManyToOne
-    @JoinColumn(name = "start_turnstile_id", nullable = false)
-    private Turnstile startTurnstile;
-
-    @ManyToOne
-    @JoinColumn(name = "end_turnstile_id", nullable = true)
-    private Turnstile endTurnstile;
-    @JoinColumn(name = "start_time",nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date startTime;
-
-    @JoinColumn(name = "end_time",nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date endTime;
-
-    @Enumerated
-    @Column(name= "transportation_type")
-    private TransportationType transportationType;
-
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "line_id")
+    private Line line;
     private double price;
-
-    @JoinColumn(nullable = false)
-    private Status status;
-    public Ticket(Passenger passenger, Turnstile startTurnstile, Date startTime, Status status) {
-        this.passenger = passenger;
-        this.startTurnstile = startTurnstile;
-        this.startTime = startTime;
-        this.status = status;
-        this.price = 0;
-    }
-
-    public Ticket(Passenger passenger, Turnstile startTurnstile, Turnstile endTurnstile, Date startTime, Date endTime, double price, Status status) {
-        this.passenger = passenger;
-        this.startTurnstile = startTurnstile;
-        this.endTurnstile = endTurnstile;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.price = price;
-        this.status = status;
-    }
-
-
+    private double weight;
+    private Date time;
 }

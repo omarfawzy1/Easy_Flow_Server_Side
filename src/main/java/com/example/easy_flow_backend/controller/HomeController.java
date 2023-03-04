@@ -18,7 +18,7 @@ public class HomeController {
     /*
     TODO 3/2/2023
         Passenger API
-            History Return Tickets
+            History Return trips
             Request Privilege
      */
     @GetMapping("index")

@@ -5,7 +5,7 @@ import com.example.easy_flow_backend.entity.Status;
 import java.sql.Date;
 
 
-public interface TicketView {
+public interface TripView {
 
     String getId();
 

@@ -3,7 +3,7 @@ package com.example.easy_flow_backend.controller;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.service.PassengerService;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TicketView;
+import com.example.easy_flow_backend.dto.Views.TripView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +19,14 @@ public class PassengerController {
     private PassengerService passengerService;
 
     @GetMapping("history")
-    public List<TicketView> getMyTickets() throws BadRequestException {
-        return passengerService.getMyTickets();
+    public List<TripView> getMytrips() throws BadRequestException {
+        return passengerService.getMytrips();
     }
 
     @GetMapping("history/{date}")
-    public List<TicketView> getMyTickets(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws BadRequestException {
+    public List<TripView> getMytrips(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws BadRequestException {
 
-        return passengerService.getMyTickets(date);
+        return passengerService.getMytrips(date);
     }
 
     @GetMapping("profile")

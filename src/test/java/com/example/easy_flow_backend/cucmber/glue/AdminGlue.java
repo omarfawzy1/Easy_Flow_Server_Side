@@ -68,6 +68,7 @@ public class AdminGlue extends GlueConfig {
         for (int i=0;i<passengerList.size();i++) {
             passengerList.get(i).setWallet(wallets.get(i));
         }
+        tripRepo.deleteAll();
         passengersRepo.deleteAll();
         passengersRepo.saveAll(passengerList);
         passengerList.clear();

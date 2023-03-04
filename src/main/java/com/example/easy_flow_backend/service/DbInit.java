@@ -35,7 +35,7 @@ private PassengersRepo passengersRepo;
     @Autowired
     private StationRepo stationRepo;
     @Autowired
-    private TicketRepo ticketRepository;
+    private TripRepo tripRepository;
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 
@@ -130,9 +130,9 @@ private PassengersRepo passengersRepo;
         Passenger aly = passengersRepo.findUserByUsername("aly");
         Passenger mona = passengersRepo.findUserByUsername("mona");
 
-        // Create some tickets
-        ArrayList<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket(
+        // Create some trips
+        ArrayList<Trip> trips = new ArrayList<>();
+        trips.add(new Trip(
                 omar,
                 stationaryTurnstiles.get(gizaStation.getStationName()),
                 stationaryTurnstiles.get(elMonibStation.getStationName()),
@@ -142,8 +142,8 @@ private PassengersRepo passengersRepo;
                 Status.Closed)
         );
 
-        // Ticket for Aly
-        tickets.add(new Ticket(
+        // trip for Aly
+        trips.add(new Trip(
                 aly,
                 stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
                 stationaryTurnstiles.get(dokkiStation.getStationName()),
@@ -153,8 +153,8 @@ private PassengersRepo passengersRepo;
                 Status.Closed)
         );
 
-        // Ticket for Waled
-        tickets.add(new Ticket(
+        // trip for Waled
+        trips.add(new Trip(
                 waled,
                 stationaryTurnstiles.get(elBohoosStation.getStationName()),
                 stationaryTurnstiles.get(faysalStation.getStationName()),
@@ -164,8 +164,8 @@ private PassengersRepo passengersRepo;
                 Status.Closed)
         );
 
-        // Ticket for Mona
-        tickets.add(new Ticket(
+        // trip for Mona
+        trips.add(new Trip(
                 mona,
                 stationaryTurnstiles.get(gizaStation.getStationName()),
                 stationaryTurnstiles.get(ommElMisryeenStation.getStationName()),
@@ -175,8 +175,8 @@ private PassengersRepo passengersRepo;
                 Status.Closed)
         );
 
-        // Ticket for Omar
-        tickets.add(new Ticket(
+        // trip for Omar
+        trips.add(new Trip(
                 omar,
                 stationaryTurnstiles.get(operaStation.getStationName()),
                 stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
@@ -185,9 +185,9 @@ private PassengersRepo passengersRepo;
                 20f,
                 Status.Closed)
         );
-        ticketRepository.saveAll(tickets);
+        tripRepository.saveAll(trips);
 
-        tickets.add(new Ticket(
+        trips.add(new Trip(
                 waled,
                 stationaryTurnstiles.get(cairoUniversityStation.getStationName()),
                 stationaryTurnstiles.get(elBohoosStation.getStationName()),
@@ -197,7 +197,7 @@ private PassengersRepo passengersRepo;
                 Status.Closed)
         );
 
-        tickets.add(new Ticket(
+        trips.add(new Trip(
                 aly,
                 stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
                 stationaryTurnstiles.get(operaStation.getStationName()),
@@ -207,7 +207,7 @@ private PassengersRepo passengersRepo;
                 Status.Closed)
         );
 
-        tickets.add(new Ticket(
+        trips.add(new Trip(
                 mona,
                 stationaryTurnstiles.get(ommElMisryeenStation.getStationName()),
                 stationaryTurnstiles.get(dokkiStation.getStationName()),

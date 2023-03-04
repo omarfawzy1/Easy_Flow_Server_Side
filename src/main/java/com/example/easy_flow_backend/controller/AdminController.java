@@ -115,7 +115,7 @@ public class AdminController {
 //Admin can view the trend of passenger numbers over time for a specific line and at a specific station.
 //
 //View system-wide statistics:
-//Admin can view the total number of transactions in the system (e.g. ticket purchases, wallet recharges).
+//Admin can view the total number of transactions in the system (e.g. trip purchases, wallet recharges).
 //Admin can view the system logs to monitor any errors or issues in the system.}
 
 

@@ -2,9 +2,9 @@ package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.repos.TicketRepo;
+import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TicketView;
+import com.example.easy_flow_backend.dto.Views.TripView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,30 +17,30 @@ import java.util.List;
 public class PassengerServiceImplementation implements PassengerService {
 
     @Autowired
-    private TicketRepo ticketRepo;
+    private TripRepo tripRepo;
 
     @Autowired
     private PassengersRepo passengersRepo;
 
     @Override
-    public List<TicketView> getMyTickets() throws BadRequestException {
+    public List<TripView> getMytrips() throws BadRequestException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getPrincipal().toString();
         if (userName == null || userName.equalsIgnoreCase("anonymous")) {
             throw new BadRequestException("Not Authenticated");
         }
-        return ticketRepo.findAllProjectedByPassengerUsername(userName);
+        return tripRepo.findAllProjectedByPassengerUsername(userName);
 
     }
 
     @Override
-    public List<TicketView> getMyTickets(Date date) throws BadRequestException {
+    public List<TripView> getMytrips(Date date) throws BadRequestException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getPrincipal().toString();
         if (username == null || username.equalsIgnoreCase("anonymous")) {
             throw new BadRequestException("Not Authenticated");
         }
-        return ticketRepo.findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(username, date);
+        return tripRepo.findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(username, date);
 
     }
 
