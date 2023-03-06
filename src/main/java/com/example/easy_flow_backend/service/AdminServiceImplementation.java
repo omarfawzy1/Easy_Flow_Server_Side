@@ -3,6 +3,7 @@ package com.example.easy_flow_backend.service;
 import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -13,11 +14,9 @@ import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +35,8 @@ public class AdminServiceImplementation implements AdminService {
     private TripRepo tripRepo;
     @Autowired
     private UserRepositry userRepositry;
+    @Autowired
+    private TransactionRepo transactionRepo;
 
 
     @Override
@@ -181,6 +182,27 @@ public class AdminServiceImplementation implements AdminService {
             count++;
         }
         return sum/count;
+    }
+
+    @Override
+    public List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType,
+                                     int peekNumber) {
+        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineId,
+                transportType);
+        if(result.size()<peekNumber){
+            return result;
+        }
+        return result.subList(0,peekNumber);
+    }
+
+    @Override
+    public int getTransactionCount() {
+        return (int) transactionRepo.count();
+    }
+
+    @Override
+    public int getTripCount() {
+        return (int) tripRepo.count();
     }
 
 

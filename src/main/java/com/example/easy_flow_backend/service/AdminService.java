@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
@@ -8,11 +9,8 @@ import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.error.ResponseMessage;
-import org.springframework.http.ResponseEntity;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface AdminService {
 
@@ -50,4 +48,10 @@ public interface AdminService {
     Object getTurnstilesStatus();
     int getTripInStationCount(TimePeriod timePeriod, String stationName);
     long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId);
+
+    List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType, int peekNumber);
+
+    int getTransactionCount();
+
+    int getTripCount();
 }

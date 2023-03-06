@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -14,11 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -122,6 +123,22 @@ public class AdminController {
                                                  @PathVariable String lineId) throws ParseException {
         return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, stringToMilleSecond(timeUnit), lineId);
     }
+    @GetMapping("line/peek/{lineId}/{transportType}/{peekNumber}")
+    public List<Object> getPeekHours(
+            @Valid @RequestBody TimePeriod timePeriod,
+            @PathVariable String lineId,
+            @PathVariable TransportationType transportType,
+            @PathVariable int peekNumber) {
+        return adminService.getPeekHours(timePeriod, lineId, transportType ,peekNumber);
+    }
+    @GetMapping("transaction/count")
+    public int getTransactionCount() {
+        return adminService.getTransactionCount();
+    }
+    @GetMapping("trip/count")
+    public int getTripCount() {
+        return adminService.getTripCount();
+    }
     public long stringToMilleSecond(String date) throws ParseException {
         long result=0;
         result+=Long.parseLong(date.substring(0,4)) * 31556952000L;
@@ -133,7 +150,6 @@ public class AdminController {
         return result;
     }
 //ToDo
-//Admin can view the peak hours for a specific line and at a specific station.
 //
 //View system-wide statistics:
 //Admin can view the total number of transactions in the system (e.g. trip purchases, wallet recharges).

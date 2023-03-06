@@ -18,7 +18,7 @@ public class Wallet {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "wallet_id")
     private String id;
-    private Double balance;
+    private double balance;
     @Column(name = "credit_card")
     private String creditCard;
 
