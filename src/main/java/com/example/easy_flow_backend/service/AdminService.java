@@ -10,6 +10,7 @@ import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,5 +47,7 @@ public interface AdminService {
 
     int getBelowThresholdCount(long threshold);
 
-   Object getTurnstilesStatus();
+    Object getTurnstilesStatus();
+    int getTripInStationCount(TimePeriod timePeriod, String stationName);
+    long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId);
 }

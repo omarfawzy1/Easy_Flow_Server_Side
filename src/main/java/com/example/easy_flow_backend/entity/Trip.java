@@ -50,6 +50,10 @@ public class Trip {
 
     @JoinColumn(nullable = false)
     private Status status;
+    @Column(name = "start_station")
+    private String startStation;
+    @Column(name = "end_station")
+    private String endStation;
     public Trip(Passenger passenger, Turnstile startTurnstile, Date startTime, Status status) {
         this.passenger = passenger;
         this.startTurnstile = startTurnstile;

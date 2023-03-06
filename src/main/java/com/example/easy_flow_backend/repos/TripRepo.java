@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.repos;
 
+import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.entity.Status;
 import com.example.easy_flow_backend.entity.Trip;
 import com.example.easy_flow_backend.dto.Views.TripView;
@@ -36,16 +37,36 @@ public interface TripRepo extends JpaRepository<Trip, String> {
     Optional<Long> getRevenueAvg(@Param("start") Date start, @Param("end") Date end);
 
     @Query("select avg (trip.price)" +
-        "From Trip trip " +
-        "WHERE trip.startTime>= :start AND trip.endTime<= :end AND trip.passenger.id= :passengerId ")
+            "From Trip trip " +
+            "WHERE trip.startTime>= :start AND trip.endTime<= :end AND trip.passenger.id= :passengerId ")
     Optional<Long> getRevenueAvgByPassenger(@Param("start") Date start, @Param("end") Date end,
                                             @Param("passengerId") String passengerId);
+
     @Query("select COUNT (passenger.id)" +
             "From Passenger passenger " +
             "WHERE passenger.wallet.balance < 0")
     int getNegativePassengerCount();
+
     @Query("select COUNT (passenger.id)" +
             "From Passenger passenger " +
             "WHERE passenger.wallet.balance < :threshold")
     int getBelowThresholdCount(@Param("threshold") long threshold);
+
+    @Query("select COUNT (trip.id)" +
+            "From Trip trip " +
+            "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
+            "AND (trip.startStation = :stationName OR trip.endStation = :stationName)")
+    int getTripInStationCount(@Param("start") Date start,
+                              @Param("end") Date end,
+                              @Param("stationName") String stationName);
+
+    @Query( "SELECT COUNT (trip.id)" +
+            "From Trip trip Join MovingTurnstile mt " +
+            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) "+
+            "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.endTime <= :end "+
+            "AND mt.line.id = :lineId ")
+    long getTripAvgByTimeUnitForBusLine(@Param("start") Date start,
+                                        @Param("end") Date end,
+                                        @Param("lineId") String lineId);
+
 }

@@ -16,10 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 @Service
 public class AdminServiceImplementation implements AdminService {
@@ -158,6 +161,26 @@ public class AdminServiceImplementation implements AdminService {
     public Object getTurnstilesStatus() {
         Map<String, Integer> result = new HashMap<>();
         return userRepositry.getTurnstilesStatus();
+    }
+
+    @Override
+    public int getTripInStationCount(TimePeriod timePeriod, String stationName) {
+        return tripRepo.getTripInStationCount(timePeriod.getStart(), timePeriod.getEnd(), stationName);
+    }
+
+    @Override
+    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId) {
+        long sum=0;
+        int count=0;
+        Long start = timePeriod.getStart().getTime();
+        Long end = timePeriod.getEnd().getTime();
+        while(start+timeUnit<=end){
+            sum+= tripRepo.getTripAvgByTimeUnitForBusLine(new Date(start), new Date(start+timeUnit),
+                    lineId);
+            start+=timeUnit;
+            count++;
+        }
+        return sum/count;
     }
 
 

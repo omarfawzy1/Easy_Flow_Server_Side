@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -103,22 +108,35 @@ public class AdminController {
     public int getBelowThresholdCount(@PathVariable long threshold) {
         return adminService.getBelowThresholdCount(threshold);
     }
-    //ToDo
     @GetMapping("turnstile/status")
     public Object getTurnstilesStatus() {
         return adminService.getTurnstilesStatus();
     }
-//ToDo{Admin can view the total number of passengers on a specific line (Bus) and at a specific station for a given period .
-//Admin can view the total number of passengers on a specific station for a given period.
-//Admin can view the average number of passengers on a specific line (Bus) and at a specific station for a given period.
+    @GetMapping("station/passengersCount/{stationName}")
+    public Object getTripInStationCount(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String stationName) {
+        return adminService.getTripInStationCount(timePeriod, stationName);
+    }
+    @GetMapping("line/tripAvg/{lineId}/{timeUnit}")
+    public Object getTripAvgByTimeUnitForBusLine(@Valid @RequestBody TimePeriod timePeriod,
+                                                 @PathVariable String timeUnit,
+                                                 @PathVariable String lineId) throws ParseException {
+        return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, stringToMilleSecond(timeUnit), lineId);
+    }
+    public long stringToMilleSecond(String date) throws ParseException {
+        long result=0;
+        result+=Long.parseLong(date.substring(0,4)) * 31556952000L;
+        result+=Long.parseLong(date.substring(5,7)) * 2629746000L;
+        result+=Long.parseLong(date.substring(8,10)) * 86400000L;
+        result+=Long.parseLong(date.substring(11,13)) * 3600000L;
+        result+=Long.parseLong(date.substring(14,16)) * 60000L;
+        result+=Long.parseLong(date.substring(17,19)) * 1000L;
+        return result;
+    }
+//ToDo
 //Admin can view the peak hours for a specific line and at a specific station.
-//Admin can view the trend of passenger numbers over time for a specific line and at a specific station.
 //
 //View system-wide statistics:
 //Admin can view the total number of transactions in the system (e.g. trip purchases, wallet recharges).
-//Admin can view the system logs to monitor any errors or issues in the system.}
-
-
-
+//Admin can view the system logs to monitor any errors or issues in the system.
 
 }
