@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import java.util.Date;
-import java.util.Objects;
+
+import java.util.*;
 
 @Entity
 @Setter
@@ -18,7 +18,6 @@ public class Passenger extends User {
     @JoinColumn(name = "wallet_id", referencedColumnName ="wallet_id")
     @Cascade(CascadeType.ALL)
     private Wallet wallet;
-
     @Column(name = "first_name",nullable = false)
     private String firstName;
     @Column(name = "last_name",nullable = false)

@@ -8,7 +8,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Array;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +20,8 @@ public class DbInit implements CommandLineRunner {
 
     @Autowired
     private UserRepositry userRepositry;
-@Autowired
-private PassengersRepo passengersRepo;
+    @Autowired
+    private PassengersRepo passengersRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -65,7 +67,7 @@ private PassengersRepo passengersRepo;
         lineRepo.saveAll(lines);
 
         line2Init();
-
+        m7Init();
         // test database
         System.out.println(userRepositry.findUserByUsername("haridy").getUsername());
     }
@@ -109,6 +111,8 @@ private PassengersRepo passengersRepo;
         line2Stations.add(elBohoosStation);
         line2Stations.add(dokkiStation);
         line2Stations.add(operaStation);
+        line2Stations.forEach(station-> station.setTransportationType(TransportationType.METRO));
+
         stationRepo.saveAll(line2Stations);
         line2Stations.forEach(line2::addStation);
         lineRepo.save(line2);
@@ -138,8 +142,11 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(elMonibStation.getStationName()),
                 simpleDateFormat.parse("2023-11-01 09:54:31"),
                 simpleDateFormat.parse("2023-11-01 11:40:22"),
+                TransportationType.METRO,
                 40f,
-                Status.Closed)
+                Status.Closed,
+                gizaStation.getStationName(),
+                elMonibStation.getStationName())
         );
 
         // trip for Aly
@@ -149,8 +156,11 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(dokkiStation.getStationName()),
                 simpleDateFormat.parse("2023-11-02 08:30:00"),
                 simpleDateFormat.parse("2023-11-02 09:15:00"),
+                TransportationType.METRO,
                 20f,
-                Status.Closed)
+                Status.Closed,
+                sakiatMekkiStation.getStationName(),
+                dokkiStation.getStationName())
         );
 
         // trip for Waled
@@ -160,8 +170,11 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(faysalStation.getStationName()),
                 simpleDateFormat.parse("2023-11-03 12:45:00"),
                 simpleDateFormat.parse("2023-11-03 13:20:00"),
+                TransportationType.METRO,
                 10f,
-                Status.Closed)
+                Status.Closed,
+                elBohoosStation.getStationName(),
+                faysalStation.getStationName())
         );
 
         // trip for Mona
@@ -171,8 +184,11 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(ommElMisryeenStation.getStationName()),
                 simpleDateFormat.parse("2023-11-04 17:30:00"),
                 simpleDateFormat.parse("2023-11-04 18:10:00"),
+                TransportationType.METRO,
                 15f,
-                Status.Closed)
+                Status.Closed,
+                gizaStation.getStationName(),
+                ommElMisryeenStation.getStationName())
         );
 
         // trip for Omar
@@ -182,10 +198,13 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(sakiatMekkiStation.getStationName()),
                 simpleDateFormat.parse("2023-11-05 10:00:00"),
                 simpleDateFormat.parse("2023-11-05 10:45:00"),
+                TransportationType.METRO,
                 20f,
-                Status.Closed)
+                Status.Closed,
+                operaStation.getStationName(),
+                sakiatMekkiStation.getStationName())
         );
-        tripRepository.saveAll(trips);
+
 
         trips.add(new Trip(
                 waled,
@@ -193,8 +212,11 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(elBohoosStation.getStationName()),
                 simpleDateFormat.parse("2023-03-10 08:30:00"),
                 simpleDateFormat.parse("2023-03-10 09:00:00"),
+                TransportationType.METRO,
                 10f,
-                Status.Closed)
+                Status.Closed,
+                cairoUniversityStation.getStationName(),
+                elBohoosStation.getStationName())
         );
 
         trips.add(new Trip(
@@ -203,8 +225,11 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(operaStation.getStationName()),
                 simpleDateFormat.parse("2023-04-02 17:15:00"),
                 simpleDateFormat.parse("2023-04-02 18:05:00"),
+                TransportationType.METRO,
                 7f,
-                Status.Closed)
+                Status.Closed,
+                sakiatMekkiStation.getStationName(),
+                operaStation.getStationName())
         );
 
         trips.add(new Trip(
@@ -213,9 +238,106 @@ private PassengersRepo passengersRepo;
                 stationaryTurnstiles.get(dokkiStation.getStationName()),
                 simpleDateFormat.parse("2023-05-21 13:40:00"),
                 simpleDateFormat.parse("2023-05-21 14:15:00"),
+                TransportationType.METRO,
                 5f,
-                Status.Closed)
+                Status.Closed,
+                ommElMisryeenStation.getStationName(),
+                dokkiStation.getStationName())
         );
-
+        tripRepository.saveAll(trips);
     }
+    @SneakyThrows
+    void m7Init() {
+        Owner mwasalatmisr = new Owner("mwasalatmisr", "mwasalatmisr@government.gov", "0000 0000 0000 0000");
+        ownerRepo.save(mwasalatmisr);
+
+        Line m7 = new Line("m7", 10, mwasalatmisr);
+        Station gizaStation = new Station("Giza");
+        Station cairoUniversityStation = new Station("Cairo University");
+        Station nasrElDeenStation = new Station("Nasr el Deen");
+        Station talbiaStation = new Station("Talbia");
+        Station mariotiaStation = new Station("Mariotia");
+        Station mashalStation = new Station("Mashal");
+        Station medanRyhmiaStation = new Station("Medan Ryhmia");
+
+
+        // Add the stations to the line and save them
+        ArrayList<Station> m7Stations = new ArrayList<>();
+        m7Stations.add(gizaStation);
+        m7Stations.add(cairoUniversityStation);
+        m7Stations.add(nasrElDeenStation);
+        m7Stations.add(talbiaStation);
+        m7Stations.add(mariotiaStation);
+        m7Stations.add(mashalStation);
+        m7Stations.add(medanRyhmiaStation);
+        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
+        stationRepo.saveAll(m7Stations);
+        m7Stations.forEach(m7::addStation);
+        lineRepo.save(m7);
+
+        HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
+        for(int i = 0; i < 10;i++){
+            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"));
+            bus.setLine(m7);
+            movingTurnstiles.put(i, bus);
+            userRepositry.save(bus);
+        }
+
+        Passenger omar = passengersRepo.findUserByUsername("omar");
+        Passenger waled = passengersRepo.findUserByUsername("waled");
+        Passenger aly = passengersRepo.findUserByUsername("aly");
+        Passenger mona = passengersRepo.findUserByUsername("mona");
+
+        ArrayList<Trip> trips = new ArrayList<>();
+        trips.add(new Trip(
+                omar,
+                movingTurnstiles.get(0),
+                null,
+                simpleDateFormat.parse("2023-03-10 08:30:00"),
+                null,
+                TransportationType.BUS,
+                10f,
+                Status.Closed,
+                gizaStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        trips.add(new Trip(
+                waled,
+                movingTurnstiles.get(1),
+                null,
+                simpleDateFormat.parse("2023-03-10 08:45:00"),
+                null,
+                TransportationType.BUS,
+                10f,
+                Status.Closed,
+                nasrElDeenStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        trips.add(new Trip(
+                aly,
+                movingTurnstiles.get(2),
+                null,
+                simpleDateFormat.parse("2023-03-10 09:00:00"),
+                null,
+                TransportationType.BUS,
+                10f,
+                Status.Closed,
+                cairoUniversityStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        trips.add(new Trip(
+                mona,
+                movingTurnstiles.get(3),
+                null,
+                simpleDateFormat.parse("2023-03-10 09:15:00"),
+                null,
+                TransportationType.BUS,
+                5f,
+                Status.Closed,
+                talbiaStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        tripRepository.saveAll(trips);
+    }
+
 }

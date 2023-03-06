@@ -22,7 +22,6 @@ public class Trip {
     private String id;
 
     @ManyToOne
-
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
 
@@ -62,13 +61,18 @@ public class Trip {
         this.price = 0;
     }
 
-    public Trip(Passenger passenger, Turnstile startTurnstile, Turnstile endTurnstile, Date startTime, Date endTime, double price, Status status) {
+    public Trip(Passenger passenger, Turnstile startTurnstile, Turnstile endTurnstile, Date startTime, Date endTime,TransportationType transportationType, double price, Status status, String startStationName, String endStationName) {
         this.passenger = passenger;
         this.startTurnstile = startTurnstile;
         this.endTurnstile = endTurnstile;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.transportationType = transportationType;
         this.price = price;
         this.status = status;
+        this.startStation = startStationName;
+        this.endStation = endStationName;
     }
+
+
 }

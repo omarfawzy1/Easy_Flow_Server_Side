@@ -14,16 +14,22 @@ import java.util.stream.IntStream;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"station_name", "transportation_type"})})
 public class Station {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "station_id")
     private String id;
-    @Column(name = "station_name", nullable = false, unique = true)
+    @Column(name = "station_name", nullable = false)
     private String stationName;
     @ManyToMany(mappedBy = "stations", fetch = FetchType.LAZY)
     Set<Line> lines = new HashSet<>();
+
+    @Enumerated
+    @Column(name= "transportation_type")
+    private TransportationType transportationType;
 
     public Station(String stationName) {
 
