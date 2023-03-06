@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"graph_id", "owner_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"line_id", "owner_id"})})
 public class Graph {
     @Id
     @GeneratedValue(generator = "uuid")
