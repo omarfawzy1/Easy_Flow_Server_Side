@@ -38,7 +38,13 @@ public class DbInit implements CommandLineRunner {
     private StationRepo stationRepo;
     @Autowired
     private TripRepo tripRepository;
-    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+    @Autowired
+    private  GraphRepo graphRepo;
+    @Autowired
+    private  GraphEdgeRepo graphEdgeRepo;
+
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 
     @Override
@@ -274,6 +280,19 @@ public class DbInit implements CommandLineRunner {
         stationRepo.saveAll(m7Stations);
         m7Stations.forEach(m7::addStation);
         lineRepo.save(m7);
+
+        Graph graph = new Graph();
+        graph.setOwner(mwasalatmisr);
+        graph.setLine(m7);
+        graphRepo.save(graph);
+        ArrayList<GraphEdge> graphEdges = new ArrayList<>();
+        graphEdges.add(new GraphEdge(null, graph, null, m7Stations.get(0),1f));
+        for(int i = 0; i < m7Stations.size() - 1;i++){
+            graphEdges.add(new GraphEdge(null, graph, m7Stations.get(i), m7Stations.get(i + 1),1f));
+        }
+        graphEdges.add(new GraphEdge(null, graph, m7Stations.get(m7Stations.size() - 1), null,1f));
+        graphEdgeRepo.saveAll(graphEdges);
+
 
         HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
         for(int i = 0; i < 10;i++){
