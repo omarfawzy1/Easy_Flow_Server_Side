@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "graph_id", "owner_id" }) })
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"graph_id", "owner_id"})})
 public class Graph {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -23,7 +24,9 @@ public class Graph {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-
+    @OneToOne
+    @JoinColumn(name = "line_id")
+    private Line line;
 
 
 }
