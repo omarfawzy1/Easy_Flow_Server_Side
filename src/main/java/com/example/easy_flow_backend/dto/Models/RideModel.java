@@ -21,6 +21,12 @@ public class RideModel {
     @NotBlank(message = "Machine id should not be blank")
     @NotNull(message = "Machine id should not be null")
     String machineId;
+
+    @NotBlank(message = "Start station should not be blank")
+    @NotNull(message = "Start station should not be NULL")
+    String startStation;
+
+    String endStation;
     @NotNull(message = "Time should not be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:MM:SS")
     LocalTime time;

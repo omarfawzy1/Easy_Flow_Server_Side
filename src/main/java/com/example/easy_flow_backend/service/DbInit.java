@@ -40,9 +40,9 @@ public class DbInit implements CommandLineRunner {
     private TripRepo tripRepository;
 
     @Autowired
-    private  GraphRepo graphRepo;
+    private GraphRepo graphRepo;
     @Autowired
-    private  GraphEdgeRepo graphEdgeRepo;
+    private GraphEdgeRepo graphEdgeRepo;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -117,7 +117,7 @@ public class DbInit implements CommandLineRunner {
         line2Stations.add(elBohoosStation);
         line2Stations.add(dokkiStation);
         line2Stations.add(operaStation);
-        line2Stations.forEach(station-> station.setTransportationType(TransportationType.METRO));
+        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
 
         stationRepo.saveAll(line2Stations);
         line2Stations.forEach(line2::addStation);
@@ -252,6 +252,7 @@ public class DbInit implements CommandLineRunner {
         );
         tripRepository.saveAll(trips);
     }
+
     @SneakyThrows
     void m7Init() {
         Owner mwasalatmisr = new Owner("mwasalatmisr", "mwasalatmisr@government.gov", "0000 0000 0000 0000");
@@ -286,16 +287,15 @@ public class DbInit implements CommandLineRunner {
         graph.setLine(m7);
         graphRepo.save(graph);
         ArrayList<GraphEdge> graphEdges = new ArrayList<>();
-        graphEdges.add(new GraphEdge(null, graph, null, m7Stations.get(0),1f));
-        for(int i = 0; i < m7Stations.size() - 1;i++){
-            graphEdges.add(new GraphEdge(null, graph, m7Stations.get(i), m7Stations.get(i + 1),1f));
+        //
+        for (int i = 0; i < m7Stations.size() - 1; i++) {
+            graphEdges.add(new GraphEdge(graph, m7Stations.get(i), m7Stations.get(i + 1), 1D));
         }
-        graphEdges.add(new GraphEdge(null, graph, m7Stations.get(m7Stations.size() - 1), null,1f));
         graphEdgeRepo.saveAll(graphEdges);
 
 
         HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
-        for(int i = 0; i < 10;i++){
+        for (int i = 0; i < 10; i++) {
             MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"));
             bus.setLine(m7);
             movingTurnstiles.put(i, bus);

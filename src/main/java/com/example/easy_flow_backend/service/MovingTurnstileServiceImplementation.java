@@ -35,7 +35,11 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         }
         Passenger passenger = passengersRepo.findByUsernameIgnoreCase(rideModel.getUsername());
         MovingTurnstile machine = movingTurnstileRepo.findById(rideModel.getMachineId()).get();
-        //Todo get Price,Get start Station
+
+        //Todo Get start Station
+        //Todo Pricing Service
+        //Todo Get Price
+
         //Todo check for the availability of money
         //trip closedtrip = new trip(passenger,)
         //trip closedtrip = new trip(passenger, stationRepo.findAll().get(0), stationRepo.findAll().get(1), new Date(), rideModel.getTime(), rideModel.getTime(), 0, Status.Closed);
@@ -47,7 +51,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     @Override
     public List<Station> getLineStations(String machineId) {
         MovingTurnstile machine = movingTurnstileRepo.findById(machineId).orElse(null);
-        if(machine == null) return null;
+        if (machine == null) return null;
         Line line = machine.getLine();
 
 

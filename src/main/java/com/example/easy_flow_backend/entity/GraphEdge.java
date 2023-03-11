@@ -9,7 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Setter
 @Getter
 public class GraphEdge {
@@ -17,6 +17,7 @@ public class GraphEdge {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     String id;
+
     @ManyToOne
     @JoinColumn(name = "graph_id")
     private Graph graph;
@@ -30,4 +31,11 @@ public class GraphEdge {
     private Station toStation;
 
     private double weight;
+
+    public GraphEdge(Graph graph, Station fromStation, Station toStation, double weight) {
+        this.graph = graph;
+        this.fromStation = fromStation;
+        this.toStation = toStation;
+        this.weight = weight;
+    }
 }

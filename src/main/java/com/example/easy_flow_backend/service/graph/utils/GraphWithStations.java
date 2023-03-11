@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.graph;
+package com.example.easy_flow_backend.service.graph.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pair<T, U> {
-    T first;
-    U second;
+public class GraphWithStations {
+    double[][] graph;
+    List<String> stations;
 }

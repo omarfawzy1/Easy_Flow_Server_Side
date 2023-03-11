@@ -1,13 +1,11 @@
 package com.example.easy_flow_backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 
@@ -17,12 +15,16 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ticket {
-
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
-    @Id
+
     @ManyToOne
     @JoinColumn(name = "line_id")
     private Line line;

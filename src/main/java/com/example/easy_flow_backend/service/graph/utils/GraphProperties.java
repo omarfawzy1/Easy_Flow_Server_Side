@@ -1,67 +1,30 @@
-package com.example.easy_flow_backend.graph;
+package com.example.easy_flow_backend.service.graph.utils;
 
-import com.example.easy_flow_backend.entity.Graph;
 import com.example.easy_flow_backend.entity.GraphEdge;
-import com.example.easy_flow_backend.repos.GraphEdgeRepo;
-import com.example.easy_flow_backend.repos.GraphRepo;
-import com.example.easy_flow_backend.repos.StationRepo;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service
-public class GraphPoperties {
-    @Autowired
-    private GraphService graphService;
-    @Autowired
-    private GraphEdgeService graphEdgeService;
-    @Autowired
-    private GraphRepo graphRepo;
-    @Autowired
-    private GraphEdgeRepo graphEdgeRepo;
-    @Autowired
-    private StationRepo stationRepo;
 
-    public Pair<List<GraphEdge>, List<String>> getEdges(String ownerId) {
-
-        List<Graph> graphs = graphService.getOwnerGraph(ownerId);
-        List<GraphEdge> edges = new ArrayList<>();
-        for (Graph graph : graphs) {
-            List<GraphEdge> graphEdges = graphEdgeService.getEdges(graph);
-            edges.addAll(graphEdges);
-        }
-
-        return getListListPair(edges);
-
-    }
-
-    public Pair<List<GraphEdge>, List<String>> getEdges(String ownerId, String lineId) {
-
-        Graph graph = graphService.getLineGraph(ownerId, lineId);
-
-        List<GraphEdge> edges = graphEdgeService.getEdges(graph);
+public class GraphProperties {
+    final static double INF = 1e8;
 
 
-        return getListListPair(edges);
-
-    }
-
-    @NotNull
-    private Pair<List<GraphEdge>, List<String>> getListListPair(List<GraphEdge> edges) {
+    public static List<String> getStationNames(List<GraphEdge> edges) {
         Set<String> st = new HashSet<>();
+
         for (GraphEdge graphEdge : edges) {
             st.add(graphEdge.getFromStation().getStationName());
             st.add(graphEdge.getToStation().getStationName());
         }
 
         List<String> stationNames = new ArrayList<>(st);
-        Pair<List<GraphEdge>, List<String>> ret = new Pair<>(edges, stationNames);
-        return ret;
+
+        return stationNames;
     }
 
-    public double[][] buildGraph(List<GraphEdge> edges, List<String> stationNames) {
+    public static double[][] buildGraph(List<GraphEdge> edges, List<String> stationNames) {
         Map<String, Integer> mp = new HashMap<>();
         int sz = stationNames.size();
         for (int i = 0; i < sz; i++) {
@@ -80,9 +43,9 @@ public class GraphPoperties {
     }
 
 
-    double[][] floydWarshall(double[][] graph) {
+    public static double[][] floydWarshall(double[][] graph) {
         int nV = graph.length;
-        final double INF = 1e8;
+
         double[][] matrix = new double[nV][nV];
         int i, j, k;
 

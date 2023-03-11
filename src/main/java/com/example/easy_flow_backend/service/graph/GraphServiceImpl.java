@@ -1,7 +1,6 @@
-package com.example.easy_flow_backend.graph;
+package com.example.easy_flow_backend.service.graph;
 
 import com.example.easy_flow_backend.entity.Graph;
-import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.repos.GraphRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ public class GraphServiceImpl implements GraphService {
         Graph graph = graphRepo.findByOwnerIdAndLineId(ownerId, lineId);
         return graph;
     }
+
 
 
 }
