@@ -4,10 +4,11 @@ import com.example.easy_flow_backend.entity.Graph;
 import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.service.graph.utils.GraphProperties;
 import com.example.easy_flow_backend.service.graph.utils.GraphWithStations;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-public class SingleLineGraphServiceIml extends LineGraphService {
+@Service
+public class SingleLineGraphServiceIml extends LineGraphService  implements SingleLineGraphService{
     //TODO be cached
     private GraphWithStations floydGraphWithStation(String ownerId, String lineId) {
         Graph graph = graphService.getLineGraph(ownerId, lineId);

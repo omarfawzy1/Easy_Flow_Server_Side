@@ -34,7 +34,7 @@ public class GraphProperties {
         double[][] gp = new double[sz][sz];
         for (GraphEdge graphEdge : edges) {
             int station1id = mp.get(graphEdge.getFromStation().getStationName());
-            int station2id = mp.get(graphEdge.getFromStation().getStationName());
+            int station2id = mp.get(graphEdge.getToStation().getStationName());
             double weight = graphEdge.getWeight();
             gp[station1id][station2id] = weight;
             gp[station2id][station1id] = weight;

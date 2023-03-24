@@ -31,4 +31,12 @@ public class Ticket {
     private double price;
     private double weight;
     private Date time;
+
+    public Ticket(Owner owner, Line line, double price, double weight, Date time) {
+        this.owner = owner;
+        this.line = line;
+        this.price = price;
+        this.weight = weight;
+        this.time = time;
+    }
 }

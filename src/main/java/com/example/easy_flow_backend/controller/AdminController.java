@@ -1,44 +1,26 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.dto.Views.LineView;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.AdminService;
-import com.example.easy_flow_backend.dto.Models.AddLineModel;
-import com.example.easy_flow_backend.dto.Views.LineView;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
 @RequestMapping("admin")
 public class AdminController {
-
-    /*
-    Todo 3/2/2023
-        Users Page :
-            Username, Email, Type(Military, Student, etc), Gender, Phone Number
-     */
-
-    /*
-    Todo server side
-        Analytics Module
-        Payment Module
-     */
     @Autowired
     private AdminService adminService;
 
