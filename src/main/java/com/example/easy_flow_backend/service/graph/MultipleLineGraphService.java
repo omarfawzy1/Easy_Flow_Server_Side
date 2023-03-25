@@ -4,6 +4,7 @@ import com.example.easy_flow_backend.entity.Graph;
 import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.service.graph.utils.GraphProperties;
 import com.example.easy_flow_backend.service.graph.utils.GraphWithStations;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class MultipleLineGraphService extends LineGraphService {
     //TODO to be cached
+    @Cacheable(value = "multipleLineGraph", key = "#ownerId")
     public GraphWithStations floydGraphWithStation(String ownerId) {
         List<Graph> graphs = graphService.getOwnerGraph(ownerId);
         List<GraphEdge> totalEdges = new ArrayList<>();
@@ -22,7 +24,6 @@ public class MultipleLineGraphService extends LineGraphService {
         List<String> stationNames = GraphProperties.getStationNames(totalEdges);
         double[][] gh = GraphProperties.buildGraph(totalEdges, stationNames);
         double[][] floydWarshall = GraphProperties.floydWarshall(gh);
-
         return new GraphWithStations(floydWarshall, stationNames);
     }
 

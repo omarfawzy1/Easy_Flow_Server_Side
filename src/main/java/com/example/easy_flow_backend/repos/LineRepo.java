@@ -15,5 +15,5 @@ public interface LineRepo extends JpaRepository<Line, String> {
     LineView findProjectedById(String id);
 
     boolean existsByNameIgnoreCase(String name);
-
+    Line findByName(String name);
 }

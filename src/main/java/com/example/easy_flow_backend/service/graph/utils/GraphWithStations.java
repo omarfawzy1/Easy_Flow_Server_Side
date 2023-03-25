@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GraphWithStations {
-    double[][] graph;
-    List<String> stations;
+    private double[][] graph;
+    private List<String> stations;
+
 }
