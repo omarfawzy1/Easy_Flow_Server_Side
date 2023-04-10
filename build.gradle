@@ -46,9 +46,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.jetbrains:annotations:23.0.0'
+    //redis depend.
+
     implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.5'
-
-
+    implementation 'io.lettuce:lettuce-core'
+    // GSON to convert object into json
+    implementation 'com.google.code.gson:gson:2.8.9'
 
     testImplementation 'org.projectlombok:lombok:1.18.22'
     compileOnly 'org.projectlombok:lombok'
