@@ -2,8 +2,6 @@ package com.example.easy_flow_backend.unit_test;
 
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.repos.*;
-import com.example.easy_flow_backend.service.graph.SingleLineGraphService;
-import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

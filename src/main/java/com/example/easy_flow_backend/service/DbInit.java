@@ -74,6 +74,7 @@ public class DbInit implements CommandLineRunner {
 
         line2Init();
         m7Init();
+        m8Init();
         // test database
         System.out.println(userRepositry.findUserByUsername("haridy").getUsername());
     }
@@ -359,4 +360,108 @@ public class DbInit implements CommandLineRunner {
         tripRepository.saveAll(trips);
     }
 
+    @SneakyThrows
+    void m8Init() {
+        Owner mwasalatmisr = ownerRepo.findByName("mwasalatmisr");
+        Line m8 = new Line("m8", 10, mwasalatmisr);
+
+        Station gizaStation = new Station("Mo5abrat");
+        Station cairoUniversityStation = new Station("Mall Of egypt");
+        Station nasrElDeenStation = new Station("SouqElgomla");
+        Station talbiaStation = new Station("Frdous");
+        Station mariotiaStation = new Station("Boabat");
+        Station mashalStation = stationRepo.findByStationName("Mashal");
+        Station medanRyhmiaStation = stationRepo.findByStationName("Medan Ryhmia");
+
+
+        // Add the stations to the line and save them
+        ArrayList<Station> m7Stations = new ArrayList<>();
+        m7Stations.add(gizaStation);
+        m7Stations.add(cairoUniversityStation);
+        m7Stations.add(nasrElDeenStation);
+        m7Stations.add(talbiaStation);
+        m7Stations.add(mariotiaStation);
+        m7Stations.add(mashalStation);
+        m7Stations.add(medanRyhmiaStation);
+        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
+        stationRepo.saveAll(m7Stations);
+        m7Stations.forEach(m8::addStation);
+        lineRepo.save(m8);
+
+        Graph graph = new Graph();
+        graph.setOwner(mwasalatmisr);
+        graph.setLine(m8);
+        graphRepo.save(graph);
+        ArrayList<GraphEdge> graphEdges = new ArrayList<>();
+        //
+        for (int i = 0; i < m7Stations.size() - 1; i++) {
+            graphEdges.add(new GraphEdge(graph, m7Stations.get(i), m7Stations.get(i + 1), 1D));
+        }
+        graphEdgeRepo.saveAll(graphEdges);
+
+
+        HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
+        for (int i = 0; i < 10; i++) {
+            MovingTurnstile bus = new MovingTurnstile("m8_" + i, passwordEncoder.encode("1234"));
+            bus.setLine(m8);
+            movingTurnstiles.put(i, bus);
+            userRepositry.save(bus);
+        }
+
+        Passenger omar = passengersRepo.findUserByUsername("omar");
+        Passenger waled = passengersRepo.findUserByUsername("waled");
+        Passenger aly = passengersRepo.findUserByUsername("aly");
+        Passenger mona = passengersRepo.findUserByUsername("mona");
+
+        ArrayList<Trip> trips = new ArrayList<>();
+        trips.add(new Trip(
+                omar,
+                movingTurnstiles.get(0),
+                null,
+                simpleDateFormat.parse("2023-03-10 08:30:00"),
+                null,
+                TransportationType.BUS,
+                10f,
+                Status.Closed,
+                gizaStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        trips.add(new Trip(
+                waled,
+                movingTurnstiles.get(1),
+                null,
+                simpleDateFormat.parse("2023-03-10 08:45:00"),
+                null,
+                TransportationType.BUS,
+                10f,
+                Status.Closed,
+                nasrElDeenStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        trips.add(new Trip(
+                aly,
+                movingTurnstiles.get(2),
+                null,
+                simpleDateFormat.parse("2023-03-10 09:00:00"),
+                null,
+                TransportationType.BUS,
+                10f,
+                Status.Closed,
+                cairoUniversityStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        trips.add(new Trip(
+                mona,
+                movingTurnstiles.get(3),
+                null,
+                simpleDateFormat.parse("2023-03-10 09:15:00"),
+                null,
+                TransportationType.BUS,
+                5f,
+                Status.Closed,
+                talbiaStation.getStationName(),
+                medanRyhmiaStation.getStationName())
+        );
+        tripRepository.saveAll(trips);
+    }
 }

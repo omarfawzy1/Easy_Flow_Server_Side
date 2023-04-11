@@ -6,7 +6,7 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.service.MovingTurnstileService;
-import com.example.easy_flow_backend.service.graph.SingleLineGraphService;
+import com.example.easy_flow_backend.service.graph.GraphWeightService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,7 +55,7 @@ public class BusPaymentTest {
     @Autowired
     private GraphEdgeRepo graphEdgeRepo;
     @Autowired
-    private SingleLineGraphService singleLineGraphService;
+    private GraphWeightService singleLineGraphService;
     Passenger passenger;
     Owner owner;
     HashMap<Integer, MovingTurnstile> movingTurnstiles;

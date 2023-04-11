@@ -1,8 +1,12 @@
 package com.example.easy_flow_backend.service.graph;
 
 import com.example.easy_flow_backend.entity.Graph;
+import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.repos.GraphRepo;
+import com.example.easy_flow_backend.service.graph.utils.GraphProperties;
+import com.example.easy_flow_backend.service.graph.utils.GraphWithStations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,17 +15,48 @@ import java.util.*;
 public class GraphServiceImpl implements GraphService {
     @Autowired
     private GraphRepo graphRepo;
-
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
+    @Autowired
+    protected GraphEdgeService graphEdgeService;
     public List<Graph> getOwnerGraph(String ownerId) {
-        List<Graph> graph = graphRepo.findAllByOwnerId(ownerId);
-        return graph;
+        return graphRepo.findAllByOwnerId(ownerId);
     }
 
     public Graph getLineGraph(String ownerId, String lineId) {
-        Graph graph = graphRepo.findByOwnerIdAndLineId(ownerId, lineId);
-        return graph;
+        return graphRepo.findByOwnerIdAndLineId(ownerId, lineId);
     }
 
+    @Override
+    public List<Graph> getOwnerLineGraph(String ownerId, String lineId) {
+        return graphRepo.findAllGraphsByOwnerIdAndLineIdOrOwnerId(ownerId, lineId);
+    }
+
+    private GraphWithStations convertEdgesToGraphWithStations(List<GraphEdge> edges) {
+
+        List<String> stationNames = GraphProperties.getStationNames(edges);
+        double[][] gh = GraphProperties.buildGraph(edges, stationNames);
+        double[][] floydWarshall = GraphProperties.floydWarshall(gh);
+
+        return new GraphWithStations(floydWarshall, stationNames);
+    }
+
+    public GraphWithStations getWeightedGraph(String ownerId, String lineId) {
+        String key = ownerId + '-' + lineId;
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+            return (GraphWithStations) redisTemplate.opsForValue().get(key);
+        }
+
+        List<Graph> graphs = getOwnerLineGraph(ownerId, lineId);
+        List<GraphEdge> totalEdges = new ArrayList<>();
+        for (Graph graph : graphs) {
+            List<GraphEdge> edges = graphEdgeService.getEdges(graph);
+            totalEdges.addAll(edges);
+        }
+        GraphWithStations graph = convertEdgesToGraphWithStations(totalEdges);
+        redisTemplate.opsForValue().set(key, graph);
+        return graph;
+    }
 
 
 }
