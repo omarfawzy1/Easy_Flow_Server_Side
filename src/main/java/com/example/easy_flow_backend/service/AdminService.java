@@ -1,7 +1,10 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Views.MachineView;
+import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.TransportationType;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
@@ -54,4 +57,7 @@ public interface AdminService {
     int getTransactionCount();
 
     int getTripCount();
+
+    List<Owner> getAllOwners();
+     List<MachineView> getAllMachines();
 }

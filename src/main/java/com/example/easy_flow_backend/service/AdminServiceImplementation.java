@@ -1,9 +1,7 @@
 package com.example.easy_flow_backend.service;
 
-import com.example.easy_flow_backend.entity.Line;
-import com.example.easy_flow_backend.entity.Owner;
-import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.TransportationType;
+import com.example.easy_flow_backend.dto.Views.MachineView;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -13,6 +11,7 @@ import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +36,8 @@ public class AdminServiceImplementation implements AdminService {
     private UserRepositry userRepositry;
     @Autowired
     private TransactionRepo transactionRepo;
+    @Autowired
+    private TurnstileRepo turnstileRepo;
 
 
     @Override
@@ -205,5 +206,12 @@ public class AdminServiceImplementation implements AdminService {
         return (int) tripRepo.count();
     }
 
-
+    @Override
+    public List<Owner> getAllOwners() {
+        return ownerRepo.findAll();
+    }
+    @Override
+    public List<MachineView> getAllMachines(){
+        return turnstileRepo.findAllProjectedBy();
+    }
 }

@@ -3,9 +3,12 @@ package com.example.easy_flow_backend.controller;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.dto.Views.LineView;
+import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.TransportationType;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -25,7 +28,10 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
+    @GetMapping("owners")
+    public List<Owner> getALlOwners(){
+         return adminService.getAllOwners();
+    }
     @GetMapping("passengers")
     public List<PassagnerDetails> getAllPassengers() {
         return adminService.getAllPassangers();
@@ -121,6 +127,11 @@ public class AdminController {
     @GetMapping("trip/count")
     public int getTripCount() {
         return adminService.getTripCount();
+    }
+
+    @GetMapping("mahcines")
+    public List<MachineView> getAllMachines(){
+        return adminService.getAllMachines();
     }
 
 //ToDo

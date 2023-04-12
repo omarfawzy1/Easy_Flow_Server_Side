@@ -15,4 +15,5 @@ import org.springframework.boot.test.context.SpringBootTest;
                 "src/test/resources/features/Admin.feature",
                 "src/test/resources/features/Passenger.feature"})
 public class CucmberIT {
+
 }
