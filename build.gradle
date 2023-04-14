@@ -66,6 +66,9 @@ dependencies {
     testImplementation 'io.cucumber:cucumber-junit:6.10.4'
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
     implementation 'joda-time:joda-time:2.9.9'
+
+    // firebase admin notification
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
 }
 
 tasks.named('test') {

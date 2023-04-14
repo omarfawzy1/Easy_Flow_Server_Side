@@ -3,6 +3,7 @@ package com.example.easy_flow_backend.controller;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.service.graph.GraphWeightService;
+import com.example.easy_flow_backend.service.notification.FirebaseNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,8 @@ public class TestController {
 
     @Autowired
     GraphWeightService graphWeightService;
-
+    @Autowired
+    FirebaseNotificationService firebaseNotificationService;
     //Frdous
     @GetMapping("weight/{start}/{end}")
     double getWeightTestForMovingTurnStile(
@@ -38,6 +40,11 @@ public class TestController {
 
         System.out.println("Total time");
         return ans;
+    }
+
+    @GetMapping("notify")
+    public String notifyTest(){
+        return firebaseNotificationService.sendAnyMessage();
     }
 
 }
