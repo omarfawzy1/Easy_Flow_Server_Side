@@ -18,4 +18,11 @@ public class GraphEdgeServiceImpl implements GraphEdgeService {
         return graphEdges;
     }
 
+    @Override
+    public boolean addEdges(List<GraphEdge> edges) {
+        graphEdgeRepo.saveAll(edges);
+        return true;
+    }
+
+
 }

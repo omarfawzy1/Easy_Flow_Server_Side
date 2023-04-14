@@ -13,4 +13,6 @@ public interface GraphService {
     List<Graph> getOwnerLineGraph(String ownerId, String lineId);
 
     GraphWithStations getWeightedGraph(String ownerId, String lineId);
+
+    boolean addGraph(Graph graph);
 }

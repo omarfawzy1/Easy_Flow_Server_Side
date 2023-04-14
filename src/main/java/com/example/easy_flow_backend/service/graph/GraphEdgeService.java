@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface GraphEdgeService {
     List<GraphEdge> getEdges(Graph graph);
+
+    boolean addEdges(List<GraphEdge> edges);
 }

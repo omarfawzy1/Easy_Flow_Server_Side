@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
@@ -10,6 +11,8 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.service.graph.GraphEdgeService;
+import com.example.easy_flow_backend.service.graph.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,10 @@ public class AdminServiceImplementation implements AdminService {
     private TransactionRepo transactionRepo;
     @Autowired
     private TurnstileRepo turnstileRepo;
+    @Autowired
+    private GraphService graphService;
+    @Autowired
+    private GraphEdgeService graphEdgeService;
 
 
     @Override
@@ -213,5 +220,19 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public List<MachineView> getAllMachines(){
         return turnstileRepo.findAllProjectedBy();
+    }
+
+    @Override
+    public boolean addGraph(GraphModel graphModel) {
+        // TODO Graph Model Validation
+        if(!graphService.addGraph(graphModel.getGraph())){
+            return false;
+        }
+        return graphEdgeService.addEdges(graphModel.getGraphEdgeList());
+    }
+
+    @Override
+    public List<GraphEdge> getGraph(String ownerId, String lineId) {
+        return graphEdgeService.getEdges(graphService.getLineGraph(ownerId,lineId));
     }
 }

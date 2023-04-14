@@ -58,5 +58,11 @@ public class GraphServiceImpl implements GraphService {
         return graph;
     }
 
+    @Override
+    public boolean addGraph(Graph graph) {
+        graphRepo.save(graph);
+        return true;
+    }
+
 
 }

@@ -1,14 +1,12 @@
 package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
+import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.entity.Owner;
-import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.TransportationType;
-import com.example.easy_flow_backend.entity.Turnstile;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -39,6 +37,15 @@ public class AdminController {
     @GetMapping("passenger/{username}")
     public Passenger getPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPassenger(username);
+    }
+
+    @GetMapping("graph")
+    public boolean addGraph(@Valid @RequestBody GraphModel graphModel){
+        return adminService.addGraph(graphModel);
+    }
+    @GetMapping("graph/{ownerId}/{lineId}")
+    public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId){
+        return adminService.getGraph(ownerId, lineId);
     }
 
     @DeleteMapping("passenger/{username}")
@@ -133,6 +140,9 @@ public class AdminController {
     public List<MachineView> getAllMachines(){
         return adminService.getAllMachines();
     }
+
+
+
 
 //ToDo
 //
