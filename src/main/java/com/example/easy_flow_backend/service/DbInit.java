@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.repos.*;
+import com.example.easy_flow_backend.service.utils.Utility;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -43,12 +44,14 @@ public class DbInit implements CommandLineRunner {
     private GraphRepo graphRepo;
     @Autowired
     private GraphEdgeRepo graphEdgeRepo;
+    @Autowired
+    private TicketRepo ticketRepo;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws ParseException {
         ArrayList<Line> lines = new ArrayList<>();
         ArrayList<User> users = usersInit();
 
@@ -71,6 +74,12 @@ public class DbInit implements CommandLineRunner {
         line2.addStation(station1);
         line1.addStation(station2);
         lineRepo.saveAll(lines);
+        Ticket line1Ticket=new Ticket(
+                owner1, line1, 3, 5, Utility.stringToMilleSecond("0000-00-00/17-30-00"));
+        Ticket line2Ticket=new Ticket(
+                owner1, line1, 1, 16, Utility.stringToMilleSecond("0000-00-00/02-15-00"));
+        ticketRepo.save(line1Ticket);
+        ticketRepo.save(line2Ticket);
 
         line2Init();
         m7Init();
@@ -122,7 +131,11 @@ public class DbInit implements CommandLineRunner {
 
         stationRepo.saveAll(line2Stations);
         line2Stations.forEach(line2::addStation);
+
         lineRepo.save(line2);
+        Ticket line2Ticket=new Ticket(
+                cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/17-30-00"));
+        ticketRepo.save(line2Ticket);
 
         // Create and save stationary turnstiles for each station
         HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
@@ -260,6 +273,7 @@ public class DbInit implements CommandLineRunner {
         ownerRepo.save(mwasalatmisr);
 
         Line m7 = new Line("m7", 10, mwasalatmisr);
+
         Station gizaStation = new Station("Giza");
         Station cairoUniversityStation = new Station("Cairo University");
         Station nasrElDeenStation = new Station("Nasr el Deen");
@@ -282,6 +296,9 @@ public class DbInit implements CommandLineRunner {
         stationRepo.saveAll(m7Stations);
         m7Stations.forEach(m7::addStation);
         lineRepo.save(m7);
+        Ticket m7Ticket=new Ticket(
+                mwasalatmisr, m7, 7.5, 7, Utility.stringToMilleSecond("0000-00-01/05-00-00"));
+        ticketRepo.save(m7Ticket);
 
         Graph graph = new Graph();
         graph.setOwner(mwasalatmisr);
@@ -387,6 +404,9 @@ public class DbInit implements CommandLineRunner {
         stationRepo.saveAll(m7Stations);
         m7Stations.forEach(m8::addStation);
         lineRepo.save(m8);
+        Ticket m8Ticket=new Ticket(
+                mwasalatmisr, m8, 7.5, 7, Utility.stringToMilleSecond("0000-00-01/00-00-00"));
+        ticketRepo.save(m8Ticket);
 
         Graph graph = new Graph();
         graph.setOwner(mwasalatmisr);
@@ -463,5 +483,6 @@ public class DbInit implements CommandLineRunner {
                 medanRyhmiaStation.getStationName())
         );
         tripRepository.saveAll(trips);
+
     }
 }

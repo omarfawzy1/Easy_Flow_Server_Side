@@ -231,7 +231,7 @@ public class PaymentTest {
         stationRepo.saveAll(line2Stations);
         line2Stations.forEach(line2::addStation);
         lineRepo.save(line2);
-        Ticket ticket = new Ticket(cairoGovernment, line2, 10.0,5.0,null);
+        Ticket ticket = new Ticket(cairoGovernment, line2, 10.0,5.0,001);
         ticketRepository.save(ticket);
         // Create and save stationary turnstiles for each station
         HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
