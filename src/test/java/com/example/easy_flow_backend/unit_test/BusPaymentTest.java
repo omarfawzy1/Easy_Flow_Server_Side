@@ -104,7 +104,7 @@ public class BusPaymentTest {
         // Turnstiles
         movingTurnstiles = new HashMap<>();
         for (int i = 0; i < 10; i++) {
-            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"));
+            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"), owner);
             bus.setLine(m7);
             movingTurnstiles.put(i, bus);
             userRepositry.save(bus);

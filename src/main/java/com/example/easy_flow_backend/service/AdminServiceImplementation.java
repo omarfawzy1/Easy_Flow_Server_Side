@@ -43,16 +43,21 @@ public class AdminServiceImplementation implements AdminService {
     private GraphService graphService;
     @Autowired
     private GraphEdgeService graphEdgeService;
+    @Autowired
+    private LineService lineService;
+    @Autowired
+    private PassengerService passengerService;
+    @Autowired
+    private AnalysisService analysisService;
+
 
 
     @Override
-    public List<LineView> getAllLines() {
-        return lineRepo.findAllProjectedBy();
-    }
+    public List<LineView> getAllLines() {return lineService.getAllLines();}
 
     @Override
     public List<PassagnerDetails> getAllPassangers() {
-        return passengerRepo.findAllProjectedBy();
+        return passengerService.getAllPassangers();
     }
 
     @Override
@@ -62,22 +67,12 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public ResponseMessage deletePassenger(String username) throws NotFoundException {
-        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
-        passengerRepo.deleteByUsernameIgnoreCase(username);
-        return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
+        return passengerService.deletePassenger(username);
     }
 
     @Override
     public ResponseMessage passengerStatus(String username) throws NotFoundException {
-        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
-
-        passenger.setActive(!passenger.isActive());
-        passengerRepo.save(passenger);
-        return new ResponseMessage("Success", HttpStatus.OK);
+        return passengerService.passengerStatus(username);
     }
 
     @Override
@@ -101,94 +96,66 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public int getAllPassangersCount() {
-        return (int) passengerRepo.count();
-    }
+    public int getAllPassangersCount() { return passengerService.getAllPassangersCount(); }
 
     @Override
     public int getAllPassangersCountWithType(String type) {
-        return passengerRepo.getAllPassangersCountWithType(type);
+        return passengerService.getAllPassangersCountWithType(type);
     }
 
     @Override
     public long getRevenue(TimePeriod timePeriod) {
-        Optional<Long> revenue = tripRepo.getRevenue(timePeriod.getStart(), timePeriod.getEnd());
-        if (revenue.isEmpty())
-            return 0;
-        return revenue.get();
+        return analysisService.getRevenue(timePeriod);
     }
 
     @Override
     public long getRevenueAvg(TimePeriod timePeriod) {
-        Optional<Long> revenue = tripRepo.getRevenueAvg(timePeriod.getStart(), timePeriod.getEnd());
-        if (revenue.isEmpty())
-            return 0;
-        return revenue.get();
+        return analysisService.getRevenueAvg(timePeriod);
     }
 
     @Override
     public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId) {
-        Optional<Long> revenue = tripRepo.getRevenueAvgByPassenger(timePeriod.getStart(), timePeriod.getEnd(), passengerId);
-        if (revenue.isEmpty())
-            return 0;
-        return revenue.get();
+        return analysisService.getRevenueAvgByPassenger(timePeriod, passengerId);
     }
 
     @Override
     public int getNegativePassengerCount() {
-        return tripRepo.getNegativePassengerCount();
+        return analysisService.getNegativePassengerCount();
     }
 
     @Override
     public int getBelowThresholdCount(long threshold) {
-        return tripRepo.getBelowThresholdCount(threshold);
+        return analysisService.getBelowThresholdCount(threshold);
     }
 
     @Override
     public Object getTurnstilesStatus() {
-        Map<String, Integer> result = new HashMap<>();
-        return userRepositry.getTurnstilesStatus();
+        return analysisService.getTurnstilesStatus();
     }
 
     @Override
     public int getTripInStationCount(TimePeriod timePeriod, String stationName) {
-        return tripRepo.getTripInStationCount(timePeriod.getStart(), timePeriod.getEnd(), stationName);
+        return analysisService.getTripInStationCount(timePeriod, stationName);
     }
 
     @Override
     public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId) {
-        long sum=0;
-        int count=0;
-        Long start = timePeriod.getStart().getTime();
-        Long end = timePeriod.getEnd().getTime();
-        while(start+timeUnit<=end){
-            sum+= tripRepo.getTripAvgByTimeUnitForBusLine(new Date(start), new Date(start+timeUnit),
-                    lineId);
-            start+=timeUnit;
-            count++;
-        }
-        return sum/count;
+        return analysisService.getTripAvgByTimeUnitForBusLine(timePeriod, timeUnit, lineId);
     }
 
     @Override
-    public List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType,
-                                     int peekNumber) {
-        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineId,
-                transportType);
-        if(result.size()<peekNumber){
-            return result;
-        }
-        return result.subList(0,peekNumber);
+    public List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType, int peekNumber) {
+        return analysisService.getPeekHours(timePeriod, lineId, transportType, peekNumber);
     }
 
     @Override
     public int getTransactionCount() {
-        return (int) transactionRepo.count();
+        return analysisService.getTransactionCount();
     }
 
     @Override
     public int getTripCount() {
-        return (int) tripRepo.count();
+        return analysisService.getTripCount();
     }
 
     @Override

@@ -13,8 +13,9 @@ public class StationaryTurnstile extends Turnstile {
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
-    public StationaryTurnstile(String username, String password) {
-        super(username, password);
+
+    public StationaryTurnstile(String username, String password, Owner owner) {
+        super(username, password, owner);
     }
 
 

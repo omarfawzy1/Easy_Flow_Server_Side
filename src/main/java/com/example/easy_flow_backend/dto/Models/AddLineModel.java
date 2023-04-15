@@ -17,7 +17,6 @@ public class AddLineModel {
     @NotBlank(message = "Owner id Should Not be Blank")
     @NotNull(message = "Owner id Should Not be Null")
     String ownerId;
-
     @NotNull(message = "Price Should Not be Null")
     double price;
     @NotNull(message = "Line Name Should Not be Null")

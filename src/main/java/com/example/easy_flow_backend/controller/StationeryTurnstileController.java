@@ -17,11 +17,8 @@ public class StationeryTurnstileController {
 
     @PostMapping("in-ride")
     public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
-
         return stationeryTurnstileService.inRide(rideModel);
-
     }
-
     @PostMapping("out-ride")
     public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
         return stationeryTurnstileService.outRide(rideModel);

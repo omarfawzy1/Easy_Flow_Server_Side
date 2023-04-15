@@ -29,4 +29,14 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     @Query("SELECT COUNT (passenger) FROM Passenger  passenger WHERE passenger.type = :type")
     int getAllPassangersCountWithType(@Param("type") String type);
+
+    @Query("select COUNT (passenger.id)" +
+            "From Passenger passenger " +
+            "WHERE passenger.wallet.balance < 0")
+    int getNegativePassengerCount();
+
+    @Query("select COUNT (passenger.id)" +
+            "From Passenger passenger " +
+            "WHERE passenger.wallet.balance < :threshold")
+    int getBelowThresholdCount(@Param("threshold") long threshold);
 }

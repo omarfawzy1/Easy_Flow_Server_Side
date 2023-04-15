@@ -44,16 +44,6 @@ public interface TripRepo extends JpaRepository<Trip, String> {
     Optional<Long> getRevenueAvgByPassenger(@Param("start") Date start, @Param("end") Date end,
                                             @Param("passengerId") String passengerId);
 
-    @Query("select COUNT (passenger.id)" +
-            "From Passenger passenger " +
-            "WHERE passenger.wallet.balance < 0")
-    int getNegativePassengerCount();
-
-    @Query("select COUNT (passenger.id)" +
-            "From Passenger passenger " +
-            "WHERE passenger.wallet.balance < :threshold")
-    int getBelowThresholdCount(@Param("threshold") long threshold);
-
     @Query("select COUNT (trip.id)" +
             "From Trip trip " +
             "WHERE trip.startTime>= :start AND trip.endTime<= :end " +

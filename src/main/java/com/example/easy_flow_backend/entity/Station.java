@@ -15,14 +15,13 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"station_name", "transportation_type"})})
 public class Station {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "station_id")
     private String id;
-    @Column(name = "station_name", nullable = false)
+    @Column(name = "station_name", nullable = false, unique = true)
     private String stationName;
     @ManyToMany(mappedBy = "stations", fetch = FetchType.LAZY)
     Set<Line> lines = new HashSet<>();

@@ -47,6 +47,8 @@ public class DbInit implements CommandLineRunner {
     private GraphEdgeRepo graphEdgeRepo;
     @Autowired
     private TicketRepo ticketRepo;
+    @Autowired
+    private LineService lineService;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 

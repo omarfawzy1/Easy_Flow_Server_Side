@@ -15,10 +15,9 @@ import java.util.List;
 
 public interface AdminService {
 
-     List<LineView> getAllLines();
+    List<LineView> getAllLines();
 
     List<PassagnerDetails> getAllPassangers();
-
 
     Passenger getPassenger(String username) throws NotFoundException;
 
