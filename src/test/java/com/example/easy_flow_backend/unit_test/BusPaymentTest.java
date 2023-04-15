@@ -84,7 +84,6 @@ public class BusPaymentTest {
         ArrayList<Station> m7Stations = new ArrayList<>();
         for(String station_name : station_names){
             Station station = new Station(station_name);
-            station.setTransportationType(TransportationType.BUS);
             m7Stations.add(station);
         }
         stationRepo.saveAll(m7Stations);

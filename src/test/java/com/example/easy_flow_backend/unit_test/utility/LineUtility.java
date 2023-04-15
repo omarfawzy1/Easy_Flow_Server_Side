@@ -26,7 +26,7 @@ public class LineUtility {
         String[] stationNames = generateStationNames(stationsCount);
         for(String station_name : stationNames){
             Station station = new Station(station_name);
-            station.setTransportationType(TransportationType.BUS);
+            //station.setTransportationType(TransportationType.BUS);
             stations.add(station);
         }
         return stations;
@@ -45,7 +45,7 @@ public class LineUtility {
         String[] stationNames = generateStationNames(5);
         for(String station_name : stationNames){
             Station station = new Station(station_name);
-            station.setTransportationType(TransportationType.BUS);
+            //station.setTransportationType(TransportationType.BUS);
             stations.add(station);
         }
 //        stationRepo.saveAll(stations);

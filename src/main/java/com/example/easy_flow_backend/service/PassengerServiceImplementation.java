@@ -20,7 +20,7 @@ public class PassengerServiceImplementation implements PassengerService {
     private TripRepo tripRepo;
 
     @Autowired
-    private PassengersRepo passengersRepo;
+    private PassengersRepo passengerRepo;
 
     @Override
     public List<TripView> getMytrips() throws BadRequestException {

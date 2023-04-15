@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "Stationary_turnstile")
 public class StationaryTurnstile extends Turnstile {
-    // TODO ADD Owner
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;

@@ -115,7 +115,7 @@ public class PaymentTest {
         m7Stations.add(mariotiaStation);
         m7Stations.add(mashalStation);
         m7Stations.add(medanRyhmiaStation);
-        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
+//        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
         stationRepo.saveAll(m7Stations);
         m7Stations.forEach(m7::addStation);
         lineRepo.save(m7);
@@ -134,7 +134,7 @@ public class PaymentTest {
 
         HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
         for (int i = 0; i < 10; i++) {
-            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"));
+            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"),mwasalatmisr);
             bus.setLine(m7);
             movingTurnstiles.put(i, bus);
             userRepositry.save(bus);
@@ -226,7 +226,7 @@ public class PaymentTest {
         line2Stations.add(elBohoosStation);
         line2Stations.add(dokkiStation);
         line2Stations.add(operaStation);
-        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
+//        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
 
         stationRepo.saveAll(line2Stations);
         line2Stations.forEach(line2::addStation);
@@ -238,7 +238,7 @@ public class PaymentTest {
         for (Station station : line2Stations) {
             String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
             String password = passwordEncoder.encode("1234");
-            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password);
+            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password,cairoGovernment);
             stationaryTurnstile.setStation(station);
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
             userRepositry.save(stationaryTurnstile);

@@ -14,6 +14,7 @@ public class Turnstile extends User {
 
     Turnstile(String username, String password){
         super(username, password);
+        this.owner = owner;
         roles = "TURNSTILE";
     }
 }

@@ -30,8 +30,6 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private PassengersRepo passengerRepo;
     @Autowired
-    private LineRepo lineRepo;
-    @Autowired
     private OwnerRepo ownerRepo;
     @Autowired
     private TripRepo tripRepo;
@@ -59,11 +57,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public Passenger getPassenger(String username) throws NotFoundException {
-
-        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
-        return passenger;
+        return passengerService.getPassenger(username);
     }
 
     @Override
@@ -88,36 +82,20 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public LineView getLine(String id) throws NotFoundException {
-        LineView line = lineRepo.findProjectedById(id);
-        if (line == null)
-            throw new NotFoundException("The Line Not Exist");
-
-        return line;
+        return lineService.getLine(id);
     }
 
     @Override
     public ResponseMessage deleteLine(String id) throws NotFoundException {
-        if (!lineRepo.existsById(id))
+        if (!lineService.deleteLine(id))
             throw new NotFoundException("The Line Does Not Exist");
-        lineRepo.deleteById(id);
         return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
     public ResponseMessage addLine(AddLineModel addLineModel) throws BadRequestException {
-//        if (lineRepo.existsByNameIgnoreCase(line.getName()))
-//            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
-        Optional<Owner> owner = ownerRepo.findById(addLineModel.getOwnerId());
-
-        if (!owner.isPresent()) {
-        throw new BadRequestException("The Owner Not Exists");
-        }
-        Line tmpLine = new Line(addLineModel.getLineName(), addLineModel.getPrice(), owner.get());
-
-        try {
-            lineRepo.save(tmpLine);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        if (!lineService.addLine(addLineModel)) {
+            throw new BadRequestException("The Owner Not Exists");
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }

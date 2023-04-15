@@ -30,7 +30,6 @@ public class TestController {
 //        String lineId = lineRepo.findByName("M7").getId();
         String ownerId = ownerRepo.findByName("mwasalatmisr").getId();
 
-
         long curr = System.currentTimeMillis();
 
         double ans = graphWeightService.getWeight(ownerId, null, station1, station2);

@@ -27,9 +27,9 @@ public class Station {
     @ManyToMany(mappedBy = "stations", fetch = FetchType.LAZY)
     Set<Line> lines = new HashSet<>();
 
-    @Enumerated
-    @Column(name= "transportation_type")
-    private TransportationType transportationType;
+//    @Enumerated
+//    @Column(name= "transportation_type")
+//    private TransportationType transportationType;
 
     public Station(String stationName) {
 
@@ -53,17 +53,8 @@ public class Station {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Station station = (Station) o;
-        return stationName.equals(station.stationName) && equalsLines((Line[]) ((Station) o).getLines().toArray());
+        return stationName.equals(station.stationName);
     }
-
-    private boolean equalsLines(Line[] lines) {
-        if (lines.length != this.lines.size()) return false;
-        for (int i = 0; i < this.lines.size(); i++) {
-            if (!this.lines.contains(lines[i])) return false;
-        }
-        return true;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(stationName);

@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class DbInit implements CommandLineRunner {
@@ -117,7 +118,7 @@ public class DbInit implements CommandLineRunner {
         Station operaStation = new Station("Opera");
 
         // Add the stations to the line and save them
-        ArrayList<Station> line2Stations = new ArrayList<>();
+        List<Station> line2Stations = new ArrayList<>();
         line2Stations.add(elMonibStation);
         line2Stations.add(sakiatMekkiStation);
         line2Stations.add(ommElMisryeenStation);
@@ -127,12 +128,14 @@ public class DbInit implements CommandLineRunner {
         line2Stations.add(elBohoosStation);
         line2Stations.add(dokkiStation);
         line2Stations.add(operaStation);
-        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
+//        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
 
-        stationRepo.saveAll(line2Stations);
-        line2Stations.forEach(line2::addStation);
+        line2 = lineRepo.save(line2);
 
-        lineRepo.save(line2);
+        for(Station station : line2Stations){
+            line2 = lineService.addStationToLine(station, line2);
+        }
+        line2Stations = line2.getStations().stream().toList();
         Ticket line2Ticket=new Ticket(
                 cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/17-30-00"));
         ticketRepo.save(line2Ticket);
@@ -142,7 +145,7 @@ public class DbInit implements CommandLineRunner {
         for (Station station : line2Stations) {
             String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
             String password = passwordEncoder.encode("1234");
-            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password);
+            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password, cairoGovernment);
             stationaryTurnstile.setStation(station);
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
             userRepositry.save(stationaryTurnstile);
@@ -284,7 +287,7 @@ public class DbInit implements CommandLineRunner {
 
 
         // Add the stations to the line and save them
-        ArrayList<Station> m7Stations = new ArrayList<>();
+        List<Station> m7Stations = new ArrayList<>();
         m7Stations.add(gizaStation);
         m7Stations.add(cairoUniversityStation);
         m7Stations.add(nasrElDeenStation);
@@ -292,10 +295,12 @@ public class DbInit implements CommandLineRunner {
         m7Stations.add(mariotiaStation);
         m7Stations.add(mashalStation);
         m7Stations.add(medanRyhmiaStation);
-        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
-        stationRepo.saveAll(m7Stations);
-        m7Stations.forEach(m7::addStation);
-        lineRepo.save(m7);
+
+        m7 = lineRepo.save(m7);
+        for(Station station : m7Stations){
+            m7 = lineService.addStationToLine(station, m7);
+        }
+        m7Stations = m7.getStations().stream().toList();
         Ticket m7Ticket=new Ticket(
                 mwasalatmisr, m7, 7.5, 7, Utility.stringToMilleSecond("0000-00-01/05-00-00"));
         ticketRepo.save(m7Ticket);
@@ -305,7 +310,7 @@ public class DbInit implements CommandLineRunner {
         graph.setLine(m7);
         graphRepo.save(graph);
         ArrayList<GraphEdge> graphEdges = new ArrayList<>();
-        //
+        // TODO Fix the set order
         for (int i = 0; i < m7Stations.size() - 1; i++) {
             graphEdges.add(new GraphEdge(graph, m7Stations.get(i), m7Stations.get(i + 1), 1D));
         }
@@ -314,7 +319,7 @@ public class DbInit implements CommandLineRunner {
 
         HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
         for (int i = 0; i < 10; i++) {
-            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"));
+            MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"), mwasalatmisr);
             bus.setLine(m7);
             movingTurnstiles.put(i, bus);
             userRepositry.save(bus);
@@ -392,7 +397,7 @@ public class DbInit implements CommandLineRunner {
 
 
         // Add the stations to the line and save them
-        ArrayList<Station> m7Stations = new ArrayList<>();
+        List<Station> m7Stations = new ArrayList<>();
         m7Stations.add(gizaStation);
         m7Stations.add(cairoUniversityStation);
         m7Stations.add(nasrElDeenStation);
@@ -400,10 +405,15 @@ public class DbInit implements CommandLineRunner {
         m7Stations.add(mariotiaStation);
         m7Stations.add(mashalStation);
         m7Stations.add(medanRyhmiaStation);
-        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
+//        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
         stationRepo.saveAll(m7Stations);
-        m7Stations.forEach(m8::addStation);
-        lineRepo.save(m8);
+
+        m8 = lineRepo.save(m8);
+        for(Station station : m7Stations){
+            m8 = lineService.addStationToLine(station, m8);
+        }
+        m7Stations = m8.getStations().stream().toList();
+
         Ticket m8Ticket=new Ticket(
                 mwasalatmisr, m8, 7.5, 7, Utility.stringToMilleSecond("0000-00-01/00-00-00"));
         ticketRepo.save(m8Ticket);
@@ -422,7 +432,7 @@ public class DbInit implements CommandLineRunner {
 
         HashMap<Integer, MovingTurnstile> movingTurnstiles = new HashMap<>();
         for (int i = 0; i < 10; i++) {
-            MovingTurnstile bus = new MovingTurnstile("m8_" + i, passwordEncoder.encode("1234"));
+            MovingTurnstile bus = new MovingTurnstile("m8_" + i, passwordEncoder.encode("1234"), mwasalatmisr);
             bus.setLine(m8);
             movingTurnstiles.put(i, bus);
             userRepositry.save(bus);

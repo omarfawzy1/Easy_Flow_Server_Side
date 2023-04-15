@@ -47,14 +47,9 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         return new ResponseMessage("Success", HttpStatus.OK);
 
     }
-
+    // TODO implement this function
     @Override
     public List<Station> getLineStations(String machineId) {
-        MovingTurnstile machine = movingTurnstileRepo.findById(machineId).orElse(null);
-        if (machine == null) return null;
-        Line line = machine.getLine();
-
-
         return null;
     }
 }
