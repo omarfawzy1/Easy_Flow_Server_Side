@@ -30,5 +30,9 @@ public interface PassengerService {
     public int getAllPassangersCount();
 
     public int getAllPassangersCountWithType(String type);
+
+    void rechargePassenger(String name, double amount);
     //ToDo edit profile - forget password
+
+
 }

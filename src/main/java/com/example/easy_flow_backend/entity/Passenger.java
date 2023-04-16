@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.time.Instant;
 import java.util.*;
 
 @Entity
@@ -30,7 +31,8 @@ public class Passenger extends User {
     private Gender gender;
     @Column(name = "email",nullable = false)
     private String email;
-
+    @Column
+    private Date lastQrTime = Date.from(Instant.now());
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
@@ -72,6 +74,6 @@ public class Passenger extends User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(wallet, firstName, lastName, phoneNumber, type, city, gender, birthDay,email);
+        return Objects.hash(username);
     }
 }

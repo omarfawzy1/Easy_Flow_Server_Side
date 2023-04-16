@@ -12,7 +12,8 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"line_id", "owner_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"line_id", "owner_id"})},
+        indexes = {@Index(columnList = "owner_id"), @Index(columnList = "owner_id,line_id") })
 public class Graph {
     @Id
     @GeneratedValue(generator = "uuid")

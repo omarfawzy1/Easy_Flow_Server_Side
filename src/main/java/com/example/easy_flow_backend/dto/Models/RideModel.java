@@ -38,4 +38,10 @@ public class RideModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:MM:SS")
     Date time;
 
+    String token;
+    Date generationTime;
+
+
+
+
 }

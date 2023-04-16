@@ -94,4 +94,11 @@ public class PassengerServiceImplementation implements PassengerService {
         return passengerRepo.getAllPassangersCountWithType(type);
     }
 
+    @Override
+    public void rechargePassenger(String username, double amount) {
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
+        // TODO Contact Wallet Service
+
+    }
+
 }
