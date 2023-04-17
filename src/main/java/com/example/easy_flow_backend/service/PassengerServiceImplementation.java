@@ -1,13 +1,13 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.TripView;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TripView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

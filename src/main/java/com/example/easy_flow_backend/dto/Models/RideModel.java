@@ -18,22 +18,19 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RideModel {
+
     @NotBlank(message = "Username should not be blank")
     @NotNull(message = "username should not be null")
     String username;
-    @NotBlank(message = "Machine id should not be blank")
-    @NotNull(message = "Machine id should not be null")
-    String machineId;
 
-    @NotBlank(message = "Start station should not be blank")
-    @NotNull(message = "Start station should not be NULL")
-    String startStation;
+    @NotBlank(message = "Start Station should not be blank")
+    @NotNull(message = "Start Station should not be null")
+    private String startStation;
 
-    String endStation;
+    @NotBlank(message = "End Station should not be blank")
+    @NotNull(message = "End Station should not be null")
+    private String endStation;
 
-    Line line;
-
-    Owner owner;
     @NotNull(message = "Time should not be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:MM:SS")
     Date time;

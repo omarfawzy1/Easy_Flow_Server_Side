@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StationaryTurnstileRepo extends TurnstileRepo<StationaryTurnstile> {
+    boolean existsByUsernameIgnoreCase(String username);
 }
