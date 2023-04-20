@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
@@ -22,6 +23,8 @@ public interface PassengerService {
     public List<PassagnerBriefDetails> getAllPassangers();
 
     public Passenger getPassenger(String username) throws NotFoundException;
+
+    public PassagnerDetails getPassengerDetails(String username) throws NotFoundException;
 
     public ResponseMessage deletePassenger(String username) throws NotFoundException;
 

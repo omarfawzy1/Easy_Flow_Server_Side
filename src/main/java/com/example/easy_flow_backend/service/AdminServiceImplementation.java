@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.service;
 
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Views.MachineView;
+import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -58,6 +59,11 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public List<PassagnerBriefDetails> getAllPassangers() {
         return passengerService.getAllPassangers();
+    }
+
+    @Override
+    public PassagnerDetails getPassengerDetails(String username) throws NotFoundException {
+        return passengerService.getPassengerDetails(username);
     }
 
     @Override

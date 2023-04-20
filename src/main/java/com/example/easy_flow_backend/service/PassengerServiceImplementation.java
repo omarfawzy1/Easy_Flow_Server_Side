@@ -62,6 +62,16 @@ public class PassengerServiceImplementation implements PassengerService {
     public List<PassagnerBriefDetails> getAllPassangers() {
         return passengerRepo.findAllProjectedBy();
     }
+
+    @Override
+    public PassagnerDetails getPassengerDetails(String username) throws NotFoundException {
+        PassagnerDetails passenger = passengerRepo.findAllProjectedByUsername(username);
+        if (passenger == null)
+            throw new NotFoundException("Passenger Not Found");
+        return passenger;
+    }
+
+
     @Override
     public Passenger getPassenger(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
