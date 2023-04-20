@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.repos;
 
+import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import jakarta.transaction.Transactional;
@@ -13,7 +14,8 @@ import java.util.List;
 @Repository
 public interface PassengersRepo extends AbstractRepo<Passenger> {
 
-    List<PassagnerDetails> findAllProjectedBy();
+    List<PassagnerBriefDetails> findAllProjectedBy();
+    PassagnerDetails findAllProjectedByUsername(String username);
 
     Passenger findByUsernameIgnoreCase(String username);
 

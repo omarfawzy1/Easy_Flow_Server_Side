@@ -17,7 +17,9 @@ public interface AdminService {
 
     List<LineView> getAllLines();
 
-    List<PassagnerDetails> getAllPassangers();
+    List<PassagnerBriefDetails> getAllPassangers();
+
+    PassagnerDetails getPassengerDetails(String username) throws NotFoundException;
 
     Passenger getPassenger(String username) throws NotFoundException;
 

@@ -19,7 +19,7 @@ public interface PassengerService {
 
     PassagnerDetails getMyProfile() throws BadRequestException;
 
-    public List<PassagnerDetails> getAllPassangers();
+    public List<PassagnerBriefDetails> getAllPassangers();
 
     public Passenger getPassenger(String username) throws NotFoundException;
 

@@ -56,7 +56,7 @@ public class AdminServiceImplementation implements AdminService {
     public List<LineView> getAllLines() {return lineService.getAllLines();}
 
     @Override
-    public List<PassagnerDetails> getAllPassangers() {
+    public List<PassagnerBriefDetails> getAllPassangers() {
         return passengerService.getAllPassangers();
     }
 

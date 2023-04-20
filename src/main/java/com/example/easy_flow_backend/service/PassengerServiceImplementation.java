@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -58,7 +59,7 @@ public class PassengerServiceImplementation implements PassengerService {
         return passengerRepo.findProjectedByUsername(username);
     }
     @Override
-    public List<PassagnerDetails> getAllPassangers() {
+    public List<PassagnerBriefDetails> getAllPassangers() {
         return passengerRepo.findAllProjectedBy();
     }
     @Override
