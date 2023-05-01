@@ -26,6 +26,8 @@ public class PassengerServiceImplementation implements PassengerService {
 
     @Autowired
     private PassengersRepo passengerRepo;
+    @Autowired
+    private WalletService walletService;
 
     @Override
     public List<TripView> getMytrips() throws BadRequestException {
@@ -108,8 +110,7 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public void rechargePassenger(String username, double amount) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        // TODO Contact Wallet Service
-
+        walletService.recharge(passenger.getWallet().getId(),amount);
     }
 
 }

@@ -41,6 +41,7 @@ public class PassengerController {
     // Dummy
     @PutMapping("recharge/{amount}")
     public void recharge(@PathVariable double amount, Principal principal){
+
         passengerService.rechargePassenger(principal.getName(), amount);
     }
 
