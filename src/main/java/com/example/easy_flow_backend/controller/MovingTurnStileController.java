@@ -4,6 +4,7 @@ import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.MovingTurnstileService;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ public class MovingTurnStileController {
     MovingTurnstileService movingTurnstileService;
 
     @PostMapping("in-ride")
-    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
+    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException {
         return movingTurnstileService.inRide(rideModel);
     }
 

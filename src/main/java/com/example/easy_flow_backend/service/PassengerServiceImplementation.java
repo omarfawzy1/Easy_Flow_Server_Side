@@ -60,6 +60,7 @@ public class PassengerServiceImplementation implements PassengerService {
         }
         return passengerRepo.findProjectedByUsername(username);
     }
+
     @Override
     public List<PassagnerBriefDetails> getAllPassangers() {
         return passengerRepo.findAllProjectedBy();
@@ -81,6 +82,7 @@ public class PassengerServiceImplementation implements PassengerService {
             throw new NotFoundException("Passenger Not Found");
         return passenger;
     }
+
     @Override
     public ResponseMessage deletePassenger(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
@@ -89,6 +91,7 @@ public class PassengerServiceImplementation implements PassengerService {
         passengerRepo.deleteByUsernameIgnoreCase(username);
         return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
     }
+
     @Override
     public ResponseMessage passengerStatus(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
@@ -98,10 +101,12 @@ public class PassengerServiceImplementation implements PassengerService {
         passengerRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
     }
+
     @Override
     public int getAllPassangersCount() {
         return (int) passengerRepo.count();
     }
+
     @Override
     public int getAllPassangersCountWithType(String type) {
         return passengerRepo.getAllPassangersCountWithType(type);
@@ -110,7 +115,14 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public void rechargePassenger(String username, double amount) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        walletService.recharge(passenger.getWallet().getId(),amount);
+        walletService.recharge(passenger.getWallet().getId(), amount);
+    }
+
+    @Override
+    public void updateLastGeneratedTime(String username, Date time) {
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
+        passenger.setLastQrTime(time);
+        passengerRepo.save(passenger);
     }
 
 }
