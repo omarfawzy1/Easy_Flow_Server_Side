@@ -25,5 +25,10 @@ public class WalletServiceImpl implements WalletService {
         return wallet.getBalance() >= value;
     }
 
+    @Override
+    public void recharge(String walletId, double amount) {
+        walletRepo.recharge(walletId, amount);
+    }
+
 
 }

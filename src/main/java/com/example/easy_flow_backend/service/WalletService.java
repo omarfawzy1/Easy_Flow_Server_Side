@@ -1,15 +1,11 @@
 package com.example.easy_flow_backend.service;
 
-import com.example.easy_flow_backend.repos.WalletRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.easy_flow_backend.entity.Wallet;
 
-@Service
-public class WalletService {
-    @Autowired
-    private WalletRepo walletRepo;
+public interface WalletService {
+    boolean withdraw(Wallet wallet, double value);
 
-    public void recharge(String walletId, double amount){
-        walletRepo.recharge(walletId, amount);
-    }
+    boolean canWithdraw(Wallet wallet, double value);
+
+    void recharge(String walletId, double amount);
 }
