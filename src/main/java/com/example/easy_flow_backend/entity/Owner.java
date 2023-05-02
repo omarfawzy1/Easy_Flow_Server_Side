@@ -18,7 +18,7 @@ public class Owner {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "owner_id")
     private String id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String mail;

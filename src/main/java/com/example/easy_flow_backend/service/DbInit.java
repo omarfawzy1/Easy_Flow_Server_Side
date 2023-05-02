@@ -77,10 +77,10 @@ public class DbInit implements CommandLineRunner {
         line2.addStation(station1);
         line1.addStation(station2);
         lineRepo.saveAll(lines);
-        Ticket line1Ticket=new Ticket(
-                owner1, line1, 3, 5, Utility.stringToMilleSecond("0000-00-00/17-30-00"));
-        Ticket line2Ticket=new Ticket(
-                owner1, line1, 1, 16, Utility.stringToMilleSecond("0000-00-00/02-15-00"));
+        Ticket line1Ticket = new Ticket(
+                owner1, line1, 3, 5, Utility.stringToMilleSecond("0000-00-00/00-30-00"));
+        Ticket line2Ticket = new Ticket(
+                owner1, line1, 1, 16, Utility.stringToMilleSecond("0000-00-00/03-00-00"));
         ticketRepo.save(line1Ticket);
         ticketRepo.save(line2Ticket);
 
@@ -134,12 +134,12 @@ public class DbInit implements CommandLineRunner {
 
         line2 = lineRepo.save(line2);
 
-        for(Station station : line2Stations){
+        for (Station station : line2Stations) {
             line2 = lineService.addStationToLine(station, line2);
         }
         line2Stations = line2.getStations().stream().toList();
-        Ticket line2Ticket=new Ticket(
-                cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/17-30-00"));
+        Ticket line2Ticket = new Ticket(
+                cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/02-00-00"));
         ticketRepo.save(line2Ticket);
 
         // Create and save stationary turnstiles for each station
@@ -152,7 +152,7 @@ public class DbInit implements CommandLineRunner {
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
             userRepositry.save(stationaryTurnstile);
         }
-
+        // s1=elmonib_5_in    s2= giza_7_in
         // Create some passengers
         Passenger omar = passengersRepo.findUserByUsername("omar");
         Passenger waled = passengersRepo.findUserByUsername("waled");
@@ -299,12 +299,12 @@ public class DbInit implements CommandLineRunner {
         m7Stations.add(medanRyhmiaStation);
 
         m7 = lineRepo.save(m7);
-        for(Station station : m7Stations){
+        for (Station station : m7Stations) {
             m7 = lineService.addStationToLine(station, m7);
         }
         m7Stations = m7.getStations().stream().toList();
-        Ticket m7Ticket=new Ticket(
-                mwasalatmisr, m7, 7.5, 7, Utility.stringToMilleSecond("0000-00-01/05-00-00"));
+        Ticket m7Ticket = new Ticket(
+                mwasalatmisr, m7, 7.5, 7, Utility.stringToMilleSecond("0000-00-00/01-30-00"));
         ticketRepo.save(m7Ticket);
 
         Graph graph = new Graph();
@@ -411,13 +411,13 @@ public class DbInit implements CommandLineRunner {
         stationRepo.saveAll(m7Stations);
 
         m8 = lineRepo.save(m8);
-        for(Station station : m7Stations){
+        for (Station station : m7Stations) {
             m8 = lineService.addStationToLine(station, m8);
         }
         m7Stations = m8.getStations().stream().toList();
 
-        Ticket m8Ticket=new Ticket(
-                mwasalatmisr, m8, 7.5, 7, Utility.stringToMilleSecond("0000-00-01/00-00-00"));
+        Ticket m8Ticket = new Ticket(
+                mwasalatmisr, m8, 7.5, 7, Utility.stringToMilleSecond("0000-00-00/01-00-00"));
         ticketRepo.save(m8Ticket);
 
         Graph graph = new Graph();
