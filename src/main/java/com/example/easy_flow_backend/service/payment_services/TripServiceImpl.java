@@ -1,14 +1,14 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.payment_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
-import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.service.graph.GraphWeightService;
+import com.example.easy_flow_backend.service.passenger_services.PassengerService;
+import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

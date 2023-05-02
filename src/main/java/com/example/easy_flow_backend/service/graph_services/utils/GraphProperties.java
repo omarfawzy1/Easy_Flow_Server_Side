@@ -1,8 +1,6 @@
-package com.example.easy_flow_backend.service.graph.utils;
+package com.example.easy_flow_backend.service.graph_services.utils;
 
 import com.example.easy_flow_backend.entity.GraphEdge;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 

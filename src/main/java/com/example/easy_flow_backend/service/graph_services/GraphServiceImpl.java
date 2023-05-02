@@ -1,14 +1,12 @@
-package com.example.easy_flow_backend.service.graph;
+package com.example.easy_flow_backend.service.graph_services;
 
 import com.example.easy_flow_backend.entity.Graph;
 import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.repos.GraphRepo;
-import com.example.easy_flow_backend.service.graph.utils.GraphProperties;
-import com.example.easy_flow_backend.service.graph.utils.GraphWithStations;
-import com.google.protobuf.MapEntry;
+import com.example.easy_flow_backend.service.graph_services.utils.GraphProperties;
+import com.example.easy_flow_backend.service.graph_services.utils.GraphWithStations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

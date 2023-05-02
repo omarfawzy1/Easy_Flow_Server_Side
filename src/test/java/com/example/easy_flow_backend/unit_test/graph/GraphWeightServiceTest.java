@@ -1,7 +1,7 @@
 package com.example.easy_flow_backend.unit_test.graph;
 
 import com.example.easy_flow_backend.entity.*;
-import com.example.easy_flow_backend.service.graph.GraphWeightService;
+import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
 import com.example.easy_flow_backend.unit_test.utility.LineUtility;
 import com.example.easy_flow_backend.unit_test.utility.OwnerUtility;
 import com.example.easy_flow_backend.unit_test.utility.ServiceTest;
@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class GraphWeightServiceTest extends ServiceTest {

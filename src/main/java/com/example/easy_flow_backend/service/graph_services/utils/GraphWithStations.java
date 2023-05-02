@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service.graph.utils;
+package com.example.easy_flow_backend.service.graph_services.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

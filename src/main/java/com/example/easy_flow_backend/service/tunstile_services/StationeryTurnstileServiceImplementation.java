@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.Status;
@@ -8,6 +8,10 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
+import com.example.easy_flow_backend.service.payment_services.TicketService;
+import com.example.easy_flow_backend.service.TokenValidationService;
+import com.example.easy_flow_backend.service.payment_services.TripService;
+import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

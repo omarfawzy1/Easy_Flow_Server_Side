@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.payment_services;
 
 import com.example.easy_flow_backend.entity.Wallet;
 

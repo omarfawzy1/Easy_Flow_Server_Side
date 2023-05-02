@@ -1,18 +1,15 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.station_line_services;
 
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Station;
-import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
-import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.repos.StationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

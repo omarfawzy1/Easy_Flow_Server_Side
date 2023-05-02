@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.station_line_services;
 
 import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.repos.StationRepo;

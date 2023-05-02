@@ -1,17 +1,16 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.MovingTurnstile;
-import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.service.graph.GraphService;
-import com.example.easy_flow_backend.service.graph.GraphWeightService;
+import com.example.easy_flow_backend.service.TokenValidationService;
+import com.example.easy_flow_backend.service.payment_services.TripService;
+import com.example.easy_flow_backend.service.graph_services.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

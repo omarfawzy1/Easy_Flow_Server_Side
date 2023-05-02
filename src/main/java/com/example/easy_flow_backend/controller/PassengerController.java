@@ -1,16 +1,13 @@
 package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.error.BadRequestException;
-import com.example.easy_flow_backend.service.PassengerService;
+import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;

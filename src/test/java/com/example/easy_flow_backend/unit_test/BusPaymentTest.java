@@ -3,10 +3,11 @@ package com.example.easy_flow_backend.unit_test;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
-import com.example.easy_flow_backend.service.MovingTurnstileService;
-import com.example.easy_flow_backend.service.graph.GraphWeightService;
+import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
+import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BusPaymentTest {
@@ -62,27 +64,29 @@ public class BusPaymentTest {
     String[] station_names;
     Line m7;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    void setPassenger(){
+
+    void setPassenger() {
         passenger = new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "omar", passwordEncoder.encode("omar"), "omar@gmail.com");
         userRepositry.save(passenger);
     }
 
 
-    void setOwner(){
+    void setOwner() {
         owner = new Owner("Cairo Government2", "government@government.gov", "0000 0000 0000 0000");
         ownerRepo.save(owner);
     }
+
     /*
-    * 7 stations
-    *
-    */
+     * 7 stations
+     *
+     */
     void m7Init() throws ParseException {
         m7 = new Line("m7", 10, owner);
         station_names = new String[]{"Giza", "Cairo University", "Nasr el Deen", "Talbia", "Mariotia", "Mashal", "Medan Ryhmia"};
 
         // Add the stations to the line and save them
         ArrayList<Station> m7Stations = new ArrayList<>();
-        for(String station_name : station_names){
+        for (String station_name : station_names) {
             Station station = new Station(station_name);
             m7Stations.add(station);
         }
@@ -111,8 +115,10 @@ public class BusPaymentTest {
         }
 
     }
+
     @Autowired
     MovingTurnstileService movingTurnstileService;
+
     @Test
     public void allLineRideTest() throws ParseException, BadRequestException {
         setOwner();
@@ -122,16 +128,16 @@ public class BusPaymentTest {
         // ride price
         m7Init();
         MovingTurnstile bus = movingTurnstiles.get(0);
-        RideModel rideModel = new RideModel(passenger.getUsername(), bus.getId(),
-                station_names[0],station_names[station_names.length-1],
-                m7,owner,null
+        RideModel rideModel = new RideModel(passenger.getUsername(),
+                station_names[0], station_names[station_names.length - 1],null, "Sfdfd",null
         );
         try {
             ResponseMessage m = movingTurnstileService.inRide(rideModel);
             assert m.getStatus().equals(HttpStatus.OK);
-        }
-        catch (BadRequestException ignored){
+        } catch (BadRequestException ignored) {
             assert false;
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -144,13 +150,11 @@ public class BusPaymentTest {
         // ride price
         m7Init();
         MovingTurnstile bus = movingTurnstiles.get(0);
-        RideModel rideModel = new RideModel(passenger.getUsername(), bus.getId(),
-                station_names[0],station_names[station_names.length-1],
-                m7,owner,null
+        RideModel rideModel = new RideModel(passenger.getUsername(), station_names[0], station_names[station_names.length - 1], null, "ff", null
         );
-        double weight = singleLineGraphService.getWeight(owner.getId(),m7.getId(),station_names[0], station_names[1]);
+        double weight = singleLineGraphService.getWeight(owner.getId(), m7.getId(), station_names[0], station_names[1]);
         System.out.println(weight);
-        assertEquals(1.0, weight,0.1);
+        assertEquals(1.0, weight, 0.1);
     }
 
     @Test
@@ -162,9 +166,9 @@ public class BusPaymentTest {
         // ride price
         m7Init();
         long start = System.currentTimeMillis();
-        double weight = singleLineGraphService.getWeight(owner.getId(),m7.getId(),station_names[0], station_names[station_names.length - 1]);
+        double weight = singleLineGraphService.getWeight(owner.getId(), m7.getId(), station_names[0], station_names[station_names.length - 1]);
         System.out.println(System.currentTimeMillis() - start);
         System.out.println(weight);
-        assertEquals(station_names.length - 1.0, weight,0.1);
+        assertEquals(station_names.length - 1.0, weight, 0.1);
     }
 }

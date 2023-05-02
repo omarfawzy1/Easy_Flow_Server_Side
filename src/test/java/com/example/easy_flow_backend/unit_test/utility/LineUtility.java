@@ -1,16 +1,9 @@
 package com.example.easy_flow_backend.unit_test.utility;
 
 import com.example.easy_flow_backend.entity.*;
-import com.example.easy_flow_backend.repos.*;
-import com.example.easy_flow_backend.service.graph.GraphWeightService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootTest
 public class LineUtility {

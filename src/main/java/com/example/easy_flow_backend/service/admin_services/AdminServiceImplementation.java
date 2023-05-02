@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Views.MachineView;
@@ -12,18 +12,15 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
-import com.example.easy_flow_backend.service.graph.GraphEdgeService;
-import com.example.easy_flow_backend.service.graph.GraphService;
+import com.example.easy_flow_backend.service.station_line_services.LineService;
+import com.example.easy_flow_backend.service.passenger_services.PassengerService;
+import com.example.easy_flow_backend.service.graph_services.GraphEdgeService;
+import com.example.easy_flow_backend.service.graph_services.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 
 @Service

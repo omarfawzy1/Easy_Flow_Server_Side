@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Views.MachineView;

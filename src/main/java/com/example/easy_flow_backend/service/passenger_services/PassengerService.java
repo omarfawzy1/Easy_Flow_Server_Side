@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.Passenger;

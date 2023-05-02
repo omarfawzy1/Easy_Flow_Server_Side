@@ -11,7 +11,7 @@ import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
-import com.example.easy_flow_backend.service.AdminService;
+import com.example.easy_flow_backend.service.admin_services.AdminService;
 import com.example.easy_flow_backend.service.utils.Utility;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

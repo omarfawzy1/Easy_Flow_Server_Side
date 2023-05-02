@@ -1,7 +1,7 @@
 package com.example.easy_flow_backend.unit_test.utility;
 
 import com.example.easy_flow_backend.repos.*;
-import com.example.easy_flow_backend.service.graph.GraphWeightService;
+import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,9 @@
 package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
-import com.example.easy_flow_backend.service.StationeryTurnstileService;
+import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class StationeryTurnstileController {
     StationeryTurnstileService stationeryTurnstileService;
 
     @PostMapping("in-ride")
-    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
+    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException {
         return stationeryTurnstileService.inRide(rideModel);
     }
     @PostMapping("out-ride")

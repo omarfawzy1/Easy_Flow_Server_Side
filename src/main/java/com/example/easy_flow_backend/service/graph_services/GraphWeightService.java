@@ -1,6 +1,4 @@
-package com.example.easy_flow_backend.service.graph;
-
-import com.example.easy_flow_backend.service.graph.utils.GraphWithStations;
+package com.example.easy_flow_backend.service.graph_services;
 
 public interface GraphWeightService {
 

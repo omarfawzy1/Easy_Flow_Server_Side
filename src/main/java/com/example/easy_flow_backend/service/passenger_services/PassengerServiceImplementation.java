@@ -1,4 +1,4 @@
-package com.example.easy_flow_backend.service;
+package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.Passenger;
@@ -9,6 +9,7 @@ import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
+import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
