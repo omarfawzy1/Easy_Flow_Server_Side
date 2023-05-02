@@ -15,4 +15,6 @@ public interface GraphService {
     GraphWithStations getWeightedGraph(String ownerId, String lineId);
 
     boolean addGraph(Graph graph);
+
+    List<String> getOrderedStationOfLine( String lineId);
 }

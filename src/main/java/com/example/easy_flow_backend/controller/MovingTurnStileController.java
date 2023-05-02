@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.error.BadRequestException;
@@ -23,10 +24,9 @@ public class MovingTurnStileController {
         return movingTurnstileService.inRide(rideModel);
     }
 
-    @GetMapping("{machineId}/line")
-    public List<Station> getLineStations(@PathVariable String machineId){
-        movingTurnstileService.getLineStations(machineId);
-        return null;
+    @GetMapping("line")
+    public Pair<String, List<String>> getLineStations(){
+        return movingTurnstileService.getLineStations();
     }
 
 }
