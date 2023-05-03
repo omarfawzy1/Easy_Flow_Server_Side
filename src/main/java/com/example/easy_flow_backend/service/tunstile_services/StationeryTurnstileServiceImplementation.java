@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
+import com.example.easy_flow_backend.entity.StationaryTurnstile;
 import com.example.easy_flow_backend.entity.Status;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -8,14 +9,15 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.service.payment_services.TicketService;
 import com.example.easy_flow_backend.service.TokenValidationService;
+import com.example.easy_flow_backend.service.payment_services.TicketService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import java.security.Principal;
 
 @Service
 public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService, TurnstileService {
@@ -101,5 +103,17 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         outRideValidation(rideModel, machineUsername);
 
         return tripService.makeFinalTrip(rideModel, machineUsername);
+    }
+
+    @Override
+    public String getMyStationName(Principal principal) throws BadRequestException {
+        if (principal == null)
+            throw new BadRequestException("the principal must not be null, may be you are not authenticated");
+
+        StationaryTurnstile stationaryTurnstile = stationaryTurnstileRepo.findUserByUsername(principal.getName());
+        if (stationaryTurnstile == null)
+            throw new BadRequestException("The user name not valid");
+
+        return stationaryTurnstile.getStation().getStationName();
     }
 }

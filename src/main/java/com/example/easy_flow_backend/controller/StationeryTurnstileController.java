@@ -1,13 +1,14 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
-import com.example.easy_flow_backend.dto.Models.RideModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
@@ -23,5 +24,10 @@ public class StationeryTurnstileController {
     @PostMapping("out-ride")
     public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
         return stationeryTurnstileService.outRide(rideModel);
+    }
+
+    @GetMapping("station-name")
+    public String getMyStationName(Principal principal) throws BadRequestException {
+        return stationeryTurnstileService.getMyStationName(principal);
     }
 }
