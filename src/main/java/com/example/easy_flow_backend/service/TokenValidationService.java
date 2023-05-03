@@ -33,7 +33,7 @@ public class TokenValidationService {
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String payload = new String(decoder.decode(chunks[1]));
         //validate
-        SignatureAlgorithm sa = SignatureAlgorithm.HS256;
+        SignatureAlgorithm sa = SignatureAlgorithm.HS512;
         SecretKeySpec secretKeySpec = new SecretKeySpec(SECRET.getBytes(), sa.getJcaName());
 
         String tokenWithoutSignature = chunks[0] + "." + chunks[1];
