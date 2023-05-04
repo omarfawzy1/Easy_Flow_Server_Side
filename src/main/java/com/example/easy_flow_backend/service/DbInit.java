@@ -142,6 +142,18 @@ public class DbInit implements CommandLineRunner {
                 cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/02-00-00"));
         ticketRepo.save(line2Ticket);
 
+
+        Graph graph = new Graph();
+        graph.setOwner(cairoGovernment);
+        graph.setLine(line2);
+        graphRepo.save(graph);
+
+        ArrayList<GraphEdge> graphEdges = new ArrayList<>();
+        for (int i = 0; i < line2Stations.size() - 1; i++) {
+            graphEdges.add(new GraphEdge(graph, line2Stations.get(i), line2Stations.get(i + 1), 1D));
+        }
+
+        graphEdgeRepo.saveAll(graphEdges);
         // Create and save stationary turnstiles for each station
         HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
         for (Station station : line2Stations) {
@@ -497,4 +509,6 @@ public class DbInit implements CommandLineRunner {
         tripRepository.saveAll(trips);
 
     }
+
+
 }
