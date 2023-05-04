@@ -67,4 +67,8 @@ public class LineService {
     }
 
 
+    public List<Object> getOwnerDetails(String id) {
+        return lineRepo.getOwnerDetails(id);
+    }
+
 }

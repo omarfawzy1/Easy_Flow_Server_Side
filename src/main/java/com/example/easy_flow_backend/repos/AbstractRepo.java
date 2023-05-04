@@ -9,7 +9,6 @@ import java.util.Map;
 @NoRepositoryBean
 public interface AbstractRepo<T extends User> extends JpaRepository<T, String>
 {
-//    @Query("select e from #{#entityName} as e from user where e.useranme = useranme")
 
     public T findUserByUsername(String username);
 

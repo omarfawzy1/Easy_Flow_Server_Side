@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.service.admin_services;
 
+import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
@@ -12,6 +13,7 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.graph_services.GraphEdgeService;
@@ -47,6 +49,8 @@ public class AdminServiceImplementation implements AdminService {
     private PassengerService passengerService;
     @Autowired
     private AnalysisService analysisService;
+    @Autowired
+    private OwnerService ownerService;
 
 
 
@@ -183,4 +187,19 @@ public class AdminServiceImplementation implements AdminService {
     public List<GraphEdge> getGraph(String ownerId, String lineId) {
         return graphEdgeService.getEdges(graphService.getLineGraph(ownerId,lineId));
     }
+
+    @Override
+    public ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException {
+        if (!ownerService.addOwner(addOwnerModel)) {
+            throw new BadRequestException("The Owner Not Exists");
+        }
+        return new ResponseMessage("Success", HttpStatus.OK);
+    }
+
+    @Override
+    public List<Object> getOwnerDetails(String ownerName)throws BadRequestException {
+        return ownerService.getOwnerDetails(ownerName);
+
+    }
+
 }

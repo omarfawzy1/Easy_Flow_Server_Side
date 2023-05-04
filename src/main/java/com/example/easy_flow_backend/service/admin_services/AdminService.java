@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.service.admin_services;
 
+import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
@@ -64,4 +65,8 @@ public interface AdminService {
     boolean addGraph(GraphModel graphModel);
 
     List<GraphEdge> getGraph(String ownerId, String lineId);
+
+    ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException;
+
+    List<Object> getOwnerDetails(String ownerName)throws BadRequestException;
 }

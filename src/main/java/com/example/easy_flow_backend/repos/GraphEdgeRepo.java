@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface GraphEdgeRepo extends JpaRepository<GraphEdge, String> {
-    //    List<GraphEdge> findAllByGraph(Graph graph);
+
     List<GraphEdge> findAllByGraph(Graph graph);
 }

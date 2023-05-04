@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
+import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.dto.Views.LineView;
@@ -142,6 +143,15 @@ public class AdminController {
     public List<MachineView> getAllMachines(){
         return adminService.getAllMachines();
     }
+    @PostMapping("owner/add")
+    public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel) throws BadRequestException {
+        return adminService.addOwner(addOwnerModel);
+    }
+    @GetMapping("owner/getDetails/{ownerName}")
+    public List<Object> getOwnerDetails(@PathVariable String ownerName)throws BadRequestException{
+        return adminService.getOwnerDetails(ownerName);
+    }
+
 
 
 

@@ -22,8 +22,7 @@ public class Line {
     @Column(name = "line_id")
     protected String id;
 
-
-    @Column(name = "line_name", nullable = true)
+    @Column(name = "line_name", nullable = true, unique = true)
     private String name;
     @Column(nullable = false)
     private double price;
