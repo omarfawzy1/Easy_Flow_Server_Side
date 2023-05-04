@@ -71,6 +71,8 @@ public interface AdminService {
 
     LiveWithStationsView getLineDetails(String name);
 
+    ResponseMessage deleteOwner(String username) throws BadRequestException;
+
     Owner getOwner(String username) throws BadRequestException;
 
     List<Turnstile> getAllMachines();

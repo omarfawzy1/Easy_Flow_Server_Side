@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,13 +24,15 @@ public class Graph {
     @Column(name = "graph_id")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
     @OneToOne
     @JoinColumn(name = "line_id")
     private Line line;
+    @OneToMany(mappedBy = "graph", cascade = CascadeType.ALL)
+    private Set<GraphEdge> graphEdges= new HashSet<>();
 
 
 }

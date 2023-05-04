@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MovingTurnstile extends Turnstile{
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name= "line_id")
     private Line line;
     public MovingTurnstile(String username, String password, Owner owner) {

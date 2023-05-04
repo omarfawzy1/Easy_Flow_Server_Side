@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -25,6 +27,14 @@ public class Owner {
 
     @Column(name = "bank_account")
     private String bankAccount;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Line> lines= new HashSet<>();
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Ticket> tickets= new HashSet<>();
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Graph> graphs= new HashSet<>();
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Turnstile> turnstiles= new HashSet<>();
 
     public Owner(String name, String mail, String bankAccount) {
         this.name = name;

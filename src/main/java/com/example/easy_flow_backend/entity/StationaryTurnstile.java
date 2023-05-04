@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "Stationary_turnstile")
 public class StationaryTurnstile extends Turnstile {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
 

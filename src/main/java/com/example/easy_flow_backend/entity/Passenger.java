@@ -37,6 +37,8 @@ public class Passenger extends User {
     @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
+    @OneToMany(mappedBy = "passenger", cascade = jakarta.persistence.CascadeType.ALL)
+    private Set<Trip> trips= new HashSet<>();
 
     public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);

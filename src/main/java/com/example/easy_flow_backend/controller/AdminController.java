@@ -171,6 +171,10 @@ public class AdminController {
     public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel) throws BadRequestException {
         return adminService.addOwner(addOwnerModel);
     }
+    @DeleteMapping("owner/delete/{username}")
+    public ResponseMessage deleteOwner(@PathVariable String username) throws BadRequestException {
+        return adminService.deleteOwner(username);
+    }
     @GetMapping("owner/getDetails/{ownerName}")
     public List<Object> getOwnerDetails(@PathVariable String ownerName)throws BadRequestException{
         return adminService.getOwnerDetails(ownerName);

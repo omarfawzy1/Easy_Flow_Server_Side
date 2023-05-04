@@ -18,15 +18,15 @@ public class GraphEdge {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     String id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "graph_id")
     private Graph graph;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "from_station_id")
     private Station fromStation;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "to_station_id")
     private Station toStation;
 

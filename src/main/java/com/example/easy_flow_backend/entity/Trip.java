@@ -3,7 +3,6 @@ package com.example.easy_flow_backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
@@ -21,15 +20,15 @@ public class Trip {
     @Column(name = "trip_id")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "passenger_id", nullable = false)
     private Passenger passenger;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "start_turnstile_id", nullable = false)
     private Turnstile startTurnstile;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "end_turnstile_id", nullable = true)
     private Turnstile endTurnstile;
     @JoinColumn(name = "start_time", nullable = false)

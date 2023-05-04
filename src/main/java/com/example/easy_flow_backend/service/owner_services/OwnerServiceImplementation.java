@@ -3,9 +3,11 @@ import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,5 +45,13 @@ public class OwnerServiceImplementation implements OwnerService{
         result.add(lineService.getOwnerDetails(owner.getId()));
         return result;
 
+    }
+
+    @Override
+    public ResponseMessage deleteOwner(String username) throws BadRequestException {
+        Owner temp=ownerRepo.findByName(username);
+        if(temp==null)throw new BadRequestException("there is no owner with this name.");
+        ownerRepo.delete(temp);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 }

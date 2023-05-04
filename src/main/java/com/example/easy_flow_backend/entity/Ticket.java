@@ -20,8 +20,7 @@ public class Ticket {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 

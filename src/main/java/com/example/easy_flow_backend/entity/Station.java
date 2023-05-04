@@ -25,10 +25,12 @@ public class Station {
     private String stationName;
     @ManyToMany(mappedBy = "stations", fetch = FetchType.LAZY)
     Set<Line> lines = new HashSet<>();
-
-//    @Enumerated
-//    @Column(name= "transportation_type")
-//    private TransportationType transportationType;
+    @OneToMany(mappedBy = "fromStation", cascade = CascadeType.ALL)
+    private Set<GraphEdge> fromGraphEdges= new HashSet<>();
+    @OneToMany(mappedBy = "toStation", cascade = CascadeType.ALL)
+    private Set<GraphEdge> toGraphEdges= new HashSet<>();
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
+    private Set<StationaryTurnstile> stationaryTurnstiles= new HashSet<>();
 
     public Station(String stationName) {
 

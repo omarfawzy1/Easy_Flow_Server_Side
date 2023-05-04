@@ -247,4 +247,9 @@ public class AdminServiceImplementation implements AdminService {
     }
 
 
+    @Override
+    public ResponseMessage deleteOwner(String username) throws BadRequestException {
+        return ownerService.deleteOwner(username);
+    }
+
 }

@@ -27,7 +27,7 @@ public class Line {
     @Column(nullable = false)
     private TransportationType type;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "owner_id")
     private Owner owner;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
@@ -41,6 +41,8 @@ public class Line {
     @JoinColumn(name = "graph_id", referencedColumnName ="graph_id")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Graph graph;
+    @OneToMany(mappedBy = "line", cascade = CascadeType.ALL)
+    private Set<MovingTurnstile> movingTurnstiles= new HashSet<>();
 
     public Line(String name, TransportationType type, Owner owner) {
         this.name = name;
