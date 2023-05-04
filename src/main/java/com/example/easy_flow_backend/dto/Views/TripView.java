@@ -2,19 +2,16 @@ package com.example.easy_flow_backend.dto.Views;
 
 import com.example.easy_flow_backend.entity.Status;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 public interface TripView {
 
     String getId();
 
-    UserDetails getPassenger();
+    String getStartStation();
 
-    StationView getStartTurnstile();
-
-    StationView getEndTurnstile();
-
+    String getEndStation();
 
     Date getStartTime();
 

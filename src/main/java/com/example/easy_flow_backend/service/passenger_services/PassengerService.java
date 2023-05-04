@@ -14,9 +14,9 @@ import java.util.List;
 
 public interface PassengerService {
 
-    List<TripView> getMytrips() throws BadRequestException;
+    List<TripView> getMytrips(String username) throws BadRequestException;
 
-    List<TripView> getMytrips(Date date) throws BadRequestException;
+    List<TripView> getMytrips(Date date, String username) throws BadRequestException;
 
     PassagnerDetails getMyProfile() throws BadRequestException;
 

@@ -31,25 +31,19 @@ public class PassengerServiceImplementation implements PassengerService {
     private WalletService walletService;
 
     @Override
-    public List<TripView> getMytrips() throws BadRequestException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getPrincipal().toString();
-        if (userName == null || userName.equalsIgnoreCase("anonymous")) {
+    public List<TripView> getMytrips(String username) throws BadRequestException {
+        if (username == null || username.equalsIgnoreCase("anonymous"))
             throw new BadRequestException("Not Authenticated");
-        }
-        return tripRepo.findAllProjectedByPassengerUsername(userName);
 
+        return tripRepo.findAllProjectedByPassengerUsername(username);
     }
 
     @Override
-    public List<TripView> getMytrips(Date date) throws BadRequestException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getPrincipal().toString();
-        if (username == null || username.equalsIgnoreCase("anonymous")) {
+    public List<TripView> getMytrips(Date date, String username) throws BadRequestException {
+        if (username == null || username.equalsIgnoreCase("anonymous"))
             throw new BadRequestException("Not Authenticated");
-        }
-        return tripRepo.findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(username, date);
 
+        return tripRepo.findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(username, date);
     }
 
     @Override
