@@ -13,5 +13,4 @@ import java.util.List;
 @Repository
 public interface TurnstileRepo<T extends Turnstile> extends AbstractRepo<T> {
 
-    List<MachineView> findAllProjectedBy();
 }

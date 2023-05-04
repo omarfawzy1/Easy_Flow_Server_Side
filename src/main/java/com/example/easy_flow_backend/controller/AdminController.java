@@ -10,12 +10,14 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.admin_services.AdminService;
+import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
 import com.example.easy_flow_backend.service.utils.Utility;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,10 +27,20 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private StationeryTurnstileService stationeryTurnstileService;
+
     @GetMapping("owners")
     public List<Owner> getALlOwners(){
          return adminService.getAllOwners();
     }
+
+    @GetMapping("owners/{username}")
+    public Owner getOwner(@PathVariable("username") String username) throws BadRequestException {
+        return adminService.getOwner(username);
+    }
+
+
     @GetMapping("passengers")
     public List<PassagnerBriefDetails> getAllPassengers() {
         return adminService.getAllPassangers();
@@ -40,11 +52,12 @@ public class AdminController {
     }
 
     @GetMapping("graph")
-    public boolean addGraph(@Valid @RequestBody GraphModel graphModel){
+    public boolean addGraph(@Valid @RequestBody GraphModel graphModel) {
         return adminService.addGraph(graphModel);
     }
+
     @GetMapping("graph/{ownerId}/{lineId}")
-    public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId){
+    public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId) {
         return adminService.getGraph(ownerId, lineId);
     }
 
@@ -81,69 +94,79 @@ public class AdminController {
     public ResponseMessage addLine(@Valid @RequestBody AddLineModel addLineModel) throws BadRequestException {
         return adminService.addLine(addLineModel);
     }
+
     @PostMapping("passengers/count")
     public int getPassengersCount() {
         return adminService.getAllPassangersCount();
     }
+
     @PostMapping("passengers/count/{type}")
     public int getPassengersCountWithType(@PathVariable String type) {
         return adminService.getAllPassangersCountWithType(type);
     }
+
     @PostMapping("revenue")
     public long getRevenue(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenue(timePeriod);
     }
+
     @PostMapping("revenueAvg")
     public long getRevenueAvg(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenueAvg(timePeriod);
     }
+
     @PostMapping("{passengerId}/revenueAvg")
     public long getRevenueAvgByPassenger(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String passengerId) {
         return adminService.getRevenueAvgByPassenger(timePeriod, passengerId);
     }
+
     @PostMapping("passenger/negativeBalanceCount")
     public int getNegativePassengerCount() {
         return adminService.getNegativePassengerCount();
     }
+
     @PostMapping("passenger/belowThresholdCount/{threshold}")
     public int getBelowThresholdCount(@PathVariable long threshold) {
         return adminService.getBelowThresholdCount(threshold);
     }
+
     @PostMapping("turnstile/status")
     public Object getTurnstilesStatus() {
         return adminService.getTurnstilesStatus();
     }
+
     @PostMapping("station/passengersCount/{stationName}")
     public Object getTripInStationCount(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String stationName) {
         return adminService.getTripInStationCount(timePeriod, stationName);
     }
+
     @PostMapping("line/tripAvg/{lineId}/{timeUnit}")
     public Object getTripAvgByTimeUnitForBusLine(@Valid @RequestBody TimePeriod timePeriod,
                                                  @PathVariable String timeUnit,
                                                  @PathVariable String lineId) throws ParseException {
         return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineId);
     }
+
     @PostMapping("line/peek/{lineId}/{transportType}/{peekNumber}")
     public List<Object> getPeekHours(
             @Valid @RequestBody TimePeriod timePeriod,
             @PathVariable String lineId,
             @PathVariable TransportationType transportType,
             @PathVariable int peekNumber) {
-        return adminService.getPeekHours(timePeriod, lineId, transportType ,peekNumber);
+        return adminService.getPeekHours(timePeriod, lineId, transportType, peekNumber);
     }
+
     @PostMapping("transaction/count")
     public int getTransactionCount() {
         return adminService.getTransactionCount();
     }
+
     @PostMapping("trip/count")
     public int getTripCount() {
         return adminService.getTripCount();
     }
 
-    @GetMapping("mahcines")
-    public List<MachineView> getAllMachines(){
-        return adminService.getAllMachines();
-    }
+
     @PostMapping("owner/add")
     public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel) throws BadRequestException {
         return adminService.addOwner(addOwnerModel);
@@ -154,7 +177,23 @@ public class AdminController {
     }
 
 
+    @GetMapping("machine/stationery/{username}")
+    public StationeryMachineView getStationMachine(@PathVariable String username) {
+        return adminService.getStationMachine(username);
+    }
+    @GetMapping("machine/moving/{username}")
+    public MovingMachineView getMovingMachine(@PathVariable String username) {
+        return adminService.getMovingMachine(username);
+    }
+    @GetMapping("machine/moving")
+    public List<MovingMachineView> getMovingMachines() {
+        return adminService.getMovingMachines();
+    }
 
+    @GetMapping("machine/stationery")
+    public List<StationeryMachineView> getStationMachines() {
+        return adminService.getStationMachines();
+    }
 
 
 //ToDo

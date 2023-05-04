@@ -2,7 +2,10 @@ package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
+import com.example.easy_flow_backend.dto.Views.MachineView;
+import com.example.easy_flow_backend.dto.Views.MovingMachineView;
 import com.example.easy_flow_backend.entity.MovingTurnstile;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -16,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,6 +67,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         return tripService.makeTrip(rideModel, machineUsername);
     }
 
+
     @Override
     public Pair<String, List<String>> getLineStations() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -74,4 +79,20 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
 
         return new Pair<>(machine.getLine().getName(), graphService.getOrderedStationOfLine(lineId));
     }
+
+    @Override
+    public MovingMachineView findProjectedByUsername(String username) {
+        return movingTurnstileRepo.findProjectedByUsername(username);
+    }
+
+    @Override
+    public List<MovingMachineView> getMachines() {
+        return movingTurnstileRepo.findAllProjectedBy(MovingMachineView.class);
+    }
+
+    @Override
+    public List<Turnstile> getAllMachines() {
+        return new ArrayList<>(movingTurnstileRepo.findAll());
+    }
+
 }

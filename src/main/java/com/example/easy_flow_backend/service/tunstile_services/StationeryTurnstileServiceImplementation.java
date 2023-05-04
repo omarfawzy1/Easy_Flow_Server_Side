@@ -1,8 +1,11 @@
 package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
+import com.example.easy_flow_backend.dto.Views.MachineView;
+import com.example.easy_flow_backend.dto.Views.StationeryMachineView;
 import com.example.easy_flow_backend.entity.StationaryTurnstile;
 import com.example.easy_flow_backend.entity.Status;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -17,7 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService, TurnstileService {
@@ -116,4 +122,21 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
         return stationaryTurnstile.getStation().getStationName();
     }
+
+    @Override
+    public StationeryMachineView findProjectedByUsername(String username) {
+        return stationaryTurnstileRepo.findProjectedByUsername(username);
+    }
+
+    @Override
+    public List<StationeryMachineView> getMachines() {
+        return stationaryTurnstileRepo.findAllProjectedBy();
+    }
+
+    @Override
+    public List<Turnstile> getAllMachines() {
+        return new ArrayList<>(stationaryTurnstileRepo.findAll());
+    }
+
+
 }

@@ -66,7 +66,15 @@ public class TestController {
     private GraphService graphService;
 
     @GetMapping("getLineStations/{lineId}")
-    public List<String> tokenTest(@PathVariable("lineId") String lineId) {
+    public List<String> no(@PathVariable("lineId") String lineId) {
         return graphService.getOrderedStationOfLine(lineId);
+    }
+
+    @Autowired
+    private TokenValidationService tokenValidationService;
+
+    @GetMapping("validateToken/{token}/{username}")
+    public String testisvalid(@PathVariable("token") String token, @PathVariable("username") String username) {
+        return tokenValidationService.validatePassengerToken(token, username) ? "Valid" : "notValid";
     }
 }

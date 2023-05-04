@@ -9,16 +9,21 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
+import com.example.easy_flow_backend.dto.Views.LineView;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.graph_services.GraphEdgeService;
 import com.example.easy_flow_backend.service.graph_services.GraphService;
+import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
+import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,8 +39,7 @@ public class AdminServiceImplementation implements AdminService {
     private UserRepositry userRepositry;
     @Autowired
     private TransactionRepo transactionRepo;
-    @Autowired
-    private TurnstileRepo turnstileRepo;
+
     @Autowired
     private GraphService graphService;
     @Autowired
@@ -49,10 +53,15 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private OwnerService ownerService;
 
-
+    @Autowired
+    StationeryTurnstileService stationeryTurnstileService;
+    @Autowired
+    MovingTurnstileService movingTurnstileService;
 
     @Override
-    public List<LineView> getAllLines() {return lineService.getAllLines();}
+    public List<LineView> getAllLines() {
+        return lineService.getAllLines();
+    }
 
     @Override
     public List<PassagnerBriefDetails> getAllPassangers() {
@@ -100,7 +109,9 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public int getAllPassangersCount() { return passengerService.getAllPassangersCount(); }
+    public int getAllPassangersCount() {
+        return passengerService.getAllPassangersCount();
+    }
 
     @Override
     public int getAllPassangersCountWithType(String type) {
@@ -166,15 +177,12 @@ public class AdminServiceImplementation implements AdminService {
     public List<Owner> getAllOwners() {
         return ownerRepo.findAll();
     }
-    @Override
-    public List<MachineView> getAllMachines(){
-        return turnstileRepo.findAllProjectedBy();
-    }
+
 
     @Override
     public boolean addGraph(GraphModel graphModel) {
         // TODO Graph Model Validation
-        if(!graphService.addGraph(graphModel.getGraph())){
+        if (!graphService.addGraph(graphModel.getGraph())) {
             return false;
         }
         return graphEdgeService.addEdges(graphModel.getGraphEdgeList());
@@ -182,7 +190,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public List<GraphEdge> getGraph(String ownerId, String lineId) {
-        return graphEdgeService.getEdges(graphService.getLineGraph(ownerId,lineId));
+        return graphEdgeService.getEdges(graphService.getLineGraph(ownerId, lineId));
     }
 
     @Override
@@ -201,5 +209,42 @@ public class AdminServiceImplementation implements AdminService {
     public LiveWithStationsView getLineDetails(String name) {
         return lineService.getLineDetails(name);
     }
+
+
+    @Override
+    public Owner getOwner(String username) throws BadRequestException {
+        Owner owner = ownerRepo.findByName(username);
+        if (owner == null)
+            throw new BadRequestException("The owner Not exist");
+        return owner;
+    }
+
+    @Override
+    public List<Turnstile> getAllMachines() {
+        List<Turnstile> machines = new ArrayList<>(movingTurnstileService.getAllMachines());
+        machines.addAll(stationeryTurnstileService.getAllMachines());
+        return machines;
+    }
+
+    @Override
+    public MovingMachineView getMovingMachine(String username) {
+        return movingTurnstileService.findProjectedByUsername(username);
+    }
+
+    @Override
+    public StationeryMachineView getStationMachine(String username) {
+        return stationeryTurnstileService.findProjectedByUsername(username);
+    }
+
+    @Override
+    public List<MovingMachineView> getMovingMachines() {
+        return movingTurnstileService.getMachines();
+    }
+
+    @Override
+    public List<StationeryMachineView> getStationMachines() {
+        return stationeryTurnstileService.getMachines();
+    }
+
 
 }

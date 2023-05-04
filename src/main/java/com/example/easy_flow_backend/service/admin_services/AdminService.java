@@ -47,7 +47,9 @@ public interface AdminService {
     int getBelowThresholdCount(long threshold);
 
     Object getTurnstilesStatus();
+
     int getTripInStationCount(TimePeriod timePeriod, String stationName);
+
     long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId);
 
     List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType, int peekNumber);
@@ -57,7 +59,7 @@ public interface AdminService {
     int getTripCount();
 
     List<Owner> getAllOwners();
-     List<MachineView> getAllMachines();
+
 
     boolean addGraph(GraphModel graphModel);
 
@@ -68,4 +70,17 @@ public interface AdminService {
     List<Object> getOwnerDetails(String ownerName)throws BadRequestException;
 
     LiveWithStationsView getLineDetails(String name);
+
+    Owner getOwner(String username) throws BadRequestException;
+
+    List<Turnstile> getAllMachines();
+
+    MovingMachineView getMovingMachine(String username);
+
+
+    StationeryMachineView getStationMachine(String username);
+
+    List<MovingMachineView> getMovingMachines();
+
+    List<StationeryMachineView> getStationMachines();
 }
