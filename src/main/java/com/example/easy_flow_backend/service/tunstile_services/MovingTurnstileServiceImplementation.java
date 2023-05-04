@@ -41,7 +41,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
                 || !tokenValidationService.validateGenerationTime(rideModel.getGenerationTime(), rideModel.getUsername()))
             throw new BadRequestException("Illegal QR");
 
-        //validate authintication
+        //validate authentication
         if (machineUsername == null || machineUsername.equalsIgnoreCase("anonymous")) {
             throw new BadRequestException("Not Authenticated");
         }

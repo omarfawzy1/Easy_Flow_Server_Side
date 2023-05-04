@@ -152,6 +152,7 @@ public class DbInit implements CommandLineRunner {
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
             userRepositry.save(stationaryTurnstile);
         }
+
         // s1=elmonib_5_in    s2= giza_7_in
         // Create some passengers
         Passenger omar = passengersRepo.findUserByUsername("omar");

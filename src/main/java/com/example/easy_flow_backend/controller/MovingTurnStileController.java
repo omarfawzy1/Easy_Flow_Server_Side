@@ -20,7 +20,7 @@ public class MovingTurnStileController {
     MovingTurnstileService movingTurnstileService;
 
     @PostMapping("in-ride")
-    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException {
+    public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException, NotFoundException {
         return movingTurnstileService.inRide(rideModel);
     }
 
