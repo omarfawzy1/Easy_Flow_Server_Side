@@ -1,12 +1,10 @@
 package com.example.easy_flow_backend.dto.Views;
 
-import com.example.easy_flow_backend.entity.Owner;
-
 import java.util.Set;
 
-public interface LineView {
+public interface LiveWithStationsView {
     String getName();
     String getType();
     OwnerView getOwner();
-    //Set<StationView> getStations();
+    Set<StationView> getStations();
 }

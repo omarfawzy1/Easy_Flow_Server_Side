@@ -2,9 +2,11 @@ package com.example.easy_flow_backend.service.station_line_services;
 
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
+import com.example.easy_flow_backend.dto.Views.LiveWithStationsView;
 import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Station;
+import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
@@ -27,7 +29,7 @@ public class LineService {
     @Autowired
     StationService stationService;
     public List<LineView> getAllLines() {
-        return lineRepo.findAllProjectedBy();
+        return lineRepo.findBy(LineView.class);
     }
 
     public LineView getLine(String id) throws NotFoundException {
@@ -50,7 +52,8 @@ public class LineService {
         if (owner.isEmpty()) {
             return false;
         }
-        Line tmpLine = new Line(addLineModel.getLineName(), addLineModel.getPrice(), owner.get());
+        Line tmpLine = new Line(addLineModel.getLineName()
+                , TransportationType.valueOf(addLineModel.getType()), owner.get());
 
         try {
             lineRepo.save(tmpLine);
@@ -71,4 +74,7 @@ public class LineService {
         return lineRepo.getOwnerDetails(id);
     }
 
+    public LiveWithStationsView getLineDetails(String name) {
+        return lineRepo.getLineDetails(name);
+    }
 }

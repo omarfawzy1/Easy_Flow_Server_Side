@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.dto.Models;
 
+import com.example.easy_flow_backend.entity.TransportationType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class AddLineModel {
     @NotNull(message = "Owner id Should Not be Null")
     String ownerId;
     @NotNull(message = "Price Should Not be Null")
-    double price;
+    String type;
     @NotNull(message = "Line Name Should Not be Null")
     @NotBlank(message = "Line Name Should Not be Blank ")
     String lineName;

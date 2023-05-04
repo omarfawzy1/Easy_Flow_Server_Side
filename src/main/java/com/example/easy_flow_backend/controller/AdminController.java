@@ -4,10 +4,7 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
-import com.example.easy_flow_backend.dto.Views.LineView;
-import com.example.easy_flow_backend.dto.Views.MachineView;
-import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -64,6 +61,10 @@ public class AdminController {
     @GetMapping("lines")
     public List<LineView> getAllLines() {
         return adminService.getAllLines();
+    }
+    @GetMapping("lineDetails/{name}")
+    public LiveWithStationsView getLineDetails(@PathVariable String name) {
+        return adminService.getLineDetails(name);
     }
 
     @PostMapping("line/{id}")

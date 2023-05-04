@@ -2,16 +2,13 @@ package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 import com.example.easy_flow_backend.dto.Models.GraphModel;
-import com.example.easy_flow_backend.dto.Views.MachineView;
-import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
+import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
-import com.example.easy_flow_backend.dto.Views.LineView;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
@@ -195,11 +192,14 @@ public class AdminServiceImplementation implements AdminService {
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
-
     @Override
     public List<Object> getOwnerDetails(String ownerName)throws BadRequestException {
         return ownerService.getOwnerDetails(ownerName);
 
+    }
+    @Override
+    public LiveWithStationsView getLineDetails(String name) {
+        return lineService.getLineDetails(name);
     }
 
 }

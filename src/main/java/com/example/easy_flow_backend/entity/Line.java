@@ -25,7 +25,7 @@ public class Line {
     @Column(name = "line_name", nullable = true, unique = true)
     private String name;
     @Column(nullable = false)
-    private double price;
+    private TransportationType type;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -42,9 +42,9 @@ public class Line {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Graph graph;
 
-    public Line(String name, double price, Owner owner) {
+    public Line(String name, TransportationType type, Owner owner) {
         this.name = name;
-        this.price = price;
+        this.type = type;
         this.owner = owner;
     }
 
@@ -73,11 +73,11 @@ public class Line {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Line line = (Line) o;
-        return Double.compare(line.price, price) == 0 && name.equals(line.name) && owner.equals(line.owner) && Objects.equals(stations, line.stations);
+        return type.equals(line.type) && name.equals(line.name) && owner.equals(line.owner) && Objects.equals(stations, line.stations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, price, owner, stations);
+        return Objects.hash(name, type, owner, stations);
     }
 }

@@ -63,8 +63,8 @@ public class DbInit implements CommandLineRunner {
         ownerRepo.save(owner1);
 
         //line and station
-        Line line1 = new Line("line1", 10.0F, owner1);
-        Line line2 = new Line("line2", 31.0F, owner1);
+        Line line1 = new Line("line1", TransportationType.BUS, owner1);
+        Line line2 = new Line("line2", TransportationType.BUS, owner1);
         Station station1 = new Station("first station");
         Station station2 = new Station("second station");
         userRepositry.saveAll(users);
@@ -108,7 +108,7 @@ public class DbInit implements CommandLineRunner {
         ownerRepo.save(cairoGovernment);
 
         // Create the line and its stations
-        Line line2 = new Line("Line 2", 10, cairoGovernment);
+        Line line2 = new Line("Line 2", TransportationType.METRO, cairoGovernment);
         Station elMonibStation = new Station("El Monib");
         Station sakiatMekkiStation = new Station("Sakiat Mekki");
         Station ommElMisryeenStation = new Station("Omm el Misryeen");
@@ -277,7 +277,7 @@ public class DbInit implements CommandLineRunner {
         Owner mwasalatmisr = new Owner("mwasalatmisr", "mwasalatmisr@government.gov", "0000 0000 0000 0000");
         ownerRepo.save(mwasalatmisr);
 
-        Line m7 = new Line("m7", 10, mwasalatmisr);
+        Line m7 = new Line("m7", TransportationType.BUS, mwasalatmisr);
 
         Station gizaStation = new Station("Giza");
         Station cairoUniversityStation = new Station("Cairo University");
@@ -387,7 +387,7 @@ public class DbInit implements CommandLineRunner {
     @SneakyThrows
     void m8Init() {
         Owner mwasalatmisr = ownerRepo.findByName("mwasalatmisr");
-        Line m8 = new Line("m8", 10, mwasalatmisr);
+        Line m8 = new Line("m8", TransportationType.BUS, mwasalatmisr);
 
         Station gizaStation = new Station("Mo5abrat");
         Station cairoUniversityStation = new Station("Mall Of egypt");
