@@ -5,19 +5,19 @@ import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 import com.example.easy_flow_backend.dto.Models.GraphModel;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.dto.Views.*;
-import com.example.easy_flow_backend.entity.*;
+import com.example.easy_flow_backend.entity.GraphEdge;
+import com.example.easy_flow_backend.entity.Owner;
+import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.admin_services.AdminService;
-import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
 import com.example.easy_flow_backend.service.utils.Utility;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,12 +27,10 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private StationeryTurnstileService stationeryTurnstileService;
 
     @GetMapping("owners")
-    public List<Owner> getALlOwners(){
-         return adminService.getAllOwners();
+    public List<Owner> getALlOwners() {
+        return adminService.getAllOwners();
     }
 
     @GetMapping("owners/{username}")
@@ -66,15 +64,16 @@ public class AdminController {
         return adminService.deletePassenger(username);
     }
 
-    @PutMapping("passenger/active/{username}")
-    public ResponseMessage passengerStatus(@PathVariable String username) throws NotFoundException {
-        return adminService.passengerStatus(username);
+    @PutMapping("user/active/{username}")
+    public ResponseMessage flipUserActive(@PathVariable String username) throws NotFoundException {
+        return adminService.flipUserActive(username);
     }
 
     @GetMapping("lines")
     public List<LineView> getAllLines() {
         return adminService.getAllLines();
     }
+
     @GetMapping("lineDetails/{name}")
     public LiveWithStationsView getLineDetails(@PathVariable String name) {
         return adminService.getLineDetails(name);
@@ -171,12 +170,14 @@ public class AdminController {
     public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel) throws BadRequestException {
         return adminService.addOwner(addOwnerModel);
     }
+
     @DeleteMapping("owner/delete/{username}")
     public ResponseMessage deleteOwner(@PathVariable String username) throws BadRequestException {
         return adminService.deleteOwner(username);
     }
+
     @GetMapping("owner/getDetails/{ownerName}")
-    public List<Object> getOwnerDetails(@PathVariable String ownerName)throws BadRequestException{
+    public List<Object> getOwnerDetails(@PathVariable String ownerName) throws BadRequestException {
         return adminService.getOwnerDetails(ownerName);
     }
 
@@ -185,10 +186,12 @@ public class AdminController {
     public StationeryMachineView getStationMachine(@PathVariable String username) {
         return adminService.getStationMachine(username);
     }
+
     @GetMapping("machine/moving/{username}")
     public MovingMachineView getMovingMachine(@PathVariable String username) {
         return adminService.getMovingMachine(username);
     }
+
     @GetMapping("machine/moving")
     public List<MovingMachineView> getMovingMachines() {
         return adminService.getMovingMachines();

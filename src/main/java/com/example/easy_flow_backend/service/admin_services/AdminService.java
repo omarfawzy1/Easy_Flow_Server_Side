@@ -24,8 +24,6 @@ public interface AdminService {
 
     ResponseMessage deletePassenger(String username) throws NotFoundException;
 
-    ResponseMessage passengerStatus(String username) throws NotFoundException;
-
     LineView getLine(String id) throws NotFoundException;
 
     ResponseMessage deleteLine(String id) throws NotFoundException;
@@ -85,4 +83,7 @@ public interface AdminService {
     List<MovingMachineView> getMovingMachines();
 
     List<StationeryMachineView> getStationMachines();
+
+
+    ResponseMessage flipUserActive(String username) throws NotFoundException;
 }

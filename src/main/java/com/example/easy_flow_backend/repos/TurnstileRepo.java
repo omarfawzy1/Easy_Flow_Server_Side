@@ -13,4 +13,7 @@ import java.util.List;
 @Repository
 public interface TurnstileRepo<T extends Turnstile> extends AbstractRepo<T> {
 
+    boolean existsByUsername(String username);
+
+    void deleteByUsername(String username);
 }

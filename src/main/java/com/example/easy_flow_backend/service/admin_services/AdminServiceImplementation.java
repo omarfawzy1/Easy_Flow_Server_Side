@@ -12,6 +12,7 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.service.UserServiceImpl;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
@@ -19,6 +20,7 @@ import com.example.easy_flow_backend.service.graph_services.GraphEdgeService;
 import com.example.easy_flow_backend.service.graph_services.GraphService;
 import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
+import com.example.easy_flow_backend.service.tunstile_services.TurnstileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,8 @@ public class AdminServiceImplementation implements AdminService {
     StationeryTurnstileService stationeryTurnstileService;
     @Autowired
     MovingTurnstileService movingTurnstileService;
+    @Autowired
+    UserServiceImpl userService;
 
     @Override
     public List<LineView> getAllLines() {
@@ -83,10 +87,6 @@ public class AdminServiceImplementation implements AdminService {
         return passengerService.deletePassenger(username);
     }
 
-    @Override
-    public ResponseMessage passengerStatus(String username) throws NotFoundException {
-        return passengerService.passengerStatus(username);
-    }
 
     @Override
     public LineView getLine(String id) throws NotFoundException {
@@ -244,6 +244,11 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public List<StationeryMachineView> getStationMachines() {
         return stationeryTurnstileService.getMachines();
+    }
+
+    @Override
+    public ResponseMessage flipUserActive(String username) throws NotFoundException {
+        return userService.flipUserActive(username);
     }
 
 

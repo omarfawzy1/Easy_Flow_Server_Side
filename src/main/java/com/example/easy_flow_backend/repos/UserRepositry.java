@@ -13,5 +13,7 @@ public interface UserRepositry extends AbstractRepo<User>
         "FROM User user " +
         "WHERE user.roles LIKE '%TURNSTILE%' group by user.active")
     Object getTurnstilesStatus();
+
+    boolean existsByUsername(String username);
 }
 

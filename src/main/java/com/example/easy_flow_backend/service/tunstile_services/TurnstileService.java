@@ -1,8 +1,6 @@
 package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
-import com.example.easy_flow_backend.dto.Views.MachineView;
-import com.example.easy_flow_backend.dto.Views.MovingMachineView;
 import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
