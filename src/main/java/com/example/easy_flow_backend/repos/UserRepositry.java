@@ -15,5 +15,7 @@ public interface UserRepositry extends AbstractRepo<User>
     Object getTurnstilesStatus();
 
     boolean existsByUsername(String username);
+
+    void deleteByUsername(String username);
 }
 

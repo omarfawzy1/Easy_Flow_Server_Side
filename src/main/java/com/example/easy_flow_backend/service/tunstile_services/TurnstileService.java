@@ -14,5 +14,6 @@ public interface TurnstileService {
 
     List<Turnstile> getAllMachines();
 
+    ResponseMessage deletMachine(String username) throws NotFoundException;
 
 }

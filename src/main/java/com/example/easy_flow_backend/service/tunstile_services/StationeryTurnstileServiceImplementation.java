@@ -128,7 +128,9 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     }
 
     @Override
-    public StationeryMachineView findProjectedByUsername(String username) {
+    public StationeryMachineView findProjectedByUsername(String username) throws NotFoundException {
+        if (!stationaryTurnstileRepo.existsByUsername(username))
+            throw new NotFoundException("Machine Not found!");
         return stationaryTurnstileRepo.findProjectedByUsername(username);
     }
 
@@ -140,6 +142,14 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     @Override
     public List<Turnstile> getAllMachines() {
         return new ArrayList<>(stationaryTurnstileRepo.findAll());
+    }
+
+    @Override
+    public ResponseMessage deletMachine(String username) throws NotFoundException {
+        if (!stationaryTurnstileRepo.existsByUsername(username)) {
+            throw new NotFoundException("Invalid username!");
+        }
+        return userService.deleteUser(username);
     }
 
 

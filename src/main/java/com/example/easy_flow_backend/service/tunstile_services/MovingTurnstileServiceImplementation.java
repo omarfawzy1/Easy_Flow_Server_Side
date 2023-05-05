@@ -83,7 +83,9 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     }
 
     @Override
-    public MovingMachineView findProjectedByUsername(String username) {
+    public MovingMachineView findProjectedByUsername(String username) throws NotFoundException {
+        if (!movingTurnstileRepo.existsByUsername(username))
+            throw new NotFoundException("machine not exist!");
         return movingTurnstileRepo.findProjectedByUsername(username);
     }
 
@@ -95,6 +97,14 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     @Override
     public List<Turnstile> getAllMachines() {
         return new ArrayList<>(movingTurnstileRepo.findAll());
+    }
+
+    @Override
+    public ResponseMessage deletMachine(String username) throws NotFoundException {
+        if (!movingTurnstileRepo.existsByUsername(username)) {
+            throw new NotFoundException("Invalid username!");
+        }
+        return userService.deleteUser(username);
     }
 
 }

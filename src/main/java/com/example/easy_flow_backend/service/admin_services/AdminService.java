@@ -75,10 +75,10 @@ public interface AdminService {
 
     List<Turnstile> getAllMachines();
 
-    MovingMachineView getMovingMachine(String username);
+    MovingMachineView getMovingMachine(String username) throws NotFoundException;
 
 
-    StationeryMachineView getStationMachine(String username);
+    StationeryMachineView getStationMachine(String username) throws NotFoundException;
 
     List<MovingMachineView> getMovingMachines();
 
@@ -86,4 +86,8 @@ public interface AdminService {
 
 
     ResponseMessage flipUserActive(String username) throws NotFoundException;
+
+    ResponseMessage deleteStationeryMachine(String username) throws NotFoundException;
+
+    ResponseMessage deleteMovingMachine(String username) throws NotFoundException;
 }

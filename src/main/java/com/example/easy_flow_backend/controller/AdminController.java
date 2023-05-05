@@ -183,12 +183,12 @@ public class AdminController {
 
 
     @GetMapping("machine/stationery/{username}")
-    public StationeryMachineView getStationMachine(@PathVariable String username) {
+    public StationeryMachineView getStationMachine(@PathVariable String username) throws NotFoundException {
         return adminService.getStationMachine(username);
     }
 
     @GetMapping("machine/moving/{username}")
-    public MovingMachineView getMovingMachine(@PathVariable String username) {
+    public MovingMachineView getMovingMachine(@PathVariable String username) throws NotFoundException {
         return adminService.getMovingMachine(username);
     }
 
@@ -202,6 +202,15 @@ public class AdminController {
         return adminService.getStationMachines();
     }
 
+    @DeleteMapping("machine/stationery/{username}")
+    public ResponseMessage deleteStationeryMachine(@PathVariable String username) throws NotFoundException {
+        return adminService.deleteStationeryMachine(username);
+    }
+
+    @DeleteMapping("machine/moving/{username}")
+    public ResponseMessage deleteMovingMachine(@PathVariable String username) throws NotFoundException {
+        return adminService.deleteMovingMachine(username);
+    }
 
 //ToDo
 //

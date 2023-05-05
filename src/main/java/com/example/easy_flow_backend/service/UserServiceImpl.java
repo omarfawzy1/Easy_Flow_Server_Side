@@ -24,4 +24,13 @@ public class UserServiceImpl {
         return new ResponseMessage("Success", HttpStatus.OK);
     }
 
+    public ResponseMessage deleteUser(String username) throws NotFoundException {
+        if (!userRepositry.existsByUsername(username)) {
+            throw new NotFoundException("Invalid Username!");
+        }
+
+        userRepositry.deleteByUsername(username);
+        return new ResponseMessage("Success", HttpStatus.OK);
+    }
+
 }

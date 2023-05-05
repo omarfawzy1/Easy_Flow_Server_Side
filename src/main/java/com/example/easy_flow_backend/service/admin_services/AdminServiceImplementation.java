@@ -200,11 +200,13 @@ public class AdminServiceImplementation implements AdminService {
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
+
     @Override
-    public List<Object> getOwnerDetails(String ownerName)throws BadRequestException {
+    public List<Object> getOwnerDetails(String ownerName) throws BadRequestException {
         return ownerService.getOwnerDetails(ownerName);
 
     }
+
     @Override
     public LiveWithStationsView getLineDetails(String name) {
         return lineService.getLineDetails(name);
@@ -227,12 +229,13 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public MovingMachineView getMovingMachine(String username) {
+    public MovingMachineView getMovingMachine(String username) throws NotFoundException {
         return movingTurnstileService.findProjectedByUsername(username);
     }
 
     @Override
-    public StationeryMachineView getStationMachine(String username) {
+    public StationeryMachineView getStationMachine(String username) throws NotFoundException {
+
         return stationeryTurnstileService.findProjectedByUsername(username);
     }
 
@@ -249,6 +252,16 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public ResponseMessage flipUserActive(String username) throws NotFoundException {
         return userService.flipUserActive(username);
+    }
+
+    @Override
+    public ResponseMessage deleteStationeryMachine(String username) throws NotFoundException {
+        return stationeryTurnstileService.deletMachine(username);
+    }
+
+    @Override
+    public ResponseMessage deleteMovingMachine(String username) throws NotFoundException {
+        return movingTurnstileService.deletMachine(username);
     }
 
 
