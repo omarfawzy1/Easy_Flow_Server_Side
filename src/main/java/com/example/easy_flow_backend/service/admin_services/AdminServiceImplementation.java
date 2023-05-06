@@ -12,7 +12,7 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
-import com.example.easy_flow_backend.service.UserServiceImpl;
+import com.example.easy_flow_backend.service.UserService;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
@@ -21,7 +21,6 @@ import com.example.easy_flow_backend.service.graph_services.GraphService;
 import com.example.easy_flow_backend.service.station_line_services.StationService;
 import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
-import com.example.easy_flow_backend.service.tunstile_services.TurnstileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -61,9 +60,10 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private MovingTurnstileService movingTurnstileService;
     @Autowired
-    MovingTurnstileService movingTurnstileService;
+    private UserService userService;
     @Autowired
-    UserServiceImpl userService;
+    private StationService stationService;
+
 
     @Override
     public List<LineView> getAllLines() {

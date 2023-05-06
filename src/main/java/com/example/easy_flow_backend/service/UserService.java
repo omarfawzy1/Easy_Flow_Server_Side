@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl {
+public class UserService {
 
     @Autowired
     UserRepositry userRepositry;

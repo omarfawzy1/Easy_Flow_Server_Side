@@ -1,7 +1,6 @@
 package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
-import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.dto.Views.StationeryMachineView;
 import com.example.easy_flow_backend.entity.StationaryTurnstile;
 import com.example.easy_flow_backend.entity.Status;
@@ -13,7 +12,7 @@ import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.service.TokenValidationService;
-import com.example.easy_flow_backend.service.UserServiceImpl;
+import com.example.easy_flow_backend.service.UserService;
 import com.example.easy_flow_backend.service.payment_services.TicketService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
@@ -47,7 +46,7 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     TokenValidationService tokenValidationService;
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     private void inRideValidation(RideModel rideModel, String machineUsername) throws BadRequestException {
         if (!tokenValidationService.validatePassengerToken(rideModel.getToken(), rideModel.getUsername())

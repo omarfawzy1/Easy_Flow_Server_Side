@@ -2,7 +2,6 @@ package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
-import com.example.easy_flow_backend.dto.Views.MachineView;
 import com.example.easy_flow_backend.dto.Views.MovingMachineView;
 import com.example.easy_flow_backend.entity.MovingTurnstile;
 import com.example.easy_flow_backend.entity.Turnstile;
@@ -12,7 +11,7 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.service.TokenValidationService;
-import com.example.easy_flow_backend.service.UserServiceImpl;
+import com.example.easy_flow_backend.service.UserService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.graph_services.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     @Autowired
     TokenValidationService tokenValidationService;
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     private void inRideValidation(RideModel rideModel, String machineUsername) throws BadRequestException {
         if (!tokenValidationService.validatePassengerToken(rideModel.getToken(), rideModel.getUsername()) || !tokenValidationService.validateGenerationTime(rideModel.getGenerationTime(), rideModel.getUsername()))

@@ -16,9 +16,9 @@ import java.util.Set;
 @Service
 public class StationService {
     @Autowired
-    StationRepo stationRepo;
+    private StationRepo stationRepo;
     @Autowired
-    LineRepo lineRepo;
+    private LineRepo lineRepo;
 
     public boolean exists(String stationName){
         return stationRepo.existsByStationNameIgnoreCase(stationName);
