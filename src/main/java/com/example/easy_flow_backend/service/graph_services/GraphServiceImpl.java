@@ -44,9 +44,9 @@ public class GraphServiceImpl implements GraphService {
 
     public GraphWithStations getWeightedGraph(String ownerId, String lineId) {
         String key = ownerId + '-' + lineId;
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-            return (GraphWithStations) redisTemplate.opsForValue().get(key);
-        }
+//        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+//            return (GraphWithStations) redisTemplate.opsForValue().get(key);
+//        }
 
         List<Graph> graphs = getOwnerLineGraph(ownerId, lineId);
         List<GraphEdge> totalEdges = new ArrayList<>();
@@ -55,7 +55,7 @@ public class GraphServiceImpl implements GraphService {
             totalEdges.addAll(edges);
         }
         GraphWithStations graph = convertEdgesToGraphWithStations(totalEdges);
-        redisTemplate.opsForValue().set(key, graph);
+//        redisTemplate.opsForValue().set(key, graph);
         return graph;
     }
 

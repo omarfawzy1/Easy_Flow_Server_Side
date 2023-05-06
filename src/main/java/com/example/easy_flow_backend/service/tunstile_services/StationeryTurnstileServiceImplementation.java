@@ -13,6 +13,7 @@ import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.service.TokenValidationService;
+import com.example.easy_flow_backend.service.UserServiceImpl;
 import com.example.easy_flow_backend.service.payment_services.TicketService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
@@ -44,6 +45,9 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
     @Autowired
     TokenValidationService tokenValidationService;
+
+    @Autowired
+    UserServiceImpl userService;
 
     private void inRideValidation(RideModel rideModel, String machineUsername) throws BadRequestException {
         if (!tokenValidationService.validatePassengerToken(rideModel.getToken(), rideModel.getUsername())
@@ -124,7 +128,9 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     }
 
     @Override
-    public StationeryMachineView findProjectedByUsername(String username) {
+    public StationeryMachineView findProjectedByUsername(String username) throws NotFoundException {
+        if (!stationaryTurnstileRepo.existsByUsername(username))
+            throw new NotFoundException("Machine Not found!");
         return stationaryTurnstileRepo.findProjectedByUsername(username);
     }
 
@@ -136,6 +142,14 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     @Override
     public List<Turnstile> getAllMachines() {
         return new ArrayList<>(stationaryTurnstileRepo.findAll());
+    }
+
+    @Override
+    public ResponseMessage deletMachine(String username) throws NotFoundException {
+        if (!stationaryTurnstileRepo.existsByUsername(username)) {
+            throw new NotFoundException("Invalid username!");
+        }
+        return userService.deleteUser(username);
     }
 
 

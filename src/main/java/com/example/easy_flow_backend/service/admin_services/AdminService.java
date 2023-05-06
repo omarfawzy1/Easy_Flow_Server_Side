@@ -24,8 +24,6 @@ public interface AdminService {
 
     ResponseMessage deletePassenger(String username) throws NotFoundException;
 
-    ResponseMessage passengerStatus(String username) throws NotFoundException;
-
     LineView getLine(String id) throws NotFoundException;
 
     ResponseMessage deleteLine(String id) throws NotFoundException;
@@ -77,14 +75,21 @@ public interface AdminService {
 
     List<Turnstile> getAllMachines();
 
-    MovingMachineView getMovingMachine(String username);
+    MovingMachineView getMovingMachine(String username) throws NotFoundException;
 
 
-    StationeryMachineView getStationMachine(String username);
+    StationeryMachineView getStationMachine(String username) throws NotFoundException;
 
     List<MovingMachineView> getMovingMachines();
 
     List<StationeryMachineView> getStationMachines();
 
     ResponseMessage deleteStation(String name) throws BadRequestException;
+
+
+    ResponseMessage flipUserActive(String username) throws NotFoundException;
+
+    ResponseMessage deleteStationeryMachine(String username) throws NotFoundException;
+
+    ResponseMessage deleteMovingMachine(String username) throws NotFoundException;
 }

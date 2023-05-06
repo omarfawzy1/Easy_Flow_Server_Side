@@ -97,7 +97,7 @@ public class DbInit implements CommandLineRunner {
         users.add(new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "omar", passwordEncoder.encode("omar"), "omar@gmail.com"));
         users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aly", passwordEncoder.encode("omar"), "aly@gmail.com"));
         users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464", "Regular", "Giza", Gender.M, new Date(System.currentTimeMillis()), "waled", passwordEncoder.encode("omar"), "waled@gmail.com"));
-        users.add(new Passenger(new Wallet("CC"), "Mona", "Mahmoud", "12311561655", "Regular", "Cairo", Gender.F, new Date(System.currentTimeMillis()), "mona", passwordEncoder.encode("omar"), "mona@gmail.com"));
+        users.add(new Passenger(new Wallet("CC", 1000.0), "Mona", "Mahmoud", "12311561655", "Regular", "Cairo", Gender.F, new Date(System.currentTimeMillis()), "mona", passwordEncoder.encode("omar"), "mona@gmail.com"));
         return users;
     }
 
@@ -141,7 +141,24 @@ public class DbInit implements CommandLineRunner {
         Ticket line2Ticket = new Ticket(
                 cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/02-00-00"));
         ticketRepo.save(line2Ticket);
+        Ticket line4Ticket = new Ticket(
+                cairoGovernment, line2, 9, 4, Utility.stringToMilleSecond("0000-00-00/00-30-00"));
+        Ticket line3Ticket = new Ticket(
+                cairoGovernment, line2, 12, 7, Utility.stringToMilleSecond("0000-00-00/03-00-00"));
+        ticketRepo.save(line4Ticket);
+        ticketRepo.save(line3Ticket);
 
+        Graph graph = new Graph();
+        graph.setOwner(cairoGovernment);
+        graph.setLine(line2);
+        graphRepo.save(graph);
+
+        ArrayList<GraphEdge> graphEdges = new ArrayList<>();
+        for (int i = 0; i < line2Stations.size() - 1; i++) {
+            graphEdges.add(new GraphEdge(graph, line2Stations.get(i), line2Stations.get(i + 1), 1D));
+        }
+
+        graphEdgeRepo.saveAll(graphEdges);
         // Create and save stationary turnstiles for each station
         HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
         for (Station station : line2Stations) {
@@ -152,6 +169,7 @@ public class DbInit implements CommandLineRunner {
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
             userRepositry.save(stationaryTurnstile);
         }
+
         // s1=elmonib_5_in    s2= giza_7_in
         // Create some passengers
         Passenger omar = passengersRepo.findUserByUsername("omar");
@@ -497,4 +515,6 @@ public class DbInit implements CommandLineRunner {
         tripRepository.saveAll(trips);
 
     }
+
+
 }

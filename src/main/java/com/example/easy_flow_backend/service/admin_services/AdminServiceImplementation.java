@@ -12,6 +12,7 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.service.UserServiceImpl;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
@@ -20,6 +21,7 @@ import com.example.easy_flow_backend.service.graph_services.GraphService;
 import com.example.easy_flow_backend.service.station_line_services.StationService;
 import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
+import com.example.easy_flow_backend.service.tunstile_services.TurnstileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -59,7 +61,9 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private MovingTurnstileService movingTurnstileService;
     @Autowired
-    private StationService stationService;
+    MovingTurnstileService movingTurnstileService;
+    @Autowired
+    UserServiceImpl userService;
 
     @Override
     public List<LineView> getAllLines() {
@@ -86,10 +90,6 @@ public class AdminServiceImplementation implements AdminService {
         return passengerService.deletePassenger(username);
     }
 
-    @Override
-    public ResponseMessage passengerStatus(String username) throws NotFoundException {
-        return passengerService.passengerStatus(username);
-    }
 
     @Override
     public LineView getLine(String id) throws NotFoundException {
@@ -203,11 +203,13 @@ public class AdminServiceImplementation implements AdminService {
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
+
     @Override
-    public List<Object> getOwnerDetails(String ownerName)throws BadRequestException {
+    public List<Object> getOwnerDetails(String ownerName) throws BadRequestException {
         return ownerService.getOwnerDetails(ownerName);
 
     }
+
     @Override
     public LiveWithStationsView getLineDetails(String name) {
         return lineService.getLineDetails(name);
@@ -230,12 +232,13 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public MovingMachineView getMovingMachine(String username) {
+    public MovingMachineView getMovingMachine(String username) throws NotFoundException {
         return movingTurnstileService.findProjectedByUsername(username);
     }
 
     @Override
-    public StationeryMachineView getStationMachine(String username) {
+    public StationeryMachineView getStationMachine(String username) throws NotFoundException {
+
         return stationeryTurnstileService.findProjectedByUsername(username);
     }
 
@@ -252,6 +255,21 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public ResponseMessage deleteStation(String name) throws BadRequestException {
         return stationService.deleteStation(name);
+    }
+
+    @Override
+    public ResponseMessage flipUserActive(String username) throws NotFoundException {
+        return userService.flipUserActive(username);
+    }
+
+    @Override
+    public ResponseMessage deleteStationeryMachine(String username) throws NotFoundException {
+        return stationeryTurnstileService.deletMachine(username);
+    }
+
+    @Override
+    public ResponseMessage deleteMovingMachine(String username) throws NotFoundException {
+        return movingTurnstileService.deletMachine(username);
     }
 
 

@@ -4,6 +4,7 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +33,11 @@ public class PassengerController {
 
     @GetMapping("profile")
     public PassagnerDetails getMyProfile() throws BadRequestException {
-
         return passengerService.getMyProfile();
     }
     // Dummy
     @PutMapping("recharge/{amount}")
+    @Operation(summary = "Passenger Wallet Recharge", description = "Passenger Wallet Recharge")
     public void recharge(@PathVariable double amount, Principal principal){
 
         passengerService.rechargePassenger(principal.getName(), amount);

@@ -77,6 +77,7 @@ public class TripServiceImpl implements TripService {
             trip.setEndTurnstile(machine);
             trip.setEndTime(rideModel.getTime());
             trip.setStatus(Status.Closed);
+            trip.setEndStation(machine.getStation().getStationName());
             tripRepo.save(trip);
         } else {
             return new ResponseMessage("Can not End Ride", HttpStatus.OK);
