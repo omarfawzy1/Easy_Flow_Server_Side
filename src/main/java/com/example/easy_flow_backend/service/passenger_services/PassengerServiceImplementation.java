@@ -2,10 +2,12 @@ package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.Transaction;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
+import com.example.easy_flow_backend.repos.TransactionRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
@@ -24,11 +26,12 @@ public class PassengerServiceImplementation implements PassengerService {
 
     @Autowired
     private TripRepo tripRepo;
-
     @Autowired
     private PassengersRepo passengerRepo;
     @Autowired
     private WalletService walletService;
+    @Autowired
+    private TransactionRepo transactionRepo;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -110,6 +113,8 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public void rechargePassenger(String username, double amount) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
+        Transaction transaction=new Transaction(passenger,amount);
+        transactionRepo.save(transaction);
         walletService.recharge(passenger.getWallet().getId(), amount);
     }
 

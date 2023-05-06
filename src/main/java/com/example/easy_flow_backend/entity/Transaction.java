@@ -27,4 +27,9 @@ public class Transaction {
     private Passenger passenger;
     @Column(nullable = false)
     private double amount;
+
+    public Transaction(Passenger passenger, double amount) {
+        this.passenger = passenger;
+        this.amount = amount;
+    }
 }

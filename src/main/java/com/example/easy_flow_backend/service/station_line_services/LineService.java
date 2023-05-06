@@ -3,10 +3,7 @@ package com.example.easy_flow_backend.service.station_line_services;
 import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.LiveWithStationsView;
-import com.example.easy_flow_backend.entity.Line;
-import com.example.easy_flow_backend.entity.Owner;
-import com.example.easy_flow_backend.entity.Station;
-import com.example.easy_flow_backend.entity.TransportationType;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
@@ -40,8 +37,11 @@ public class LineService {
         return line;
     }
     public boolean deleteLine(String id){
-        if (!lineRepo.existsById(id))
+        Optional<Line> line =lineRepo.findById(id);
+        if (line.isEmpty())
            return false;
+        for(MovingTurnstile temp:line.get().getMovingTurnstiles())
+            temp.setLine(null);
         lineRepo.deleteById(id);
         return true;
     }

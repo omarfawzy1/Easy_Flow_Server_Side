@@ -33,7 +33,7 @@ public class Owner {
     private Set<Ticket> tickets= new HashSet<>();
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Graph> graphs= new HashSet<>();
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner")
     private Set<Turnstile> turnstiles= new HashSet<>();
 
     public Owner(String name, String mail, String bankAccount) {

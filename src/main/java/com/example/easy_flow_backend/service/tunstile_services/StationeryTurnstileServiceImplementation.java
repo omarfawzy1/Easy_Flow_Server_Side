@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.service.tunstile_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.dto.Views.StationeryMachineView;
+import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.entity.StationaryTurnstile;
 import com.example.easy_flow_backend.entity.Status;
 import com.example.easy_flow_backend.entity.Turnstile;
@@ -122,8 +123,9 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         StationaryTurnstile stationaryTurnstile = stationaryTurnstileRepo.findUserByUsername(principal.getName());
         if (stationaryTurnstile == null)
             throw new BadRequestException("The user name not valid");
-
-        return stationaryTurnstile.getStation().getStationName();
+        Station station =stationaryTurnstile.getStation();
+        if(station==null)return null;
+        return station.getStationName();
     }
 
     @Override

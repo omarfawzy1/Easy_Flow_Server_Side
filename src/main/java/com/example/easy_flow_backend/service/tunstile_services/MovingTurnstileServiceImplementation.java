@@ -75,6 +75,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         String machineUsername = auth.getPrincipal().toString();
 
         MovingTurnstile machine = movingTurnstileRepo.findUserByUsername(machineUsername);
+        if(machine.getLine()==null)return null;
 
         String lineId = machine.getLine().getId();
 

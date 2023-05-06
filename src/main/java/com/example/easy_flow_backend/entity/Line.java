@@ -42,7 +42,7 @@ public class Line {
 
     @OneToOne(mappedBy = "line", cascade = CascadeType.REFRESH)
     private Graph graph;
-    @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "line")
     private Set<MovingTurnstile> movingTurnstiles= new HashSet<>();
     @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)
     private Set<Ticket> tickets= new HashSet<>();

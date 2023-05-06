@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.service.owner_services;
 import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
 
 import com.example.easy_flow_backend.entity.Owner;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.OwnerRepo;
@@ -51,6 +52,8 @@ public class OwnerServiceImplementation implements OwnerService{
     public ResponseMessage deleteOwner(String username) throws BadRequestException {
         Owner temp=ownerRepo.findByName(username);
         if(temp==null)throw new BadRequestException("there is no owner with this name.");
+        for(Turnstile turnstile:temp.getTurnstiles())
+            turnstile.setOwner(null);
         ownerRepo.delete(temp);
         return new ResponseMessage("Success", HttpStatus.OK);
     }

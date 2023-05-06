@@ -32,7 +32,7 @@ public class Station {
     private Set<GraphEdge> fromGraphEdges= new HashSet<>();
     @OneToMany(mappedBy = "toStation", cascade = CascadeType.ALL)
     private Set<GraphEdge> toGraphEdges= new HashSet<>();
-    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "station")
     private Set<StationaryTurnstile> stationaryTurnstiles= new HashSet<>();
 
     public Station(String stationName) {
