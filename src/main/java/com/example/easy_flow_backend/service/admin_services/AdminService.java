@@ -85,4 +85,6 @@ public interface AdminService {
     List<MovingMachineView> getMovingMachines();
 
     List<StationeryMachineView> getStationMachines();
+
+    ResponseMessage deleteStation(String name) throws BadRequestException;
 }

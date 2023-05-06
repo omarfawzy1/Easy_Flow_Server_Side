@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.*;
 
@@ -30,19 +32,20 @@ public class Line {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "owner_id")
     private Owner owner;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "line_station",
             joinColumns = @JoinColumn(name = "line_id", referencedColumnName = "line_id"),
             inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "station_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Set<Station> stations = new HashSet<>();
 
-    @OneToOne(optional = true)
-    @JoinColumn(name = "graph_id", referencedColumnName ="graph_id")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToOne(mappedBy = "line", cascade = CascadeType.REFRESH)
     private Graph graph;
-    @OneToMany(mappedBy = "line", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)
     private Set<MovingTurnstile> movingTurnstiles= new HashSet<>();
+    @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)
+    private Set<Ticket> tickets= new HashSet<>();
 
     public Line(String name, TransportationType type, Owner owner) {
         this.name = name;

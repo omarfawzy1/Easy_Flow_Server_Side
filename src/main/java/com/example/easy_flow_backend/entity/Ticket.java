@@ -24,7 +24,7 @@ public class Ticket {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "line_id")
     private Line line;
     private double price;

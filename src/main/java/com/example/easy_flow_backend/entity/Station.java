@@ -3,6 +3,9 @@ package com.example.easy_flow_backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.engine.internal.Cascade;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,7 +26,7 @@ public class Station {
     private String id;
     @Column(name = "station_name", nullable = false, unique = true)
     private String stationName;
-    @ManyToMany(mappedBy = "stations", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "stations", fetch = FetchType.EAGER)
     Set<Line> lines = new HashSet<>();
     @OneToMany(mappedBy = "fromStation", cascade = CascadeType.ALL)
     private Set<GraphEdge> fromGraphEdges= new HashSet<>();

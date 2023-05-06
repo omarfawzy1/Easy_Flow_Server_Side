@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @NoArgsConstructor
@@ -19,6 +21,7 @@ public class GraphEdge {
     String id;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "graph_id")
     private Graph graph;
 

@@ -408,7 +408,7 @@ public class DbInit implements CommandLineRunner {
         m7Stations.add(mashalStation);
         m7Stations.add(medanRyhmiaStation);
 //        m7Stations.forEach(station -> station.setTransportationType(TransportationType.BUS));
-        stationRepo.saveAll(m7Stations);
+        //stationRepo.saveAll(m7Stations);
 
         m8 = lineRepo.save(m8);
         for (Station station : m7Stations) {

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +17,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"line_id", "owner_id"})},
-        indexes = {@Index(columnList = "owner_id"), @Index(columnList = "owner_id,line_id") })
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"line_id", "owner_id"})},
+//        indexes = {@Index(columnList = "owner_id"), @Index(columnList = "owner_id,line_id") })
+@Table(indexes = {@Index(columnList = "owner_id")})
 public class Graph {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -28,7 +31,8 @@ public class Graph {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "line_id")
     private Line line;
     @OneToMany(mappedBy = "graph", cascade = CascadeType.ALL)
