@@ -41,4 +41,6 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
             "From Passenger passenger " +
             "WHERE passenger.wallet.balance < :threshold")
     int getBelowThresholdCount(@Param("threshold") long threshold);
+
+    Passenger findByEmailIgnoreCase(String email);
 }

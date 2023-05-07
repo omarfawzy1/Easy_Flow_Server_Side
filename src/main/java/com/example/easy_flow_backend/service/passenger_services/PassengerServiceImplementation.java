@@ -1,14 +1,15 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.TripView;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TripView;
+import com.example.easy_flow_backend.service.password_reset_services.ResetPasswordTokenService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Service
 public class PassengerServiceImplementation implements PassengerService {
-
+    private static final int TOKEN_LENGTH = 7;
     @Autowired
     private TripRepo tripRepo;
 
@@ -29,6 +30,8 @@ public class PassengerServiceImplementation implements PassengerService {
     private PassengersRepo passengerRepo;
     @Autowired
     private WalletService walletService;
+    @Autowired
+    private ResetPasswordTokenService resetPasswordTokenService;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -64,8 +67,7 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public PassagnerDetails getPassengerDetails(String username) throws NotFoundException {
         PassagnerDetails passenger = passengerRepo.findAllProjectedByUsername(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+        if (passenger == null) throw new NotFoundException("Passenger Not Found");
         return passenger;
     }
 
@@ -73,16 +75,14 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public Passenger getPassenger(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+        if (passenger == null) throw new NotFoundException("Passenger Not Found");
         return passenger;
     }
 
     @Override
     public ResponseMessage deletePassenger(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+        if (passenger == null) throw new NotFoundException("Passenger Not Found");
         passengerRepo.deleteByUsernameIgnoreCase(username);
         return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
     }
@@ -90,8 +90,7 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public ResponseMessage passengerStatus(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+        if (passenger == null) throw new NotFoundException("Passenger Not Found");
         passenger.setActive(!passenger.isActive());
         passengerRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
@@ -118,6 +117,29 @@ public class PassengerServiceImplementation implements PassengerService {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         passenger.setLastQrTime(time);
         passengerRepo.save(passenger);
+    }
+
+
+    @Override
+    public ResponseMessage resetPassword(String email) throws NotFoundException {
+        System.out.println(email);
+        Passenger passenger = passengerRepo.findByEmailIgnoreCase(email);
+        if (passenger == null) {
+            throw new NotFoundException("Incorrect email!");
+        }
+        String token = resetPasswordTokenService.getRandomToken(TOKEN_LENGTH);
+        resetPasswordTokenService.createPasswordResetTokenForUser(passenger, token);
+        String subject = "Reset your EasyFlow password\n";
+        String text = "Reset password code is " + token + ".\n";
+        try {
+            resetPasswordTokenService.sendMail(email, subject, text);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return new ResponseMessage("Sorry Something wrong,please try again letter.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+        return new ResponseMessage("Check your mail.", HttpStatus.OK);
     }
 
 }

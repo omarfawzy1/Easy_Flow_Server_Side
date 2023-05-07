@@ -6,6 +6,7 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.dto.Models.RegisterModel;
+import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class HomeServiceImplementation implements HomeService {
     private PassengersRepo passengersRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PassengerService passengerService;
 
     @Override
     public ResponseMessage Register(RegisterModel registerModel) throws NotFoundException {
@@ -28,8 +31,13 @@ public class HomeServiceImplementation implements HomeService {
             throw new NotFoundException("The Phone already Used");
         }
 
-        Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(),"Regular", registerModel.getCity(), registerModel.getGender(),registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()),registerModel.getEmail());
+        Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), "Regular", registerModel.getCity(), registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()), registerModel.getEmail());
         passengersRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseMessage resetPassword(String email) throws NotFoundException {
+        return passengerService.resetPassword(email);
     }
 }
