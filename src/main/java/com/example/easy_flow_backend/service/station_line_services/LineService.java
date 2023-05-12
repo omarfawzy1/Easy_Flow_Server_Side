@@ -26,6 +26,7 @@ public class LineService {
     StationRepo stationRepo;
     @Autowired
     StationService stationService;
+
     public List<LineView> getAllLines() {
         return lineRepo.findBy(LineView.class);
     }
@@ -36,16 +37,18 @@ public class LineService {
             throw new NotFoundException("The Line Not Exist");
         return line;
     }
-    public boolean deleteLine(String id){
-        Optional<Line> line =lineRepo.findById(id);
-        if (line.isEmpty())
-           return false;
-        for(MovingTurnstile temp:line.get().getMovingTurnstiles())
+
+    public boolean deleteLine(String name) {
+        Line line = lineRepo.findByName(name);
+        if (line == null)
+            return false;
+        for (MovingTurnstile temp : line.getMovingTurnstiles())
             temp.setLine(null);
-        lineRepo.deleteById(id);
+        lineRepo.deleteByName(name);
         return true;
     }
-    public boolean addLine(AddLineModel addLineModel){
+
+    public boolean addLine(AddLineModel addLineModel) {
 //        if (lineRepo.existsByNameIgnoreCase(line.getName()))
 //            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
         Optional<Owner> owner = ownerRepo.findById(addLineModel.getOwnerId());
@@ -64,7 +67,7 @@ public class LineService {
         return true;
     }
 
-    public Line addStationToLine(Station station, Line line){
+    public Line addStationToLine(Station station, Line line) {
         station = stationService.addStation(station);
         line.addStation(station);
         return lineRepo.save(line);

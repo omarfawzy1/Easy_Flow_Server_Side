@@ -84,9 +84,9 @@ public class AdminController {
         return adminService.getLine(id);
     }
 
-    @DeleteMapping("line/{id}")
-    public ResponseMessage deleteLine(@PathVariable String id) throws NotFoundException {
-        return adminService.deleteLine(id);
+    @DeleteMapping("line/{name}")
+    public ResponseMessage deleteLine(@PathVariable String name) throws NotFoundException {
+        return adminService.deleteLine(name);
     }
     @DeleteMapping("station/{name}")
     public ResponseMessage deleteStation(@PathVariable String name) throws NotFoundException, BadRequestException {

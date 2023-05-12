@@ -26,7 +26,7 @@ public interface AdminService {
 
     LineView getLine(String id) throws NotFoundException;
 
-    ResponseMessage deleteLine(String id) throws NotFoundException;
+    ResponseMessage deleteLine(String name) throws NotFoundException;
 
     ResponseMessage addLine(AddLineModel addLineModel) throws BadRequestException;
 

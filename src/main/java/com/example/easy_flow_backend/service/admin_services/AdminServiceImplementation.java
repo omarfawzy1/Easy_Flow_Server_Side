@@ -97,8 +97,8 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage deleteLine(String id) throws NotFoundException {
-        if (!lineService.deleteLine(id))
+    public ResponseMessage deleteLine(String name) throws NotFoundException {
+        if (!lineService.deleteLine(name))
             throw new NotFoundException("The Line Does Not Exist");
         return new ResponseMessage("Success", HttpStatus.OK);
     }

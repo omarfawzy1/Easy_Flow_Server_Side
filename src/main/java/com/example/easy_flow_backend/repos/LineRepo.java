@@ -25,4 +25,6 @@ public interface LineRepo extends JpaRepository<Line, String> {
             "From Line line " +
             "WHERE line.name = :name")
     LiveWithStationsView getLineDetails(@Param("name") String name);
+
+    void deleteByName(String name);
 }
