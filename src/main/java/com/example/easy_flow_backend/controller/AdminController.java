@@ -34,7 +34,7 @@ public class AdminController {
     }
 
     @GetMapping("owners/{username}")
-    public Owner getOwner(@PathVariable("username") String username) throws BadRequestException {
+    public OwnerViewDetails getOwner(@PathVariable("username") String username) throws BadRequestException {
         return adminService.getOwner(username);
     }
 

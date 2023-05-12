@@ -218,8 +218,8 @@ public class AdminServiceImplementation implements AdminService {
 
 
     @Override
-    public Owner getOwner(String username) throws BadRequestException {
-        Owner owner = ownerRepo.findByName(username);
+    public OwnerViewDetails getOwner(String username) throws BadRequestException {
+        OwnerViewDetails owner = ownerRepo.findByName(username, OwnerViewDetails.class);
         if (owner == null)
             throw new BadRequestException("The owner Not exist");
         return owner;

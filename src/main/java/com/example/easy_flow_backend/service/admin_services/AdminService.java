@@ -71,7 +71,7 @@ public interface AdminService {
 
     ResponseMessage deleteOwner(String username) throws BadRequestException;
 
-    Owner getOwner(String username) throws BadRequestException;
+    OwnerViewDetails getOwner(String username) throws BadRequestException;
 
     List<Turnstile> getAllMachines();
 
