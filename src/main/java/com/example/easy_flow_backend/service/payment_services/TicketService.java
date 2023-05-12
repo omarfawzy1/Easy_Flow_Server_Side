@@ -1,7 +1,10 @@
 package com.example.easy_flow_backend.service.payment_services;
 
+import com.example.easy_flow_backend.dto.Models.TicketModel;
 import com.example.easy_flow_backend.entity.Ticket;
-
+import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface TicketService {
@@ -16,5 +19,7 @@ public interface TicketService {
     double getMinPrice(String ownerId, String lineId);
 
     double getMinPrice(String ownerId);
+
+    ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException;
 
 }

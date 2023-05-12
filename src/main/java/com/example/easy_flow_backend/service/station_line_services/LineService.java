@@ -31,8 +31,16 @@ public class LineService {
         return lineRepo.findBy(LineView.class);
     }
 
-    public LineView getLine(String id) throws NotFoundException {
-        LineView line = lineRepo.findProjectedById(id);
+    public Line getLineById(String id) throws NotFoundException {
+        Line line = lineRepo.findById(id, Line.class);
+        if (line == null)
+            throw new NotFoundException("The Line Not Exist");
+
+        return line;
+    }
+
+    public Line getLineByName(String name) throws NotFoundException {
+        Line line = lineRepo.findByName(name, Line.class);
         if (line == null)
             throw new NotFoundException("The Line Not Exist");
         return line;

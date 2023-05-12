@@ -2,7 +2,6 @@ package com.example.easy_flow_backend.repos;
 
 import com.example.easy_flow_backend.dto.Views.LiveWithStationsView;
 import com.example.easy_flow_backend.entity.Line;
-import com.example.easy_flow_backend.dto.Views.LineView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +13,8 @@ import java.util.List;
 public interface LineRepo extends JpaRepository<Line, String> {
     <T> List<T> findBy(Class<T> type);
 
-    LineView findProjectedById(String id);
+    <T> T findById(String id, Class<T> type);
+    <T> T findByName(String name, Class<T> type);
 
     boolean existsByNameIgnoreCase(String name);
 

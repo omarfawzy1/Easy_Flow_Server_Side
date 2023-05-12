@@ -1,13 +1,10 @@
 package com.example.easy_flow_backend.service.admin_services;
 
-import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
-import com.example.easy_flow_backend.dto.Models.GraphModel;
+import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
-import com.example.easy_flow_backend.dto.Models.AddLineModel;
-import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.error.ResponseMessage;
 
 import java.util.List;
@@ -23,8 +20,6 @@ public interface AdminService {
     Passenger getPassenger(String username) throws NotFoundException;
 
     ResponseMessage deletePassenger(String username) throws NotFoundException;
-
-    LineView getLine(String id) throws NotFoundException;
 
     ResponseMessage deleteLine(String name) throws NotFoundException;
 
@@ -65,7 +60,7 @@ public interface AdminService {
 
     ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException;
 
-    List<Object> getOwnerDetails(String ownerName)throws BadRequestException;
+    List<Object> getOwnerDetails(String ownerName) throws BadRequestException;
 
     LiveWithStationsView getLineDetails(String name);
 
@@ -92,4 +87,6 @@ public interface AdminService {
     ResponseMessage deleteStationeryMachine(String username) throws NotFoundException;
 
     ResponseMessage deleteMovingMachine(String username) throws NotFoundException;
+
+    ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException;
 }

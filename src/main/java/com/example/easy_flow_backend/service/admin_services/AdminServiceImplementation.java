@@ -1,23 +1,22 @@
 package com.example.easy_flow_backend.service.admin_services;
 
-import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
-import com.example.easy_flow_backend.dto.Models.GraphModel;
+import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
-import com.example.easy_flow_backend.entity.*;
+import com.example.easy_flow_backend.entity.GraphEdge;
+import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.TransportationType;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
-import com.example.easy_flow_backend.dto.Models.AddLineModel;
-import com.example.easy_flow_backend.dto.Views.LineView;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.service.UserService;
-import com.example.easy_flow_backend.service.owner_services.OwnerService;
-import com.example.easy_flow_backend.service.station_line_services.LineService;
-import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.graph_services.GraphEdgeService;
 import com.example.easy_flow_backend.service.graph_services.GraphService;
+import com.example.easy_flow_backend.service.owner_services.OwnerService;
+import com.example.easy_flow_backend.service.passenger_services.PassengerService;
+import com.example.easy_flow_backend.service.payment_services.TicketService;
+import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.station_line_services.StationService;
 import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
@@ -65,6 +64,8 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private StationService stationService;
 
+    @Autowired
+    private TicketService ticketService;
 
     @Override
     public List<LineView> getAllLines() {
@@ -91,11 +92,6 @@ public class AdminServiceImplementation implements AdminService {
         return passengerService.deletePassenger(username);
     }
 
-
-    @Override
-    public LineView getLine(String id) throws NotFoundException {
-        return lineService.getLine(id);
-    }
 
     @Override
     public ResponseMessage deleteLine(String name) throws NotFoundException {
@@ -271,6 +267,11 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public ResponseMessage deleteMovingMachine(String username) throws NotFoundException {
         return movingTurnstileService.deletMachine(username);
+    }
+
+    @Override
+    public ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException {
+        return ticketService.addTicket(ticketModel);
     }
 
 

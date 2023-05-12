@@ -1,17 +1,31 @@
 package com.example.easy_flow_backend.service.payment_services;
 
+import com.example.easy_flow_backend.dto.Models.TicketModel;
+import com.example.easy_flow_backend.entity.Line;
+import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Ticket;
+import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.TicketRepo;
+import com.example.easy_flow_backend.service.owner_services.OwnerService;
+import com.example.easy_flow_backend.service.station_line_services.LineService;
+import io.grpc.ManagedChannelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private TicketRepo ticketRepo;
+    @Autowired
+    LineService lineService;
+    @Autowired
+    OwnerService ownerService;
 
     public List<Ticket> getAllTickets(String ownerId, String lineID) {
         return ticketRepo.findAllByOwnerIdAndLineId(ownerId, lineID);
@@ -70,5 +84,31 @@ public class TicketServiceImpl implements TicketService {
         return getMinPriceWeightBased(tickets, 0);
     }
 
+    @Override
+    public ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException {
+        Owner owner = ownerService.getOwnerByUsername(ticketModel.getOwnerName());
+
+        Line line = null;
+        try {
+            line = lineService.getLineByName(ticketModel.getLineName());
+            if (!line.getOwner().getId().equals(owner.getId())) {
+                return new ResponseMessage("Error, This Line not belong to this owner.",HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception exception) {
+            //donothing
+        }
+
+
+        Ticket ticket = new Ticket(owner, line, ticketModel.getPrice(), ticketModel.getWeight(), ticketModel.getTime());
+        try {
+
+            ticketRepo.save(ticket);
+
+        } catch (Exception ex) {
+            return new ResponseMessage(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseMessage("Success", HttpStatus.OK);
+    }
 
 }
