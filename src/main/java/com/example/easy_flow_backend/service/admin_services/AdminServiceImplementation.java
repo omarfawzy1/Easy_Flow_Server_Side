@@ -274,6 +274,26 @@ public class AdminServiceImplementation implements AdminService {
         return ticketService.addTicket(ticketModel);
     }
 
+    @Override
+    public void deleteTicket(String id) {
+        ticketService.deleteTicket(id);
+    }
+
+    @Override
+    public TicketView getTicket(String id) {
+        return ticketService.getTicket(id);
+    }
+
+    @Override
+    public List<TicketView> getOwnerTickets(String name) {
+        return ticketService.getOwnerTickets(name);
+    }
+
+    @Override
+    public List<TicketView> getLineTickets(String name) {
+        return ticketService.getLineTickets(name);
+    }
+
 
     @Override
     public ResponseMessage deleteOwner(String username) throws BadRequestException {

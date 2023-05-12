@@ -3,7 +3,6 @@ package com.example.easy_flow_backend.controller;
 import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.GraphEdge;
-import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -215,6 +214,25 @@ public class AdminController {
         return adminService.addTicket(ticketModel);
     }
 
+    @DeleteMapping("tickets/{id}")
+    public void deleteTicket(@PathVariable String id) {
+        adminService.deleteTicket(id);
+    }
+
+    @GetMapping("tickets/{id}")
+    public TicketView getTicket(@PathVariable String id) {
+        return adminService.getTicket(id);
+    }
+
+    @GetMapping("owners/tickets/{name}")
+    public List<TicketView> getOwnerTickets(@PathVariable String name) {
+        return adminService.getOwnerTickets(name);
+    }
+
+    @GetMapping("lines/tickets/{name}")
+    public List<TicketView> getLineTickets(@PathVariable String name) {
+        return adminService.getLineTickets(name);
+    }
 //ToDo
 //
 //View system-wide statistics:

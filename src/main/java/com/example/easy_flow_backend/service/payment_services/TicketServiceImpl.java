@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.service.payment_services;
 
 import com.example.easy_flow_backend.dto.Models.TicketModel;
+import com.example.easy_flow_backend.dto.Views.TicketView;
 import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Ticket;
@@ -92,7 +93,7 @@ public class TicketServiceImpl implements TicketService {
         try {
             line = lineService.getLineByName(ticketModel.getLineName());
             if (!line.getOwner().getId().equals(owner.getId())) {
-                return new ResponseMessage("Error, This Line not belong to this owner.",HttpStatus.BAD_REQUEST);
+                return new ResponseMessage("Error, This Line not belong to this owner.", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception exception) {
             //donothing
@@ -109,6 +110,32 @@ public class TicketServiceImpl implements TicketService {
         }
 
         return new ResponseMessage("Success", HttpStatus.OK);
+    }
+
+    @Override
+    public void deleteTicket(String id) {
+        try {
+            ticketRepo.deleteById(id);
+        } catch (Exception ex) {
+            return;
+        }
+
+    }
+
+    @Override
+    public TicketView getTicket(String id) {
+
+        return ticketRepo.findById(id, TicketView.class);
+    }
+
+    @Override
+    public List<TicketView> getOwnerTickets(String name) {
+        return ticketRepo.findAllByOwnerName(name, TicketView.class);
+    }
+
+    @Override
+    public List<TicketView> getLineTickets(String name) {
+        return ticketRepo.findByLineName(name,TicketView.class);
     }
 
 }

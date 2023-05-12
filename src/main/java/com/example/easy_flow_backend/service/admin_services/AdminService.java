@@ -89,4 +89,12 @@ public interface AdminService {
     ResponseMessage deleteMovingMachine(String username) throws NotFoundException;
 
     ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException;
+
+    void deleteTicket(String id);
+
+    TicketView getTicket(String id);
+
+    List<TicketView> getOwnerTickets(String name);
+
+    List<TicketView> getLineTickets(String name);
 }

@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.repos;
 
+import com.example.easy_flow_backend.dto.Views.TicketView;
 import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,9 @@ public interface TicketRepo extends JpaRepository<Ticket, String> {
 
     List<Ticket> findAllByOwnerIdAndLineId(String owner_id, String line_id);
 
+    <T> T findById(String id, Class<T> type);
+
+    <T> List<T> findAllByOwnerName(String ownerName, Class<T> type);
+
+    <T> List<T> findByLineName(String name, Class<T> type);
 }
