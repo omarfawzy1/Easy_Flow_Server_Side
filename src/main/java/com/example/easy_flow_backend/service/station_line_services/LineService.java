@@ -44,7 +44,7 @@ public class LineService {
             return false;
         for (MovingTurnstile temp : line.getMovingTurnstiles())
             temp.setLine(null);
-        lineRepo.deleteByName(name);
+        lineRepo.delete(line);
         return true;
     }
 

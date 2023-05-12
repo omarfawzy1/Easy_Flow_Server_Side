@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OwnerRepo extends JpaRepository<Owner, String> {
     Owner findByName(String name);
@@ -13,4 +15,7 @@ public interface OwnerRepo extends JpaRepository<Owner, String> {
     @Override
     boolean existsById(String id);
 
+    <T> List<T> findALLBy(Class<T> type);
+
+    <T> T findByName(String name, Class<T> type);
 }

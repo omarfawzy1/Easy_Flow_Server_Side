@@ -29,7 +29,7 @@ public class AdminController {
 
 
     @GetMapping("owners")
-    public List<Owner> getALlOwners() {
+    public List<OwnerView> getALlOwners() {
         return adminService.getAllOwners();
     }
 

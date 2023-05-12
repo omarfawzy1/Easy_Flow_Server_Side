@@ -56,7 +56,7 @@ public interface AdminService {
 
     int getTripCount();
 
-    List<Owner> getAllOwners();
+    List<OwnerView> getAllOwners();
 
 
     boolean addGraph(GraphModel graphModel);

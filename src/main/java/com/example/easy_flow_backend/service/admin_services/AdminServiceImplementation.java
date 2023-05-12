@@ -39,6 +39,7 @@ public class AdminServiceImplementation implements AdminService {
     private TripRepo tripRepo;
     @Autowired
     private UserRepositry userRepositry;
+
     @Autowired
     private TransactionRepo transactionRepo;
 
@@ -177,8 +178,8 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public List<Owner> getAllOwners() {
-        return ownerRepo.findAll();
+    public List<OwnerView> getAllOwners() {
+        return ownerRepo.findALLBy(OwnerView.class);
     }
 
 

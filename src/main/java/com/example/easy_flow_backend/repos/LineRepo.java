@@ -13,18 +13,24 @@ import java.util.List;
 @Repository
 public interface LineRepo extends JpaRepository<Line, String> {
     <T> List<T> findBy(Class<T> type);
+
     LineView findProjectedById(String id);
 
     boolean existsByNameIgnoreCase(String name);
+
     Line findByName(String name);
-    @Query( "SELECT line.name " +
+
+    @Query("SELECT line.name " +
             "From Line line " +
             "WHERE line.owner.id = :ownerId")
     List<Object> getOwnerDetails(@Param("ownerId") String id);
-    @Query( "SELECT line " +
+
+    @Query("SELECT line " +
             "From Line line " +
             "WHERE line.name = :name")
     LiveWithStationsView getLineDetails(@Param("name") String name);
 
     void deleteByName(String name);
+
+    void removeByName(String name);
 }
