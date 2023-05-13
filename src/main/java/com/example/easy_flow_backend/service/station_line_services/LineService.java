@@ -90,4 +90,7 @@ public class LineService {
         return lineRepo.getLineDetails(name);
     }
 
+    public List<Line> getLinesByOwnerId(String ownerId) {
+        return lineRepo.findAllByOwnerId(ownerId, Line.class);
+    }
 }

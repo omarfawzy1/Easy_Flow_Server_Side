@@ -105,7 +105,7 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     }
 
     @Override
-    public ResponseMessage outRide(RideModel rideModel) throws BadRequestException {
+    public ResponseMessage outRide(RideModel rideModel) throws BadRequestException, NotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
 

@@ -10,7 +10,7 @@ import java.security.Principal;
 import java.util.List;
 
 public interface StationeryTurnstileService extends TurnstileService {
-    ResponseMessage outRide(RideModel rideModel) throws BadRequestException;
+    ResponseMessage outRide(RideModel rideModel) throws BadRequestException, NotFoundException;
 
     String getMyStationName(Principal principal) throws BadRequestException;
 

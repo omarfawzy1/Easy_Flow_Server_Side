@@ -44,14 +44,14 @@ public class AdminController {
     public PassagnerDetails getPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPassengerDetails(username);
     }
-
-    @GetMapping("graph")
+    //TODO
+ /*   @GetMapping("graph")
     public boolean addGraph(@Valid @RequestBody GraphModel graphModel) {
         return adminService.addGraph(graphModel);
-    }
+    }*/
 
     @GetMapping("graph/{ownerId}/{lineId}")
-    public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId) {
+    public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId) throws NotFoundException {
         return adminService.getGraph(ownerId, lineId);
     }
 

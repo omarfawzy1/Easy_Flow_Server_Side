@@ -13,7 +13,10 @@ import java.util.List;
 public interface LineRepo extends JpaRepository<Line, String> {
     <T> List<T> findBy(Class<T> type);
 
+    <T> List<T> findAllByOwnerId(String ownerId, Class<T> type);
+
     <T> T findById(String id, Class<T> type);
+
     <T> T findByName(String name, Class<T> type);
 
     boolean existsByNameIgnoreCase(String name);

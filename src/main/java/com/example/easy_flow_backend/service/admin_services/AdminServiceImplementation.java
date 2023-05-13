@@ -178,8 +178,8 @@ public class AdminServiceImplementation implements AdminService {
         return ownerRepo.findALLBy(OwnerView.class);
     }
 
-
-    @Override
+    //TODO
+    /*@Override
     public boolean addGraph(GraphModel graphModel) {
         // TODO Graph Model Validation
         if (!graphService.addGraph(graphModel.getGraph())) {
@@ -187,10 +187,11 @@ public class AdminServiceImplementation implements AdminService {
         }
         return graphEdgeService.addEdges(graphModel.getGraphEdgeList());
     }
-
+*/
     @Override
-    public List<GraphEdge> getGraph(String ownerId, String lineId) {
-        return graphEdgeService.getEdges(graphService.getLineGraph(ownerId, lineId));
+    public List<GraphEdge> getGraph(String ownerId, String lineId) throws NotFoundException {
+        return new ArrayList<>(lineService.getLineById(lineId).getGraphEdges());
+//        return graphEdgeService.getEdges(graphService.getLineGraph(ownerId, lineId));
     }
 
     @Override

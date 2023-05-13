@@ -1,19 +1,18 @@
 package com.example.easy_flow_backend.service.graph_services;
 
+import com.example.easy_flow_backend.entity.Line;
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphWithStations;
 
 import java.util.List;
 
 public interface GraphService {
-    List<Graph> getOwnerGraph(String ownerId);
 
-    Graph getLineGraph(String ownerId, String lineId);
 
-    List<Graph> getOwnerLineGraph(String ownerId, String lineId);
+    List<String> getOrderedStationOfLine(String lineId) throws NotFoundException;
 
-    GraphWithStations getWeightedGraph(String ownerId, String lineId);
+    GraphWithStations getLineWeightedGraph(String lineId) throws NotFoundException;
 
-    boolean addGraph(Graph graph);
-
-    List<String> getOrderedStationOfLine( String lineId);
+    //concatinate all the lines of the owner with each other like the metro
+    GraphWithStations getOwnerWeightedGraph(String ownerId);
 }

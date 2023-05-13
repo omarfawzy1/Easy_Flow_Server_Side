@@ -54,9 +54,9 @@ public interface AdminService {
     List<OwnerView> getAllOwners();
 
 
-    boolean addGraph(GraphModel graphModel);
+//    boolean addGraph(GraphModel graphModel);
 
-    List<GraphEdge> getGraph(String ownerId, String lineId);
+    List<GraphEdge> getGraph(String ownerId, String lineId) throws NotFoundException;
 
     ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException;
 

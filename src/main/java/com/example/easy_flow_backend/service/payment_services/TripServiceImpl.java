@@ -57,7 +57,7 @@ public class TripServiceImpl implements TripService {
 
     //For Stationery TurnStile
     @Override
-    public ResponseMessage makeFinalTrip(RideModel rideModel, String machineUsername) {
+    public ResponseMessage makeFinalTrip(RideModel rideModel, String machineUsername) throws NotFoundException {
 
         StationaryTurnstile machine = stationaryTurnstileRepo.findUserByUsername(machineUsername);
 
@@ -65,7 +65,7 @@ public class TripServiceImpl implements TripService {
 
         String ownerId = machine.getOwner().getId();
 
-        double weight = graphWeightService.getWeight(ownerId, trip.getStartStation(), machine.getStation().getStationName());
+        double weight = graphWeightService.getOwnerWeight(ownerId, trip.getStartStation(), machine.getStation().getStationName());
 
         long totalTime = rideModel.getTime().getTime() - trip.getStartTime().getTime();
 
@@ -97,7 +97,7 @@ public class TripServiceImpl implements TripService {
         String startStation = rideModel.getStartStation();
         String endStation = rideModel.getEndStation();
 
-        double weight = graphWeightService.getWeight(ownerId, lineId, startStation, endStation);
+        double weight = graphWeightService.getLineWeight(lineId, startStation, endStation);
 
         double price = ticketService.getPrice(ownerId, lineId, weight, 0L);
 

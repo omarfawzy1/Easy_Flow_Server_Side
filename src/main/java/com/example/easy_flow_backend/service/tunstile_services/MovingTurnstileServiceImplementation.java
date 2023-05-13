@@ -70,7 +70,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
 
 
     @Override
-    public Pair<String, List<String>> getLineStations() {
+    public Pair<String, List<String>> getLineStations() throws NotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
 

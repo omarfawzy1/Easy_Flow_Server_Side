@@ -7,7 +7,7 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 public interface TripService {
     ResponseMessage makePendingTrip(RideModel rideModel, String machineUsername) throws NotFoundException;//stationeryTurnStile
 
-    ResponseMessage makeFinalTrip(RideModel rideModel, String machineUsername);//stationeryTurnStile
+    ResponseMessage makeFinalTrip(RideModel rideModel, String machineUsername) throws NotFoundException;//stationeryTurnStile
 
     ResponseMessage makeTrip(RideModel rideModel, String machineUsername) throws NotFoundException;//MovingTurnstile
 

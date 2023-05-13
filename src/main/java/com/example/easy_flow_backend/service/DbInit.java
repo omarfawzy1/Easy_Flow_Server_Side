@@ -103,18 +103,99 @@ public class DbInit implements CommandLineRunner {
         // Create and save the owner of the line
         Owner cairoGovernment = new Owner("Cairo Government", "government@government.gov", "0000 0000 0000 0000");
         ownerRepo.save(cairoGovernment);
+        Line line1 = new Line("Line 1", TransportationType.METRO, cairoGovernment);
+        Station helwan = new Station("Helwan");
+        Station ainHelwan = new Station("Ain Helwan");
+        Station helwanUniversity = new Station("Helwan University");
+        Station wadi_hof = new Station("Wadi Hof");
+        Station hadayek_helwan = new Station("Hadayek Helwan");
+        Station maasara = new Station("El-Maasara");
+        Station toraasment = new Station("Tora El-Asmant");
+        Station kozzika = new Station("Kozzika");
+        Station toraElBalad = new Station("Tora El-Balad");
+        Station sakanatElMaadi = new Station("Sakanat El-Maadi");
+        Station maadi = new Station("Maadi");
+        Station hadyekElmaadi = new Station("Hadayek El-Maadi");
+        Station darElSalam = new Station("Dar El-Salam");
+        Station ElZagraa = new Station("El-Zahraa'");
+        Station MarGitgis = new Station("Mar Girgis");
+        Station ElmalekElsaleh = new Station("El-Malek El-Saleh");
+        Station AlSayedaZeinab = new Station("Al-Sayeda Zeinab");
+        Station saadZaghloul = new Station("Saad Zaghloul");
+        Station sadat = new Station("Sadat");
+        Station nasser = new Station("Nasser");
+        Station orabi = new Station("Orabi");
+        Station alShohadaa = new Station("Al-Shohadaa");
+        Station ghamra = new Station("Ghamra");
+        Station elDemerdash = new Station("El-Demerdash");
+        Station manshya = new Station("Manshiet El-Sadr");
+        Station kobriqobba = new Station("Kobri El-Qobba");
+        Station hammamat = new Station("Hammamat El-Qobba");
+        Station saray = new Station("Saray El-Qobba");
+        Station zaitoun = new Station("Hadayeq El-Zaitoun");
+        Station helmeyet = new Station("Helmeyet El-Zaitoun");
+        Station matareyya = new Station("El-Matareyya");
+        Station ainShams = new Station("Ain Shams");
+        Station ezbetElNakhl = new Station("Ezbet El-Nakhl");
+        Station elmarg = new Station("El-Marg");
+        Station elmargelgedid = new Station("New El-Marg");
+        List<Station> line1Stations = new ArrayList<>();
+        line1Stations.add(helwan);
+        line1Stations.add(ainHelwan);
+        line1Stations.add(helwanUniversity);
+        line1Stations.add(wadi_hof);
+        line1Stations.add(hadayek_helwan);
+        line1Stations.add(maasara);
+        line1Stations.add(toraasment);
+        line1Stations.add(kozzika);
+        line1Stations.add(toraElBalad);
+        line1Stations.add(sakanatElMaadi);
+        line1Stations.add(maadi);
+        line1Stations.add(hadyekElmaadi);
+        line1Stations.add(darElSalam);
+        line1Stations.add(ElZagraa);
+        line1Stations.add(MarGitgis);
+        line1Stations.add(ElmalekElsaleh);
+        line1Stations.add(AlSayedaZeinab);
+        line1Stations.add(saadZaghloul);
+        line1Stations.add(sadat);
+        line1Stations.add(nasser);
+        line1Stations.add(orabi);
+        line1Stations.add(alShohadaa);
+        line1Stations.add(ghamra);
+        line1Stations.add(elDemerdash);
+        line1Stations.add(manshya);
+        line1Stations.add(kobriqobba);
+        line1Stations.add(hammamat);
+        line1Stations.add(saray);
+        line1Stations.add(zaitoun);
+        line1Stations.add(helmeyet);
+        line1Stations.add(matareyya);
+        line1Stations.add(ainShams);
+        line1Stations.add(ezbetElNakhl);
+        line1Stations.add(elmarg);
+        line1Stations.add(elmargelgedid);
 
         // Create the line and its stations
         Line line2 = new Line("Line 2", TransportationType.METRO, cairoGovernment);
-        Station elMonibStation = new Station("El Monib");
+        Station elMonibStation = new Station("El-Mounib");
         Station sakiatMekkiStation = new Station("Sakiat Mekki");
         Station ommElMisryeenStation = new Station("Omm el Misryeen");
         Station gizaStation = new Station("Giza");
-        Station faysalStation = new Station("Faysal");
+        Station faysalStation = new Station("Faisal");
         Station cairoUniversityStation = new Station("Cairo University");
         Station elBohoosStation = new Station("El Bohoos");
         Station dokkiStation = new Station("Dokki");
         Station operaStation = new Station("Opera");
+        Station mohamedNaguib = new Station("Mohamed Naguib");
+        Station masarra = new Station("Masarra");
+        Station roadfarag = new Station("Road El-Farag");
+        Station teresa = new Station("St. Teresa");
+        Station khalafawy = new Station("Khalafawy");
+        Station mezallat = new Station("Mezallat");
+        Station kolleyazeraa = new Station("Kolleyyet El-Zeraa");
+        Station shubra = new Station("Shubra El-Kheima");
+        Station attaba = new Station("Attaba");
 
         // Add the stations to the line and save them
         List<Station> line2Stations = new ArrayList<>();
@@ -127,14 +208,32 @@ public class DbInit implements CommandLineRunner {
         line2Stations.add(elBohoosStation);
         line2Stations.add(dokkiStation);
         line2Stations.add(operaStation);
-//        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
+        line2Stations.add(sadat);
+        line2Stations.add(mohamedNaguib);
+        line2Stations.add(attaba);
+        line2Stations.add(alShohadaa);
+        line2Stations.add(masarra);
+        line2Stations.add(roadfarag);
+        line2Stations.add(teresa);
+        line2Stations.add(khalafawy);
+        line2Stations.add(mezallat);
+        line2Stations.add(kolleyazeraa);
+        line2Stations.add(shubra);
 
+        //        line2Stations.forEach(station -> station.setTransportationType(TransportationType.METRO));
+        line1 = lineRepo.save(line1);
         line2 = lineRepo.save(line2);
+        for (Station station : line1Stations) {
+            line1 = lineService.addStationToLine(station, line1);
+        }
+        line1Stations.forEach(station -> stationRepo.findByStationName(station.getStationName()));
 
         for (Station station : line2Stations) {
             line2 = lineService.addStationToLine(station, line2);
         }
-        line2Stations = line2.getStations().stream().toList();
+        line2Stations.forEach(station -> stationRepo.findByStationName(station.getStationName()));
+
+//        line2Stations = line2.getStations().stream().toList();
         Ticket line2Ticket = new Ticket(
                 cairoGovernment, line2, 20, 9, Utility.stringToMilleSecond("0000-00-00/02-00-00"));
         ticketRepo.save(line2Ticket);
@@ -145,15 +244,31 @@ public class DbInit implements CommandLineRunner {
         ticketRepo.save(line4Ticket);
         ticketRepo.save(line3Ticket);
 
-        ArrayList<GraphEdge> graphEdges = new ArrayList<>();
-        for (int i = 0; i < line2Stations.size() - 1; i++) {
-            graphEdges.add(new GraphEdge(line2, line2Stations.get(i), line2Stations.get(i + 1), 1D));
+        ArrayList<GraphEdge> graphEdges1 = new ArrayList<>();
+        for (int i = 0; i < line1Stations.size() - 1; i++) {
+            graphEdges1.add(new GraphEdge(line2, line1Stations.get(i), line1Stations.get(i + 1), 1D));
         }
 
-        graphEdgeRepo.saveAll(graphEdges);
+        graphEdgeRepo.saveAll(graphEdges1);
+
+        ArrayList<GraphEdge> graphEdges2 = new ArrayList<>();
+        for (int i = 0; i < line2Stations.size() - 1; i++) {
+            graphEdges2.add(new GraphEdge(line2, line2Stations.get(i), line2Stations.get(i + 1), 1D));
+        }
+
+        graphEdgeRepo.saveAll(graphEdges2);
+
         // Create and save stationary turnstiles for each station
         HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
         for (Station station : line2Stations) {
+            String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
+            String password = passwordEncoder.encode("1234");
+            StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password, cairoGovernment);
+            stationaryTurnstile.setStation(station);
+            stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
+            userRepositry.save(stationaryTurnstile);
+        }
+        for (Station station : line1Stations) {
             String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
             String password = passwordEncoder.encode("1234");
             StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password, cairoGovernment);

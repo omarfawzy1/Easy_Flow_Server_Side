@@ -22,7 +22,7 @@ public class StationeryTurnstileController {
         return stationeryTurnstileService.inRide(rideModel);
     }
     @PostMapping("out-ride")
-    public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException {
+    public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException {
         return stationeryTurnstileService.outRide(rideModel);
     }
 

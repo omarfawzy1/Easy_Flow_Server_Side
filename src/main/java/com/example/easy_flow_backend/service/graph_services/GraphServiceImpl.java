@@ -1,9 +1,14 @@
 package com.example.easy_flow_backend.service.graph_services;
 
 import com.example.easy_flow_backend.entity.GraphEdge;
+import com.example.easy_flow_backend.entity.Line;
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphProperties;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphWithStations;
+import com.example.easy_flow_backend.service.owner_services.OwnerService;
+import com.example.easy_flow_backend.service.station_line_services.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -11,25 +16,14 @@ import java.util.*;
 
 @Service
 public class GraphServiceImpl implements GraphService {
-    @Autowired
-    private GraphRepo graphRepo;
+
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
     @Autowired
     protected GraphEdgeService graphEdgeService;
+    @Autowired
+    private LineService lineService;
 
-    public List<Graph> getOwnerGraph(String ownerId) {
-        return graphRepo.findAllByOwnerId(ownerId);
-    }
-
-    public Graph getLineGraph(String ownerId, String lineId) {
-        return graphRepo.findByOwnerIdAndLineId(ownerId, lineId);
-    }
-
-    @Override
-    public List<Graph> getOwnerLineGraph(String ownerId, String lineId) {
-        return graphRepo.findAllGraphsByOwnerIdAndLineIdOrOwnerId(ownerId, lineId);
-    }
 
     private GraphWithStations convertEdgesToGraphWithStations(List<GraphEdge> edges) {
 
@@ -40,34 +34,43 @@ public class GraphServiceImpl implements GraphService {
         return new GraphWithStations(floydWarshall, stationNames);
     }
 
-    public GraphWithStations getWeightedGraph(String ownerId, String lineId) {
-        String key = ownerId + '-' + lineId;
-//        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-//            return (GraphWithStations) redisTemplate.opsForValue().get(key);
-//        }
 
-        List<Graph> graphs = getOwnerLineGraph(ownerId, lineId);
-        List<GraphEdge> totalEdges = new ArrayList<>();
-        for (Graph graph : graphs) {
-            List<GraphEdge> edges = graphEdgeService.getEdges(graph);
-            totalEdges.addAll(edges);
+    public GraphWithStations getLineWeightedGraph(String lineId) throws NotFoundException {
+
+
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(lineId))) {
+            return (GraphWithStations) redisTemplate.opsForValue().get(lineId);
         }
+
+        Line line = lineService.getLineById(lineId);
+        List<GraphEdge> totalEdges = new ArrayList<>(line.getGraphEdges());
+
         GraphWithStations graph = convertEdgesToGraphWithStations(totalEdges);
-//        redisTemplate.opsForValue().set(key, graph);
+        redisTemplate.opsForValue().set(lineId, graph);
         return graph;
     }
 
+    public GraphWithStations getOwnerWeightedGraph(String ownerId) {
 
-    @Override
-    public boolean addGraph(Graph graph) {
-        graphRepo.save(graph);
-        return true;
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(ownerId))) {
+            return (GraphWithStations) redisTemplate.opsForValue().get(ownerId);
+        }
+
+        List<Line> lines = lineService.getLinesByOwnerId(ownerId);
+        List<GraphEdge> totalEdges = new ArrayList<>();
+
+        for (Line line : lines) {
+            totalEdges.addAll(line.getGraphEdges());
+        }
+        GraphWithStations graph = convertEdgesToGraphWithStations(totalEdges);
+        redisTemplate.opsForValue().set(ownerId, graph);
+        return graph;
     }
 
     @Override
-    public List<String> getOrderedStationOfLine(String lineId) {
-        Graph graph = graphRepo.findByLineId(lineId);
-        List<GraphEdge> edges = graphEdgeService.getEdges(graph);
+    public List<String> getOrderedStationOfLine(String lineId) throws NotFoundException {
+        Line line = lineService.getLineById(lineId);
+        List<GraphEdge> edges = new ArrayList<>(line.getGraphEdges());
         Map<String, List<String>> mp = new HashMap<>();
         for (GraphEdge edge : edges) {
 

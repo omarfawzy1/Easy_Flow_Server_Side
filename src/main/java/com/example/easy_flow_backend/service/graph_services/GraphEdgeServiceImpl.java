@@ -14,8 +14,7 @@ public class GraphEdgeServiceImpl implements GraphEdgeService {
     private GraphEdgeRepo graphEdgeRepo;
 
     public List<GraphEdge> getEdges(Line line) {
-        List<GraphEdge> graphEdges = graphEdgeRepo.findAllByLine(line);
-        return graphEdges;
+        return graphEdgeRepo.findAllByLine(line);
     }
 
     @Override

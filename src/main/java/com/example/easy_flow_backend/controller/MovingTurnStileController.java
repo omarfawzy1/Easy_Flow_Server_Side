@@ -25,7 +25,7 @@ public class MovingTurnStileController {
     }
 
     @GetMapping("line")
-    public Pair<String, List<String>> getLineStations() {
+    public Pair<String, List<String>> getLineStations() throws NotFoundException {
         return movingTurnstileService.getLineStations();
     }
 
