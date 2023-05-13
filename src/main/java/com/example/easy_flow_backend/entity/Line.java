@@ -40,12 +40,12 @@ public class Line {
     @OnDelete(action = OnDeleteAction.CASCADE)
     Set<Station> stations = new HashSet<>();
 
-    @OneToOne(mappedBy = "line", cascade = CascadeType.REFRESH)
-    private Graph graph;
     @OneToMany(mappedBy = "line")
     private Set<MovingTurnstile> movingTurnstiles= new HashSet<>();
     @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)
     private Set<Ticket> tickets= new HashSet<>();
+    @OneToMany(mappedBy = "line", cascade = CascadeType.ALL)
+    private Set<GraphEdge> graphEdges= new HashSet<>();
 
     public Line(String name, TransportationType type, Owner owner) {
         this.name = name;

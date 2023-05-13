@@ -1,6 +1,5 @@
 package com.example.easy_flow_backend.service.graph_services;
 
-import com.example.easy_flow_backend.entity.Graph;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphWithStations;
 
 import java.util.List;

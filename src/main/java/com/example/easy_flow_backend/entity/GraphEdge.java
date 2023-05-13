@@ -22,8 +22,8 @@ public class GraphEdge {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "graph_id")
-    private Graph graph;
+    @JoinColumn(name = "line_id")
+    private Line line;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "from_station_id")
@@ -35,8 +35,8 @@ public class GraphEdge {
 
     private double weight;
 
-    public GraphEdge(Graph graph, Station fromStation, Station toStation, double weight) {
-        this.graph = graph;
+    public GraphEdge(Line line, Station fromStation, Station toStation, double weight) {
+        this.line = line;
         this.fromStation = fromStation;
         this.toStation = toStation;
         this.weight = weight;

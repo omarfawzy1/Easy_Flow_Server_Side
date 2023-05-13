@@ -31,8 +31,6 @@ public class Owner {
     private Set<Line> lines= new HashSet<>();
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Ticket> tickets= new HashSet<>();
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private Set<Graph> graphs= new HashSet<>();
     @OneToMany(mappedBy = "owner")
     private Set<Turnstile> turnstiles= new HashSet<>();
 

@@ -40,9 +40,6 @@ public class DbInit implements CommandLineRunner {
     private StationRepo stationRepo;
     @Autowired
     private TripRepo tripRepository;
-
-    @Autowired
-    private GraphRepo graphRepo;
     @Autowired
     private GraphEdgeRepo graphEdgeRepo;
     @Autowired
@@ -148,14 +145,9 @@ public class DbInit implements CommandLineRunner {
         ticketRepo.save(line4Ticket);
         ticketRepo.save(line3Ticket);
 
-        Graph graph = new Graph();
-        graph.setOwner(cairoGovernment);
-        graph.setLine(line2);
-        graphRepo.save(graph);
-
         ArrayList<GraphEdge> graphEdges = new ArrayList<>();
         for (int i = 0; i < line2Stations.size() - 1; i++) {
-            graphEdges.add(new GraphEdge(graph, line2Stations.get(i), line2Stations.get(i + 1), 1D));
+            graphEdges.add(new GraphEdge(line2, line2Stations.get(i), line2Stations.get(i + 1), 1D));
         }
 
         graphEdgeRepo.saveAll(graphEdges);
@@ -325,14 +317,10 @@ public class DbInit implements CommandLineRunner {
                 mwasalatmisr, m7, 7.5, 7, Utility.stringToMilleSecond("0000-00-00/01-30-00"));
         ticketRepo.save(m7Ticket);
 
-        Graph graph = new Graph();
-        graph.setOwner(mwasalatmisr);
-        graph.setLine(m7);
-        graphRepo.save(graph);
         ArrayList<GraphEdge> graphEdges = new ArrayList<>();
         // TODO Fix the set order
         for (int i = 0; i < m7Stations.size() - 1; i++) {
-            graphEdges.add(new GraphEdge(graph, m7Stations.get(i), m7Stations.get(i + 1), 1D));
+            graphEdges.add(new GraphEdge(m7, m7Stations.get(i), m7Stations.get(i + 1), 1D));
         }
         graphEdgeRepo.saveAll(graphEdges);
 
@@ -438,14 +426,11 @@ public class DbInit implements CommandLineRunner {
                 mwasalatmisr, m8, 7.5, 7, Utility.stringToMilleSecond("0000-00-00/01-00-00"));
         ticketRepo.save(m8Ticket);
 
-        Graph graph = new Graph();
-        graph.setOwner(mwasalatmisr);
-        graph.setLine(m8);
-        graphRepo.save(graph);
+
         ArrayList<GraphEdge> graphEdges = new ArrayList<>();
         //
         for (int i = 0; i < m7Stations.size() - 1; i++) {
-            graphEdges.add(new GraphEdge(graph, m7Stations.get(i), m7Stations.get(i + 1), 1D));
+            graphEdges.add(new GraphEdge(m8, m7Stations.get(i), m7Stations.get(i + 1), 1D));
         }
         graphEdgeRepo.saveAll(graphEdges);
 
