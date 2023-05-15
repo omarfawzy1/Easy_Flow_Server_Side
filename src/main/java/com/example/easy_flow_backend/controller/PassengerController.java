@@ -1,6 +1,8 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Views.TripId;
 import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
@@ -35,12 +37,18 @@ public class PassengerController {
     public PassagnerDetails getMyProfile() throws BadRequestException {
         return passengerService.getMyProfile();
     }
+
     // Dummy
     @PutMapping("recharge/{amount}")
     @Operation(summary = "Passenger Wallet Recharge", description = "Passenger Wallet Recharge")
-    public void recharge(@PathVariable double amount, Principal principal){
+    public void recharge(@PathVariable double amount, Principal principal) {
 
         passengerService.rechargePassenger(principal.getName(), amount);
+    }
+
+    @GetMapping("Trips")
+    public List<TripId> getTrips(Principal principal) throws NotFoundException {
+        return passengerService.getOpenTrips(5, principal.getName());
     }
 
 }

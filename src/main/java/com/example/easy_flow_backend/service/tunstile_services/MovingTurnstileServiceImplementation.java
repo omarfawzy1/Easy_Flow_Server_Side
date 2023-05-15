@@ -38,24 +38,17 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     @Autowired
     UserService userService;
 
-    private void inRideValidation(RideModel rideModel, String machineUsername) throws BadRequestException {
-        if (!tokenValidationService.validatePassengerToken(rideModel.getToken(), rideModel.getUsername()) || !tokenValidationService.validateGenerationTime(rideModel.getGenerationTime(), rideModel.getUsername()))
-            throw new BadRequestException("Illegal QR");
+    private void inRideValidation(String machineUsername) throws BadRequestException {
 
         //validate authentication
         if (machineUsername == null || machineUsername.equalsIgnoreCase("anonymous")) {
             throw new BadRequestException("Not Authenticated");
         }
 
-        //validate passenger existence
-        if (!passengersRepo.existsByUsernameIgnoreCase(rideModel.getUsername())) {
-            throw new BadRequestException("Passenger Not found!");
-        }
         //validate that machine is movingTurn stile machine
         if (!movingTurnstileRepo.existsByUsernameIgnoreCase(machineUsername)) {
             throw new BadRequestException("Access Denied!");
         }
-
 
     }
 
@@ -63,7 +56,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     public ResponseMessage inRide(RideModel rideModel) throws BadRequestException, NotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
-        inRideValidation(rideModel, machineUsername);
+        inRideValidation( machineUsername);
 
         return tripService.makeTrip(rideModel, machineUsername);
     }
@@ -75,7 +68,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         String machineUsername = auth.getPrincipal().toString();
 
         MovingTurnstile machine = movingTurnstileRepo.findUserByUsername(machineUsername);
-        if(machine.getLine()==null)return null;
+        if (machine.getLine() == null) return null;
 
         String lineId = machine.getLine().getId();
 

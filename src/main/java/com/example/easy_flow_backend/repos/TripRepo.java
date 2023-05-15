@@ -17,7 +17,11 @@ import java.util.Optional;
 
 @Repository
 public interface TripRepo extends JpaRepository<Trip, String> {
+    <T> T findById(String id, Class<T> type);
+
     List<TripView> findAllProjectedBy();
+
+    <T> List<T> findAllByPassengerUsernameAndStatus(String passenger_username, Status status, Class<T> type);
 
     List<TripView> findAllProjectedByPassengerUsername(String passenger_username);
 
@@ -52,20 +56,21 @@ public interface TripRepo extends JpaRepository<Trip, String> {
                               @Param("end") Date end,
                               @Param("stationName") String stationName);
 
-    @Query( "SELECT COUNT (trip.id)" +
+    @Query("SELECT COUNT (trip.id)" +
             "From Trip trip Join MovingTurnstile mt " +
-            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) "+
-            "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.endTime <= :end "+
+            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) " +
+            "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.endTime <= :end " +
             "AND mt.line.id = :lineId ")
     long getTripAvgByTimeUnitForBusLine(@Param("start") Date start,
                                         @Param("end") Date end,
                                         @Param("lineId") String lineId);
-    @Query( value = "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
+
+    @Query(value = "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
             "From Trip trip Join MovingTurnstile mt " +
-            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) "+
-            "WHERE trip.transportationType = :transportType AND trip.startTime >= :start AND trip.startTime <= :end "+
-            "AND mt.line.id = :lineId "+
-            "GROUP BY hour(trip.startTime) "+
+            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) " +
+            "WHERE trip.transportationType = :transportType AND trip.startTime >= :start AND trip.startTime <= :end " +
+            "AND mt.line.id = :lineId " +
+            "GROUP BY hour(trip.startTime) " +
             "ORDER BY number DESC ")
     List<Object> getPeekHours(@Param("start") Date start,
                               @Param("end") Date end,

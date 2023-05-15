@@ -49,23 +49,13 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     @Autowired
     UserService userService;
 
-    private void inRideValidation(RideModel rideModel, String machineUsername) throws BadRequestException {
-        if (!tokenValidationService.validatePassengerToken(rideModel.getToken(), rideModel.getUsername())
-                || !tokenValidationService.validateGenerationTime(rideModel.getGenerationTime(), rideModel.getUsername()))
-            throw new BadRequestException("Illegal QR");
+    private void rideValidation(String machineUsername) throws BadRequestException {
+
         //validate authintication
         if (machineUsername == null || machineUsername.equalsIgnoreCase("anonymous")) {
             throw new BadRequestException("Not Authenticated");
         }
 
-        //check if there is exists a pending trip for this user
-        if (tripRepo.existsByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending)) {
-            throw new BadRequestException("You Can not make Ride as you have pending Request");
-        }
-        //validate the existence of the  passenger
-        if (!passengersRepo.existsByUsernameIgnoreCase(rideModel.getUsername())) {
-            throw new BadRequestException("Passenger Not found!");
-        }
         // validate that the machine is Stationary turnstile machine
         if (!stationaryTurnstileRepo.existsByUsernameIgnoreCase(machineUsername)) {
             throw new BadRequestException("Access Denied!");
@@ -80,29 +70,12 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
 
-        inRideValidation(rideModel, machineUsername);
+        rideValidation(machineUsername);
 
 
         return tripService.makePendingTrip(rideModel, machineUsername);
     }
 
-
-    private void outRideValidation(RideModel rideModel, String machineUsername) throws BadRequestException {
-
-        if (!tokenValidationService.validatePassengerToken(rideModel.getToken(), rideModel.getUsername()))
-            throw new BadRequestException("Illegal QR");
-
-        if (machineUsername == null || machineUsername.equalsIgnoreCase("anonymous")) {
-            throw new BadRequestException("Not Authenticated");
-        }
-        if (!tripRepo.existsByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending)) {
-            throw new BadRequestException("Failed No Binding trips");
-        }
-        //validate that machine is movingTurn stile machine
-        if (!stationaryTurnstileRepo.existsByUsernameIgnoreCase(machineUsername)) {
-            throw new BadRequestException("Access Denied!");
-        }
-    }
 
     @Override
     public ResponseMessage outRide(RideModel rideModel) throws BadRequestException, NotFoundException {
@@ -110,10 +83,11 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         String machineUsername = auth.getPrincipal().toString();
 
         //validate
-        outRideValidation(rideModel, machineUsername);
+        rideValidation(machineUsername);
 
         return tripService.makeFinalTrip(rideModel, machineUsername);
     }
+
 
     @Override
     public String getMyStationName(Principal principal) throws BadRequestException {
@@ -123,8 +97,8 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
         StationaryTurnstile stationaryTurnstile = stationaryTurnstileRepo.findUserByUsername(principal.getName());
         if (stationaryTurnstile == null)
             throw new BadRequestException("The user name not valid");
-        Station station =stationaryTurnstile.getStation();
-        if(station==null)return null;
+        Station station = stationaryTurnstile.getStation();
+        if (station == null) return null;
         return station.getStationName();
     }
 

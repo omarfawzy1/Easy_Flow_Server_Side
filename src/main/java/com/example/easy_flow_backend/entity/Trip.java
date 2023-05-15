@@ -25,18 +25,18 @@ public class Trip {
     private Passenger passenger;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "start_turnstile_id", nullable = false)
+    @JoinColumn(name = "start_turnstile_id")
     private Turnstile startTurnstile;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "end_turnstile_id", nullable = true)
+    @JoinColumn(name = "end_turnstile_id")
     private Turnstile endTurnstile;
 
-    @JoinColumn(name = "start_time", nullable = false)
+    @JoinColumn(name = "start_time")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date startTime;
 
-    @JoinColumn(name = "end_time", nullable = true)
+    @JoinColumn(name = "end_time")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date endTime;
 
@@ -55,6 +55,7 @@ public class Trip {
 
     @Column(name = "end_station")
     private String endStation;
+
     public Trip(Passenger passenger, Turnstile startTurnstile, String startStation, TransportationType transportationType, Date startTime, Status status) {
         this.passenger = passenger;
         this.startTurnstile = startTurnstile;
@@ -78,5 +79,9 @@ public class Trip {
         this.endStation = endStationName;
     }
 
+    public Trip(Passenger passenger, Status status) {
+        this.passenger = passenger;
+        this.status = status;
+    }
 
 }

@@ -5,9 +5,8 @@ import com.example.easy_flow_backend.entity.Status;
 import java.util.Date;
 
 
-public interface TripView {
+public interface TripView extends TripId{
 
-    String getId();
 
     String getStartStation();
 

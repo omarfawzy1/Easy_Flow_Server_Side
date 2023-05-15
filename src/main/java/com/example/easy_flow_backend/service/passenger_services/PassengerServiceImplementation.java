@@ -1,7 +1,9 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
+import com.example.easy_flow_backend.dto.Views.TripId;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.Ticket;
 import com.example.easy_flow_backend.entity.Transaction;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -11,9 +13,11 @@ import com.example.easy_flow_backend.repos.TransactionRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
+import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,8 @@ public class PassengerServiceImplementation implements PassengerService {
     private WalletService walletService;
     @Autowired
     private TransactionRepo transactionRepo;
+    @Autowired
+    TripService tripService;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -113,7 +119,7 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public void rechargePassenger(String username, double amount) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        Transaction transaction=new Transaction(passenger,amount);
+        Transaction transaction = new Transaction(passenger, amount);
         transactionRepo.save(transaction);
         walletService.recharge(passenger.getWallet().getId(), amount);
     }
@@ -124,5 +130,11 @@ public class PassengerServiceImplementation implements PassengerService {
         passenger.setLastQrTime(time);
         passengerRepo.save(passenger);
     }
+
+    @Override
+    public List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException {
+        return tripService.getOpenTrips(numberOfTickets, passengerUsername);
+    }
+
 
 }
