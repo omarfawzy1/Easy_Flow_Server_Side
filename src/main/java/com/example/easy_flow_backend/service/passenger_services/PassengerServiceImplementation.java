@@ -124,12 +124,6 @@ public class PassengerServiceImplementation implements PassengerService {
         walletService.recharge(passenger.getWallet().getId(), amount);
     }
 
-    @Override
-    public void updateLastGeneratedTime(String username, Date time) {
-        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        passenger.setLastQrTime(time);
-        passengerRepo.save(passenger);
-    }
 
     @Override
     public List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException {

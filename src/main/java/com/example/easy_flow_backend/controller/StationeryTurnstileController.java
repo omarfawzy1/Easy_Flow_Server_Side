@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.ForgetTicketModel;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -24,6 +25,10 @@ public class StationeryTurnstileController {
     @PostMapping("out-ride")
     public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException {
         return stationeryTurnstileService.outRide(rideModel);
+    }
+    @PostMapping("out-ride/forgetTicket")
+    public ResponseMessage outRideForgetTicket(@Valid @RequestBody ForgetTicketModel forgetTicketModel) throws BadRequestException, NotFoundException {
+        return stationeryTurnstileService.outRideForgetTicket(forgetTicketModel);
     }
 
     @GetMapping("station-name")

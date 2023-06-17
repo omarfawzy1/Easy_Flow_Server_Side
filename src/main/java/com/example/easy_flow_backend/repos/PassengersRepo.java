@@ -15,6 +15,7 @@ import java.util.List;
 public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     List<PassagnerBriefDetails> findAllProjectedBy();
+    Passenger findPassengerByPhoneNumberAndPin(String PhoneNumber, int pin);
     PassagnerDetails findAllProjectedByUsername(String username);
 
     Passenger findByUsernameIgnoreCase(String username);

@@ -5,10 +5,8 @@ import com.example.easy_flow_backend.entity.Line;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphProperties;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphWithStations;
-import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -127,6 +125,5 @@ public class GraphServiceImpl implements GraphService {
 
         return stationNames;
     }
-
 
 }

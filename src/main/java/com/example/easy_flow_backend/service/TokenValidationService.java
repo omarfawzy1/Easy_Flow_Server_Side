@@ -20,14 +20,6 @@ public class TokenValidationService {
     @Autowired
     private PassengersRepo passengersRepo;
 
-
-    public boolean validateGenerationTime(Date currGenerationTime, String username) {
-        Passenger passenger = passengersRepo.findUserByUsername(username);
-        Date lastPassengerGeneration = passenger.getLastQrTime();
-
-        return currGenerationTime.compareTo(lastPassengerGeneration) > 0;
-    }
-
     public boolean validatePassengerToken(String tokenString, String username) {
         String[] chunks = tokenString.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();

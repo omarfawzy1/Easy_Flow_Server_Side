@@ -37,7 +37,6 @@ public interface PassengerService {
     void rechargePassenger(String name, double amount);
     //ToDo edit profile - forget password
 
-    void updateLastGeneratedTime(String username, Date time);
 
     List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException;
 }

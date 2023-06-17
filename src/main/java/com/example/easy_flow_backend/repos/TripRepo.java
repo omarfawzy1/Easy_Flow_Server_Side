@@ -76,6 +76,13 @@ public interface TripRepo extends JpaRepository<Trip, String> {
                               @Param("end") Date end,
                               @Param("lineId") String lineId,
                               @Param("transportType") TransportationType transportType);
+
+    @Query("SELECT trip "+
+            "FROM Trip trip "+
+            "WHERE trip.status = 1 AND trip.passenger.id= :passengerId ")
+    Trip outRideForgetTicket(@Param("passengerId") String passengerId);
+
+
 //    @Query( "SELECT hour(trip.startTime) , COUNT (trip.id) " +
 //            "From Trip trip  " +
 //            "WHERE trip.startTime >= :start AND trip.endTime <= :end "+

@@ -23,7 +23,7 @@ public class Passenger extends User {
     private String firstName;
     @Column(name = "last_name",nullable = false)
     private String lastName;
-    @Column(name = "phone_number",nullable = false)
+    @Column(name = "phone_number",unique = true ,nullable = false)
     private String phoneNumber;
     private String type;
     private String city;
@@ -31,8 +31,8 @@ public class Passenger extends User {
     private Gender gender;
     @Column(name = "email",nullable = false)
     private String email;
-    @Column
-    private Date lastQrTime = Date.from(Instant.now());
+    @Column(name = "pin")
+    private int pin;
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)

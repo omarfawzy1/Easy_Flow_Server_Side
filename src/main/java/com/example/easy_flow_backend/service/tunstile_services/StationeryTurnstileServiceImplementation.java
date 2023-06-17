@@ -1,11 +1,9 @@
 package com.example.easy_flow_backend.service.tunstile_services;
 
+import com.example.easy_flow_backend.dto.Models.ForgetTicketModel;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.dto.Views.StationeryMachineView;
-import com.example.easy_flow_backend.entity.Station;
-import com.example.easy_flow_backend.entity.StationaryTurnstile;
-import com.example.easy_flow_backend.entity.Status;
-import com.example.easy_flow_backend.entity.Turnstile;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -18,6 +16,7 @@ import com.example.easy_flow_backend.service.payment_services.TicketService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -112,6 +111,21 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     @Override
     public List<StationeryMachineView> getMachines() {
         return stationaryTurnstileRepo.findAllProjectedBy();
+    }
+
+    @Override
+    public ResponseMessage outRideForgetTicket(ForgetTicketModel forgetTicketModel) throws BadRequestException, NotFoundException {
+        Passenger passenger=passengersRepo.findPassengerByPhoneNumberAndPin(forgetTicketModel.getPhoneNumber(),forgetTicketModel.getPin());
+        if(passenger==null)
+            return new ResponseMessage("Invalid phone number or pin", HttpStatus.BAD_REQUEST);
+        Trip trip =tripRepo.outRideForgetTicket(passenger.getId());
+        if(trip==null)
+            return new ResponseMessage("No pending trips found", HttpStatus.BAD_REQUEST);
+
+        RideModel rideModel=new RideModel
+                (trip.getId(),trip.getStartStation(),null,forgetTicketModel.getTime());
+        return outRide(rideModel);
+
     }
 
     @Override
