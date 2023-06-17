@@ -30,22 +30,11 @@ import java.util.List;
 
 @Service
 public class AdminServiceImplementation implements AdminService {
-    @Autowired
-    private PassengersRepo passengerRepo;
+
     @Autowired
     private OwnerRepo ownerRepo;
-    @Autowired
-    private TripRepo tripRepo;
-    @Autowired
-    private UserRepositry userRepositry;
 
-    @Autowired
-    private TransactionRepo transactionRepo;
 
-    @Autowired
-    private GraphService graphService;
-    @Autowired
-    private GraphEdgeService graphEdgeService;
     @Autowired
     private LineService lineService;
     @Autowired

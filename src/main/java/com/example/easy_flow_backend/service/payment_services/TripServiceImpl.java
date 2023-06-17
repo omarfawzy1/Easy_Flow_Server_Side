@@ -7,6 +7,7 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
+import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
@@ -23,8 +24,7 @@ import java.util.List;
 public class TripServiceImpl implements TripService {
     @Autowired
     private TripRepo tripRepo;
-    @Autowired
-    private PassengerService passengerService;
+
     @Autowired
     private StationaryTurnstileRepo stationaryTurnstileRepo;
     @Autowired
@@ -35,17 +35,19 @@ public class TripServiceImpl implements TripService {
     private MovingTurnstileRepo movingTurnstileRepo;
     @Autowired
     TicketService ticketService;
-
+    @Autowired
+    PassengersRepo passengersRepo;
 
     private void makeOpenTrips(int numOfTrips, String passengerUsername) throws NotFoundException {
-        Passenger passenger = passengerService.getPassenger(passengerUsername);
+
+        Passenger passenger = passengersRepo.findByUsernameIgnoreCase(passengerUsername);
+        if (passenger == null)
+            throw new NotFoundException("Passenger Not found");
         List<Trip> trips = new ArrayList<>();
         for (int i = 0; i < numOfTrips; i++) {
             Trip trip = new Trip(passenger, Status.Open);
             trips.add(trip);
         }
-        System.out.println(numOfTrips);
-        System.out.println(trips.toString());
         tripRepo.saveAll(trips);
 
     }
