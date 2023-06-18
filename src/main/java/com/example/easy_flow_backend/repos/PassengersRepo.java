@@ -28,9 +28,8 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     PassagnerDetails findProjectedByUsername(String passenger_username);
 
-    int findByTypeIgnoreCase(String type);
 
-    @Query("SELECT COUNT (passenger) FROM Passenger  passenger WHERE passenger.type = :type")
+    @Query("SELECT COUNT (passenger) FROM Passenger  passenger WHERE passenger.privlages = :type")
     int getAllPassangersCountWithType(@Param("type") String type);
 
     @Query("select COUNT (passenger.id)" +

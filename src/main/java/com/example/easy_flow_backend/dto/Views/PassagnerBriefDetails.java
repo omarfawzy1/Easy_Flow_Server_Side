@@ -9,7 +9,6 @@ public interface PassagnerBriefDetails extends UserDetails {
 
 
     String  getUsername();
-    String getType();
 
     Gender getGender();
 

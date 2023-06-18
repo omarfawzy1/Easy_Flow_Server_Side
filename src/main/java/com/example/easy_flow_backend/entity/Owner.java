@@ -33,6 +33,8 @@ public class Owner {
     private Set<Ticket> tickets= new HashSet<>();
     @OneToMany(mappedBy = "owner")
     private Set<Turnstile> turnstiles= new HashSet<>();
+    @OneToMany(mappedBy = "owner")
+    private Set<Plan> plans= new HashSet<>();
 
     public Owner(String name, String mail, String bankAccount) {
         this.name = name;

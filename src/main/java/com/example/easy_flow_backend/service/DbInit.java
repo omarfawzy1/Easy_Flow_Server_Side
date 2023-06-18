@@ -91,10 +91,10 @@ public class DbInit implements CommandLineRunner {
     ArrayList<User> usersInit() {
         ArrayList<User> users = new ArrayList<>();
         users.add(new Administrator("haridy", "haridy", passwordEncoder.encode("haridy")));
-        users.add(new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "omar", passwordEncoder.encode("omar"), "omar@gmail.com"));
-        users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165", "Regular", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aly", passwordEncoder.encode("omar"), "aly@gmail.com"));
-        users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464", "Regular", "Giza", Gender.M, new Date(System.currentTimeMillis()), "waled", passwordEncoder.encode("omar"), "waled@gmail.com"));
-        users.add(new Passenger(new Wallet("CC", 1000.0), "Mona", "Mahmoud", "12311561655", "Regular", "Cairo", Gender.F, new Date(System.currentTimeMillis()), "mona", passwordEncoder.encode("omar"), "mona@gmail.com"));
+        users.add(new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "omar", passwordEncoder.encode("omar"), "omar@gmail.com"));
+        users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165",  "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aly", passwordEncoder.encode("omar"), "aly@gmail.com"));
+        users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464",  "Giza", Gender.M, new Date(System.currentTimeMillis()), "waled", passwordEncoder.encode("omar"), "waled@gmail.com"));
+        users.add(new Passenger(new Wallet("CC", 1000.0), "Mona", "Mahmoud", "12311561655", "Cairo", Gender.F, new Date(System.currentTimeMillis()), "mona", passwordEncoder.encode("omar"), "mona@gmail.com"));
         return users;
     }
 

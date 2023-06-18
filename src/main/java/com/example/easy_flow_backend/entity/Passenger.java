@@ -25,7 +25,7 @@ public class Passenger extends User {
     private String lastName;
     @Column(name = "phone_number",unique = true ,nullable = false)
     private String phoneNumber;
-    private String type;
+    private Set<PassengerPrivlage>privlages= new HashSet<>();;
     private String city;
     @Column(nullable = false)
     private Gender gender;
@@ -39,31 +39,36 @@ public class Passenger extends User {
     private java.util.Date birthDay;
     @OneToMany(mappedBy = "passenger", cascade = jakarta.persistence.CascadeType.ALL)
     private Set<Trip> trips= new HashSet<>();
+    @OneToMany(mappedBy = "passenger", cascade = jakarta.persistence.CascadeType.ALL)
+    private Set<Subscription> subscriptions= new HashSet<>();
 
-    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
+    public Passenger(Wallet wallet, String firstName, String lastName, String phoneNumber, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);
         roles = "PASSENGER";
         this.wallet = wallet;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.type = type;
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
         this.email=email;
+        this.privlages.add(PassengerPrivlage.Regular);
     }
-    public Passenger( String firstName, String lastName, String phoneNumber, String type, String city, Gender gender, Date birthDay, String username, String password, String email) {
+    public Passenger( String firstName, String lastName, String phoneNumber, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);
         roles = "PASSENGER";
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.type = type;
         this.city = city;
         this.gender = gender;
         this.birthDay = birthDay;
         this.email=email;
+        this.privlages.add(PassengerPrivlage.Regular);
+    }
+    void addPrivlage(PassengerPrivlage passengerPrivlage){
+        this.privlages.add(passengerPrivlage);
     }
 
     @Override

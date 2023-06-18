@@ -13,8 +13,6 @@ public interface PassagnerDetails extends UserDetails {
 
     String getCity();
 
-    String getType();
-
     Gender getGender();
 
     String getPhoneNumber();
