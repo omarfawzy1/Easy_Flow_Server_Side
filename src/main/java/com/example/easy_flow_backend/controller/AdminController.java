@@ -233,6 +233,13 @@ public class AdminController {
     public List<TicketView> getLineTickets(@PathVariable String name) {
         return adminService.getLineTickets(name);
     }
+
+    @PostMapping("plan")
+    public ResponseMessage addPlan(@RequestBody PlanModel plan) {
+        return adminService.addPlan(plan);
+    }
+
+
 //ToDo
 //
 //View system-wide statistics:

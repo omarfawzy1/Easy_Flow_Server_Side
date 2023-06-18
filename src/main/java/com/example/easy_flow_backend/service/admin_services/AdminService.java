@@ -97,4 +97,6 @@ public interface AdminService {
     List<TicketView> getOwnerTickets(String name);
 
     List<TicketView> getLineTickets(String name);
+
+    ResponseMessage addPlan(PlanModel plan);
 }

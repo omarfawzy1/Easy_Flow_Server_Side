@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
+
 @Entity
 @Setter
 @Getter
@@ -24,7 +26,7 @@ public class Subscription {
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date expireDate;
     @Column(name = "repurchase")
-    private boolean repurchase=false;
+    private boolean repurchase = false;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "plan_id")
     private Plan plan;
@@ -32,5 +34,14 @@ public class Subscription {
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
 
+    public boolean isExpired() {
+        return new Date().before(this.getExpireDate());
+    }
+
+    public boolean withdrawTrips(int numberOfTrips) {
+        if (numberOfTrips > this.remainingTrips) return false;
+        this.remainingTrips -= numberOfTrips;
+        return true;
+    }
 
 }

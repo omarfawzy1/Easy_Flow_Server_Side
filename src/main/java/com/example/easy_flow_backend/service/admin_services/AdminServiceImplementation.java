@@ -2,10 +2,7 @@ package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
-import com.example.easy_flow_backend.entity.GraphEdge;
-import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.TransportationType;
-import com.example.easy_flow_backend.entity.Turnstile;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -55,6 +52,8 @@ public class AdminServiceImplementation implements AdminService {
 
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private PlanRepository planRepository;
 
     @Override
     public List<LineView> getAllLines() {
@@ -290,4 +289,18 @@ public class AdminServiceImplementation implements AdminService {
         return ownerService.deleteOwner(username);
     }
 
+    @Override
+    public ResponseMessage addPlan(PlanModel plan) {
+        Owner owner = ownerRepo.findByName(plan.getOwnerName());
+        if (owner == null) {
+            return new ResponseMessage("Owner Name is invalid", HttpStatus.BAD_REQUEST);
+        }
+        Plan newPlan = new Plan(plan.getPrivilege(), plan.getPrice(), plan.getDurationDays(), plan.getTrips(), plan.getName(), plan.getMaxCompanion(), owner, plan.getDiscountRate());
+        try {
+            planRepository.save(newPlan);
+        } catch (Exception ex) {
+            return new ResponseMessage(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseMessage("Saved successfully", HttpStatus.OK);
+    }
 }

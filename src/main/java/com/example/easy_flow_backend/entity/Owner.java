@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Owner {
 
@@ -28,19 +27,18 @@ public class Owner {
     @Column(name = "bank_account")
     private String bankAccount;
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private Set<Line> lines= new HashSet<>();
+    private Set<Line> lines = new HashSet<>();
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private Set<Ticket> tickets= new HashSet<>();
+    private Set<Ticket> tickets = new HashSet<>();
     @OneToMany(mappedBy = "owner")
-    private Set<Turnstile> turnstiles= new HashSet<>();
+    private Set<Turnstile> turnstiles = new HashSet<>();
     @OneToMany(mappedBy = "owner")
-    private Set<Plan> plans= new HashSet<>();
+    private Set<Plan> plans = new HashSet<>();
 
     public Owner(String name, String mail, String bankAccount) {
         this.name = name;
         this.mail = mail;
         this.bankAccount = bankAccount;
-
     }
 
     @Override

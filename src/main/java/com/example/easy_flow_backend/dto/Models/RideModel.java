@@ -16,10 +16,16 @@ import java.sql.Date;
 @NoArgsConstructor
 public class RideModel {
 
-    @NotBlank(message = "Trip Id should not be blank")
-    @NotNull(message = "Trip Id should not be null")
-    String TripId;
+    public RideModel(String tripId, String startStation, String endStation, Date time) {
+        TripId = tripId;
+        this.startStation = startStation;
+        this.endStation = endStation;
+        this.time = time;
+    }
 
+    @NotBlank(message = "Trip Id should not be blank") @NotNull(message = "Trip Id should not be null") String TripId;
+
+    int CompanionCount;
 
     @NotBlank(message = "Start Station should not be blank")
     @NotNull(message = "Start Station should not be null")

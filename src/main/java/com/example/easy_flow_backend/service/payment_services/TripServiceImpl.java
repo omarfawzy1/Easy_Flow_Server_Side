@@ -6,10 +6,7 @@ import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
-import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
-import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
-import com.example.easy_flow_backend.repos.TripRepo;
+import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,10 @@ public class TripServiceImpl implements TripService {
     TicketService ticketService;
     @Autowired
     PassengersRepo passengersRepo;
+    @Autowired
+    SubscriptionService subscriptionService;
+    @Autowired
+    SubscriptionRepo subscriptionRepo;
 
     private void makeOpenTrips(int numOfTrips, String passengerUsername) throws NotFoundException {
 
@@ -83,8 +84,12 @@ public class TripServiceImpl implements TripService {
 
         String ownerId = machine.getOwner().getId();
 
-        double minPrice = ticketService.getMinPrice(ownerId);
+        double minPrice = ticketService.getMinPrice(ownerId) * rideModel.getCompanionCount();
+        Subscription bestSubscription = subscriptionService.getbestSubscription(subscriptionRepo.getSubscriptionByPassengerIdAndPlanOwnerName(passenger.getId(), machine.getOwner().getName()), rideModel);
 
+        if (bestSubscription != null) {
+            minPrice -= minPrice * bestSubscription.getPlan().getDiscountRate();
+        }
         boolean can = walletService.canWithdraw(passenger.getWallet(), minPrice);
 
         if (can) {
@@ -93,6 +98,7 @@ public class TripServiceImpl implements TripService {
             trip.setTransportationType(TransportationType.METRO);
             trip.setStartTime(rideModel.getTime());
             trip.setStatus(Status.Pending);
+            trip.setCompanionCount(rideModel.getCompanionCount());
 
             tripRepo.save(trip);
         } else {
@@ -128,9 +134,12 @@ public class TripServiceImpl implements TripService {
         double weight = graphWeightService.getOwnerWeight(ownerId, trip.getStartStation(), machine.getStation().getStationName());
 
         long totalTime = rideModel.getTime().getTime() - trip.getStartTime().getTime();
+        double price = ticketService.getPrice(ownerId, weight, totalTime) * rideModel.getCompanionCount();
+        Subscription bestSubscription = subscriptionService.getbestSubscription(subscriptionRepo.getSubscriptionByPassengerIdAndPlanOwnerName(trip.getPassenger().getId(), machine.getOwner().getName()), rideModel);
 
-        double price = ticketService.getPrice(ownerId, weight, totalTime);
-
+        if (bestSubscription != null) {
+            price -= price * bestSubscription.getPlan().getDiscountRate();
+        }
         boolean can = walletService.withdraw(trip.getPassenger().getWallet(), price);
         if (can) {
             trip.setPrice(price);
@@ -138,6 +147,10 @@ public class TripServiceImpl implements TripService {
             trip.setEndTime(rideModel.getTime());
             trip.setStatus(Status.Closed);
             trip.setEndStation(machine.getStation().getStationName());
+            if (bestSubscription != null) {
+                bestSubscription.withdrawTrips(rideModel.getCompanionCount());
+                subscriptionRepo.save(bestSubscription);
+            }
             tripRepo.save(trip);
         } else {
             return new ResponseMessage("Can not End Trip", HttpStatus.OK);
@@ -161,14 +174,22 @@ public class TripServiceImpl implements TripService {
 
         double weight = graphWeightService.getLineWeight(lineId, startStation, endStation);
 
-        double price = ticketService.getPrice(ownerId, lineId, weight, 0L);
+
+        double price = ticketService.getPrice(ownerId, lineId, weight, 0L) * rideModel.getCompanionCount();
+        Subscription bestSubscription = subscriptionService.getbestSubscription(subscriptionRepo.getSubscriptionByPassengerIdAndPlanOwnerName(passenger.getId(), machine.getOwner().getName()), rideModel);
+
+        if (bestSubscription != null) {
+            price -= price * bestSubscription.getPlan().getDiscountRate();
+        }
 
         boolean can = walletService.withdraw(passenger.getWallet(), price);
 
         if (can) {
-
-            Trip closedTrip = new Trip(passenger, machine, machine, rideModel.getTime(), rideModel.getTime(), TransportationType.BUS, price, Status.Closed, startStation, endStation);
-
+            if (bestSubscription != null) {
+                bestSubscription.withdrawTrips(rideModel.getCompanionCount());
+                subscriptionRepo.save(bestSubscription);
+            }
+            Trip closedTrip = new Trip(passenger, machine, machine, rideModel.getTime(), rideModel.getTime(), TransportationType.BUS, price, Status.Closed, startStation, endStation, rideModel.getCompanionCount());
             tripRepo.save(closedTrip);
 
         } else {

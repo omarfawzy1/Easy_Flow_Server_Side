@@ -56,7 +56,10 @@ public class Trip {
     @Column(name = "end_station")
     private String endStation;
 
-    public Trip(Passenger passenger, Turnstile startTurnstile, String startStation, TransportationType transportationType, Date startTime, Status status) {
+    @Column(name = "companion_count")
+    private int companionCount;
+
+    public Trip(Passenger passenger, Turnstile startTurnstile, String startStation, TransportationType transportationType, Date startTime, Status status, int companionCount) {
         this.passenger = passenger;
         this.startTurnstile = startTurnstile;
         this.startTime = startTime;
@@ -64,9 +67,10 @@ public class Trip {
         this.startStation = startStation;
         this.transportationType = transportationType;
         this.price = 0;
+        this.companionCount = companionCount;
     }
 
-    public Trip(Passenger passenger, Turnstile startTurnstile, Turnstile endTurnstile, Date startTime, Date endTime, TransportationType transportationType, double price, Status status, String startStationName, String endStationName) {
+    public Trip(Passenger passenger, Turnstile startTurnstile, Turnstile endTurnstile, Date startTime, Date endTime, TransportationType transportationType, double price, Status status, String startStationName, String endStationName, int companionCount) {
         this.passenger = passenger;
         this.startTurnstile = startTurnstile;
         this.endTurnstile = endTurnstile;
@@ -77,6 +81,7 @@ public class Trip {
         this.status = status;
         this.startStation = startStationName;
         this.endStation = endStationName;
+        this.companionCount = companionCount;
     }
 
     public Trip(Passenger passenger, Status status) {

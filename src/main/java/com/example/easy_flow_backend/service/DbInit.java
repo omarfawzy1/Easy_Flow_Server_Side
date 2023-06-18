@@ -296,7 +296,7 @@ public class DbInit implements CommandLineRunner {
                 40f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                elMonibStation.getStationName())
+                elMonibStation.getStationName(),1)
         );
 
         // trip for Aly
@@ -310,7 +310,7 @@ public class DbInit implements CommandLineRunner {
                 20f,
                 Status.Closed,
                 sakiatMekkiStation.getStationName(),
-                dokkiStation.getStationName())
+                dokkiStation.getStationName(),1)
         );
 
         // trip for Waled
@@ -324,7 +324,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 elBohoosStation.getStationName(),
-                faysalStation.getStationName())
+                faysalStation.getStationName(),1)
         );
 
         // trip for Mona
@@ -338,7 +338,7 @@ public class DbInit implements CommandLineRunner {
                 15f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                ommElMisryeenStation.getStationName())
+                ommElMisryeenStation.getStationName(),1)
         );
 
         // trip for Omar
@@ -352,7 +352,7 @@ public class DbInit implements CommandLineRunner {
                 20f,
                 Status.Closed,
                 operaStation.getStationName(),
-                sakiatMekkiStation.getStationName())
+                sakiatMekkiStation.getStationName(),1)
         );
 
 
@@ -366,7 +366,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 cairoUniversityStation.getStationName(),
-                elBohoosStation.getStationName())
+                elBohoosStation.getStationName(),1)
         );
 
         trips.add(new Trip(
@@ -379,7 +379,7 @@ public class DbInit implements CommandLineRunner {
                 7f,
                 Status.Closed,
                 sakiatMekkiStation.getStationName(),
-                operaStation.getStationName())
+                operaStation.getStationName(),1)
         );
 
         trips.add(new Trip(
@@ -392,7 +392,7 @@ public class DbInit implements CommandLineRunner {
                 5f,
                 Status.Closed,
                 ommElMisryeenStation.getStationName(),
-                dokkiStation.getStationName())
+                dokkiStation.getStationName(),1)
         );
         tripRepository.saveAll(trips);
     }
@@ -464,7 +464,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         trips.add(new Trip(
                 waled,
@@ -476,7 +476,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 nasrElDeenStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         trips.add(new Trip(
                 aly,
@@ -488,7 +488,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 cairoUniversityStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         trips.add(new Trip(
                 mona,
@@ -500,7 +500,7 @@ public class DbInit implements CommandLineRunner {
                 5f,
                 Status.Closed,
                 talbiaStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         tripRepository.saveAll(trips);
     }
@@ -574,7 +574,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         trips.add(new Trip(
                 waled,
@@ -586,7 +586,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 nasrElDeenStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         trips.add(new Trip(
                 aly,
@@ -598,7 +598,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 cairoUniversityStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         trips.add(new Trip(
                 mona,
@@ -610,7 +610,7 @@ public class DbInit implements CommandLineRunner {
                 5f,
                 Status.Closed,
                 talbiaStation.getStationName(),
-                medanRyhmiaStation.getStationName())
+                medanRyhmiaStation.getStationName(),1)
         );
         tripRepository.saveAll(trips);
 

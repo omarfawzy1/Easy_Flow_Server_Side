@@ -28,10 +28,10 @@ public class HomeController {
     /*
     * Don't Remove (blocks post request to log in)
     */
-    @PostMapping(value = "login")
-    public String login() {
-        return "Login";
-    }
+//    @PostMapping(value = "login")
+//    public String login() {
+//        return "Login";
+//    }
     @PostMapping(value = "Register")
     public ResponseMessage Register(@Valid @RequestBody RegisterModel registerModel) throws NotFoundException {
       return   homeService.Register(registerModel);

@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Range;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,25 +24,39 @@ public class Plan {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "plan_id")
     private String id;
-    @Column(name="privlage",nullable = false)
-    private PassengerPrivlage privlage;
-    @Column(name="price",nullable = false)
-    private  float price;
-    @JoinColumn(name = "time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date time;
-    @Column(name="trips",nullable = false)
+    @Column(name = "privilege", nullable = false)
+    private PassengerPrivilege privilege;
+    @Column(name = "price", nullable = false)
+    private float price;
+    @Column(name = "duration")
+    private int durationDays;
+
+    @Column(name = "trips", nullable = false)
     private int trips;
-    @Column(name="name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Column(name="max_companion",nullable = false)
+    @Column(name = "max_companion", nullable = false)
     private int maxCompanion;
     @OneToMany(mappedBy = "plan")
-    private Set<Subscription> subscriptions= new HashSet<>();
+    private Set<Subscription> subscriptions = new HashSet<>();
     @Column(name = "available")
-    private boolean available=true;
+    private boolean available = true;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
+    @Column(name = "discount_rate")
+    @Range(min = 0, max = 1)
+    private float discountRate;
+
+    public Plan(PassengerPrivilege privilege, float price, int durationDays, int trips, String name, int maxCompanion, Owner owner, float discountRate) {
+        this.privilege = privilege;
+        this.price = price;
+        this.durationDays = durationDays;
+        this.trips = trips;
+        this.name = name;
+        this.maxCompanion = maxCompanion;
+        this.owner = owner;
+        this.discountRate = discountRate;
+    }
 }
