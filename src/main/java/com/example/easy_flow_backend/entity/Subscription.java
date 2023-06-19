@@ -14,7 +14,16 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"plan_id", "passenger_id"})})
 public class Subscription {
+    public Subscription(int remainingTrips, Date expireDate, boolean repurchase, Plan plan, Passenger passenger) {
+        this.remainingTrips = remainingTrips;
+        this.expireDate = expireDate;
+        this.repurchase = repurchase;
+        this.plan = plan;
+        this.passenger = passenger;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -35,7 +44,7 @@ public class Subscription {
     private Passenger passenger;
 
     public boolean isExpired() {
-        return new Date().before(this.getExpireDate());
+        return new Date().after(this.getExpireDate());
     }
 
     public boolean withdrawTrips(int numberOfTrips) {

@@ -289,18 +289,5 @@ public class AdminServiceImplementation implements AdminService {
         return ownerService.deleteOwner(username);
     }
 
-    @Override
-    public ResponseMessage addPlan(PlanModel plan) {
-        Owner owner = ownerRepo.findByName(plan.getOwnerName());
-        if (owner == null) {
-            return new ResponseMessage("Owner Name is invalid", HttpStatus.BAD_REQUEST);
-        }
-        Plan newPlan = new Plan(plan.getPrivilege(), plan.getPrice(), plan.getDurationDays(), plan.getTrips(), plan.getName(), plan.getMaxCompanion(), owner, plan.getDiscountRate());
-        try {
-            planRepository.save(newPlan);
-        } catch (Exception ex) {
-            return new ResponseMessage(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseMessage("Saved successfully", HttpStatus.OK);
-    }
+
 }

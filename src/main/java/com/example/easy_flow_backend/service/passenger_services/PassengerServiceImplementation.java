@@ -1,18 +1,12 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
-import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
-import com.example.easy_flow_backend.dto.Views.TripId;
-import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.Ticket;
-import com.example.easy_flow_backend.entity.Transaction;
+import com.example.easy_flow_backend.dto.Views.*;
+import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
-import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.repos.TransactionRepo;
-import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TripView;
+import com.example.easy_flow_backend.repos.*;
+import com.example.easy_flow_backend.service.payment_services.SubscriptionService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +32,12 @@ public class PassengerServiceImplementation implements PassengerService {
     private TransactionRepo transactionRepo;
     @Autowired
     TripService tripService;
+    @Autowired
+    SubscriptionService subscriptionService;
+    @Autowired
+    SubscriptionRepo subscriptionRepo;
+    @Autowired
+    PlanRepository planRepository;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -128,6 +128,29 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException {
         return tripService.getOpenTrips(numberOfTickets, passengerUsername);
+    }
+
+
+    @Override
+    public ResponseMessage makeSubscription(String passengerUsername, String planId) {
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(passengerUsername);
+        if (passenger == null) {
+            return new ResponseMessage("Passenger not found", HttpStatus.BAD_REQUEST);
+        }
+        Plan plan = planRepository.findById(planId, Plan.class);
+        if (plan == null) {
+            return new ResponseMessage("Invalid plan id", HttpStatus.BAD_REQUEST);
+        }
+        if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
+            return new ResponseMessage("Sorry, you are not compatible with this plan", HttpStatus.BAD_REQUEST);
+        }
+        boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
+        if (!canWithdraw) {
+            return new ResponseMessage("Sorry, No enough money", HttpStatus.BAD_REQUEST);
+        }
+
+        walletService.withdraw(passenger.getWallet(), plan.getPrice());
+        return subscriptionService.makeSubscription(passenger, plan);
     }
 
 

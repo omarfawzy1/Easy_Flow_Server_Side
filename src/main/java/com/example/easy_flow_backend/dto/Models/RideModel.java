@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.dto.Models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,10 @@ public class RideModel {
         this.time = time;
     }
 
-    @NotBlank(message = "Trip Id should not be blank") @NotNull(message = "Trip Id should not be null") String TripId;
-
+    @NotBlank(message = "Trip Id should not be blank")
+    @NotNull(message = "Trip Id should not be null")
+    String TripId;
+    @Min(1)
     int CompanionCount;
 
     @NotBlank(message = "Start Station should not be blank")

@@ -129,12 +129,12 @@ public class TripServiceImpl implements TripService {
         String ownerId = machine.getOwner().getId();
 
         validateMakeFinalTrip(trip, ownerId);
-
+        rideModel.setCompanionCount(trip.getCompanionCount());
 
         double weight = graphWeightService.getOwnerWeight(ownerId, trip.getStartStation(), machine.getStation().getStationName());
 
         long totalTime = rideModel.getTime().getTime() - trip.getStartTime().getTime();
-        double price = ticketService.getPrice(ownerId, weight, totalTime) * rideModel.getCompanionCount();
+        double price = ticketService.getPrice(ownerId, weight, totalTime) * trip.getCompanionCount();
         Subscription bestSubscription = subscriptionService.getbestSubscription(subscriptionRepo.getSubscriptionByPassengerIdAndPlanOwnerName(trip.getPassenger().getId(), machine.getOwner().getName()), rideModel);
 
         if (bestSubscription != null) {
@@ -190,6 +190,7 @@ public class TripServiceImpl implements TripService {
                 subscriptionRepo.save(bestSubscription);
             }
             Trip closedTrip = new Trip(passenger, machine, machine, rideModel.getTime(), rideModel.getTime(), TransportationType.BUS, price, Status.Closed, startStation, endStation, rideModel.getCompanionCount());
+            closedTrip.setId(trip.getId());
             tripRepo.save(closedTrip);
 
         } else {

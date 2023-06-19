@@ -1,11 +1,9 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
-import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
-import com.example.easy_flow_backend.dto.Views.TripId;
+import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.Plan;
 import com.example.easy_flow_backend.error.BadRequestException;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TripView;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 
@@ -39,4 +37,7 @@ public interface PassengerService {
 
 
     List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException;
+
+
+    ResponseMessage makeSubscription(String username, String planId);
 }

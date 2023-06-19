@@ -18,6 +18,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name","owner_id"})})
 public class Plan {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -32,7 +33,7 @@ public class Plan {
     private int durationDays;
 
     @Column(name = "trips", nullable = false)
-    private int trips;
+    private int numberOfTrips;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "max_companion", nullable = false)
@@ -49,11 +50,11 @@ public class Plan {
     @Range(min = 0, max = 1)
     private float discountRate;
 
-    public Plan(PassengerPrivilege privilege, float price, int durationDays, int trips, String name, int maxCompanion, Owner owner, float discountRate) {
+    public Plan(PassengerPrivilege privilege, float price, int durationDays, int numberOfTrips, String name, int maxCompanion, Owner owner, float discountRate) {
         this.privilege = privilege;
         this.price = price;
         this.durationDays = durationDays;
-        this.trips = trips;
+        this.numberOfTrips = numberOfTrips;
         this.name = name;
         this.maxCompanion = maxCompanion;
         this.owner = owner;

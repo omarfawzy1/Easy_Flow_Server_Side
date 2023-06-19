@@ -98,5 +98,4 @@ public interface AdminService {
 
     List<TicketView> getLineTickets(String name);
 
-    ResponseMessage addPlan(PlanModel plan);
 }

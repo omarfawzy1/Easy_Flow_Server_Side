@@ -3,6 +3,7 @@ package com.example.easy_flow_backend.controller;
 import com.example.easy_flow_backend.dto.Views.TripId;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.TripView;
@@ -51,4 +52,8 @@ public class PassengerController {
         return passengerService.getOpenTrips(5, principal.getName());
     }
 
+    @PostMapping("subscribe")
+    public ResponseMessage makeSubscription(String username, String planId) {
+        return passengerService.makeSubscription(username, planId);
+    }
 }

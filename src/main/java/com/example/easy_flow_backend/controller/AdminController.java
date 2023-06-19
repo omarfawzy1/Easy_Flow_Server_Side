@@ -1,6 +1,9 @@
 package com.example.easy_flow_backend.controller;
 
-import com.example.easy_flow_backend.dto.Models.*;
+import com.example.easy_flow_backend.dto.Models.AddLineModel;
+import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
+import com.example.easy_flow_backend.dto.Models.TicketModel;
+import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.entity.TransportationType;
@@ -22,6 +25,7 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+
 
 
     @GetMapping("owners")
@@ -234,10 +238,7 @@ public class AdminController {
         return adminService.getLineTickets(name);
     }
 
-    @PostMapping("plan")
-    public ResponseMessage addPlan(@RequestBody PlanModel plan) {
-        return adminService.addPlan(plan);
-    }
+
 
 
 //ToDo
