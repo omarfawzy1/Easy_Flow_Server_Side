@@ -14,24 +14,22 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PASSENGER')")
 public class PlanController {
     @Autowired
     PlanService planService;
 
     @GetMapping("plans")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PASSENGER')")
     public List<PlanView> getAllPlans() {
         return planService.getAllPlans();
     }
 
     @GetMapping("plans/{ownerName}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PASSENGER')")
     public List<PlanView> getAllOwnerPlans(@PathVariable String ownerName) {
         return planService.getAllOwnerPlans(ownerName);
     }
 
     @GetMapping("plan/{planId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PASSENGER')")
     public PlanView getPlan(@PathVariable String planId) throws NotFoundException {
         return planService.getPlan(planId);
     }
@@ -40,6 +38,12 @@ public class PlanController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseMessage addPlan(@RequestBody PlanModel plan) {
         return planService.addPlan(plan);
+    }
+
+    @DeleteMapping("plan/{planId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseMessage deletePlan(@PathVariable String planId) {
+        return planService.deletePlan(planId);
     }
 
 }

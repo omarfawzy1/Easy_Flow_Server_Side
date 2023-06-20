@@ -35,6 +35,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public ResponseMessage addPlan(PlanModel plan) {
+
         Owner owner = ownerRepo.findByName(plan.getOwnerName());
         if (owner == null) {
             return new ResponseMessage("Owner Name is invalid", HttpStatus.BAD_REQUEST);
@@ -53,5 +54,15 @@ public class PlanServiceImpl implements PlanService {
         PlanView planView = planRepository.findById(planId, PlanView.class);
         if (planView == null) throw new NotFoundException("Sorry, The Plan not found");
         return planView;
+    }
+
+    @Override
+    public ResponseMessage deletePlan(String planId) {
+        if (!planRepository.existsById(planId)) {
+            return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
+        }
+        planRepository.deleteById(planId);
+        return new ResponseMessage("Success", HttpStatus.OK);
+
     }
 }
