@@ -34,7 +34,7 @@ public class Plan {
 
     @Column(name = "trips", nullable = false)
     private int numberOfTrips;
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "max_companion", nullable = false)
     private int maxCompanion;
