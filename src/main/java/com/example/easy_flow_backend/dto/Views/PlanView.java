@@ -4,7 +4,6 @@ import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.PassengerPrivilege;
 
 public interface PlanView {
-    String getId();
 
     PassengerPrivilege getPrivilege();
 

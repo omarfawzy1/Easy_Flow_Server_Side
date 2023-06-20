@@ -46,6 +46,8 @@ public class DbInit implements CommandLineRunner {
     private TicketRepo ticketRepo;
     @Autowired
     private LineService lineService;
+    @Autowired
+    private PlanRepository planRepository;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -84,6 +86,7 @@ public class DbInit implements CommandLineRunner {
         line2Init();
         m7Init();
         m8Init();
+        addplans();
         // test database
         System.out.println(userRepositry.findUserByUsername("haridy").getUsername());
     }
@@ -92,8 +95,8 @@ public class DbInit implements CommandLineRunner {
         ArrayList<User> users = new ArrayList<>();
         users.add(new Administrator("haridy", "haridy", passwordEncoder.encode("haridy")));
         users.add(new Passenger(new Wallet("CC"), "Omar", "Fawzy", "01251253311", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "omar", passwordEncoder.encode("omar"), "omar@gmail.com"));
-        users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165",  "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aly", passwordEncoder.encode("omar"), "aly@gmail.com"));
-        users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464",  "Giza", Gender.M, new Date(System.currentTimeMillis()), "waled", passwordEncoder.encode("omar"), "waled@gmail.com"));
+        users.add(new Passenger(new Wallet("CC", 9787654.68), "ALy", "Khaled", "01256156165", "Cairo", Gender.M, new Date(System.currentTimeMillis()), "aly", passwordEncoder.encode("omar"), "aly@gmail.com"));
+        users.add(new Passenger(new Wallet("CC"), "Waled", "Yahia", "01254556464", "Giza", Gender.M, new Date(System.currentTimeMillis()), "waled", passwordEncoder.encode("omar"), "waled@gmail.com"));
         users.add(new Passenger(new Wallet("CC", 1000.0), "Mona", "Mahmoud", "12311561655", "Cairo", Gender.F, new Date(System.currentTimeMillis()), "mona", passwordEncoder.encode("omar"), "mona@gmail.com"));
         return users;
     }
@@ -296,7 +299,7 @@ public class DbInit implements CommandLineRunner {
                 40f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                elMonibStation.getStationName(),1)
+                elMonibStation.getStationName(), 1)
         );
 
         // trip for Aly
@@ -310,7 +313,7 @@ public class DbInit implements CommandLineRunner {
                 20f,
                 Status.Closed,
                 sakiatMekkiStation.getStationName(),
-                dokkiStation.getStationName(),1)
+                dokkiStation.getStationName(), 1)
         );
 
         // trip for Waled
@@ -324,7 +327,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 elBohoosStation.getStationName(),
-                faysalStation.getStationName(),1)
+                faysalStation.getStationName(), 1)
         );
 
         // trip for Mona
@@ -338,7 +341,7 @@ public class DbInit implements CommandLineRunner {
                 15f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                ommElMisryeenStation.getStationName(),1)
+                ommElMisryeenStation.getStationName(), 1)
         );
 
         // trip for Omar
@@ -352,7 +355,7 @@ public class DbInit implements CommandLineRunner {
                 20f,
                 Status.Closed,
                 operaStation.getStationName(),
-                sakiatMekkiStation.getStationName(),1)
+                sakiatMekkiStation.getStationName(), 1)
         );
 
 
@@ -366,7 +369,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 cairoUniversityStation.getStationName(),
-                elBohoosStation.getStationName(),1)
+                elBohoosStation.getStationName(), 1)
         );
 
         trips.add(new Trip(
@@ -379,7 +382,7 @@ public class DbInit implements CommandLineRunner {
                 7f,
                 Status.Closed,
                 sakiatMekkiStation.getStationName(),
-                operaStation.getStationName(),1)
+                operaStation.getStationName(), 1)
         );
 
         trips.add(new Trip(
@@ -392,7 +395,7 @@ public class DbInit implements CommandLineRunner {
                 5f,
                 Status.Closed,
                 ommElMisryeenStation.getStationName(),
-                dokkiStation.getStationName(),1)
+                dokkiStation.getStationName(), 1)
         );
         tripRepository.saveAll(trips);
     }
@@ -464,7 +467,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         trips.add(new Trip(
                 waled,
@@ -476,7 +479,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 nasrElDeenStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         trips.add(new Trip(
                 aly,
@@ -488,7 +491,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 cairoUniversityStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         trips.add(new Trip(
                 mona,
@@ -500,7 +503,7 @@ public class DbInit implements CommandLineRunner {
                 5f,
                 Status.Closed,
                 talbiaStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         tripRepository.saveAll(trips);
     }
@@ -574,7 +577,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 gizaStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         trips.add(new Trip(
                 waled,
@@ -586,7 +589,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 nasrElDeenStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         trips.add(new Trip(
                 aly,
@@ -598,7 +601,7 @@ public class DbInit implements CommandLineRunner {
                 10f,
                 Status.Closed,
                 cairoUniversityStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         trips.add(new Trip(
                 mona,
@@ -610,11 +613,25 @@ public class DbInit implements CommandLineRunner {
                 5f,
                 Status.Closed,
                 talbiaStation.getStationName(),
-                medanRyhmiaStation.getStationName(),1)
+                medanRyhmiaStation.getStationName(), 1)
         );
         tripRepository.saveAll(trips);
 
     }
 
-
+    @SneakyThrows
+    void addplans() {
+        Owner owner1 = ownerRepo.findByName("Cairo government");
+        Owner owner2 = ownerRepo.findByName("mwasalatmisr");
+        Plan plan1 = new Plan(PassengerPrivilege.Regular, 20, 30, 60, "Gold", 3, owner1, 0.5F);
+        Plan plan2 = new Plan(PassengerPrivilege.Student, 5, 90, 120, "Silver", 1, owner1, 0.8F);
+        Plan plan3 = new Plan(PassengerPrivilege.Regular, 10, 20, 40, "Silver", 1, owner2, 0.3F);
+        Plan plan4 = new Plan(PassengerPrivilege.Army, 3, 30, 10, "Army Silver", 1, owner2, 0.5F);
+        List<Plan> plans = new ArrayList<>();
+        plans.add(plan1);
+        plans.add(plan2);
+        plans.add(plan3);
+        plans.add(plan4);
+        planRepository.saveAll(plans);
+    }
 }
