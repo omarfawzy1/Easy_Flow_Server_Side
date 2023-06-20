@@ -17,13 +17,19 @@ public class PlanModel {
     @NotBlank(message = "owner name must not null")
     @NotNull(message = "owner name is mandatory")
     private String ownerName;
+
     @NotNull(message = "privilege is mandatory")
     private PassengerPrivilege privilege;
+
     @NotNull(message = "price is mandatory")
+    @Min(0)
     private float price;
+
     @NotNull(message = "duration days is mandatory")
     private int durationDays;
+
     @NotNull(message = "Number of Trips is mandatory")
+    @Min(1)
     private int trips;
 
     @NotNull(message = "Plan name is mandatory")

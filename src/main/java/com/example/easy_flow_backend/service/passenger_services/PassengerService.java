@@ -39,5 +39,5 @@ public interface PassengerService {
     List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException;
 
 
-    ResponseMessage makeSubscription(String username, String planId);
+    ResponseMessage makeSubscription(String owner_name, String plan_name);
 }

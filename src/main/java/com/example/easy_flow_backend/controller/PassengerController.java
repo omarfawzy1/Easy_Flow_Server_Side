@@ -53,7 +53,7 @@ public class PassengerController {
     }
 
     @PostMapping("subscribe")
-    public ResponseMessage makeSubscription(String username, String planId) {
-        return passengerService.makeSubscription(username, planId);
+    public ResponseMessage makeSubscription(String owner_name, String plan_name) {
+        return passengerService.makeSubscription(owner_name, plan_name);
     }
 }

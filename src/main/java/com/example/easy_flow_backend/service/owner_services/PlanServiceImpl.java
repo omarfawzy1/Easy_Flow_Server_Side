@@ -50,28 +50,29 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanView getPlan(String planId) throws NotFoundException {
-        PlanView planView = planRepository.findById(planId, PlanView.class);
+    public PlanView getPlan(String planName, String ownerName) throws NotFoundException {
+        PlanView planView = planRepository.findByNameAndOwnerName(planName, ownerName, PlanView.class);
         if (planView == null) throw new NotFoundException("Sorry, The Plan not found");
         return planView;
     }
 
     @Override
-    public ResponseMessage deletePlan(String planId) {
-        if (!planRepository.existsById(planId)) {
+    public ResponseMessage deletePlan(String planName, String ownerName) {
+        if (!planRepository.existsByNameAndOwnerName(planName, ownerName)) {
             return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
         }
-        planRepository.deleteById(planId);
+        Plan plan = planRepository.findByNameAndOwnerName(planName, ownerName, Plan.class);
+        planRepository.deleteById(plan.getId());
         return new ResponseMessage("Success", HttpStatus.OK);
 
     }
 
     @Override
-    public ResponseMessage updatePlan(String planId, PlanModel planModel) {
-        if (!planRepository.existsById(planId)) {
+    public ResponseMessage updatePlan(String planName, PlanModel planModel) {
+        if (!planRepository.existsByNameAndOwnerName(planName, planModel.getOwnerName())) {
             return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
         }
-        Plan plan = planRepository.findById(planId, Plan.class);
+        Plan plan = planRepository.findByNameAndOwnerName(planName, planModel.getOwnerName(), Plan.class);
         plan.setName(planModel.getName());
         plan.setDiscountRate(planModel.getDiscountRate());
         plan.setDurationDays(planModel.getDurationDays());
@@ -79,9 +80,9 @@ public class PlanServiceImpl implements PlanService {
         plan.setPrivilege(planModel.getPrivilege());
         plan.setNumberOfTrips(plan.getNumberOfTrips());
         plan.setPrice(planModel.getPrice());
+
         planRepository.save(plan);
         return new ResponseMessage("Success", HttpStatus.OK);
-
     }
 
 }

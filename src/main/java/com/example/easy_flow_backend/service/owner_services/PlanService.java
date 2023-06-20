@@ -15,9 +15,9 @@ public interface PlanService {
 
     ResponseMessage addPlan(PlanModel plan);
 
-    PlanView getPlan(String planId) throws NotFoundException;
+    PlanView getPlan(String planName, String ownerName) throws NotFoundException;
 
-    ResponseMessage deletePlan(String planId);
+    ResponseMessage deletePlan(String planName, String ownerName);
 
-    ResponseMessage updatePlan(String planId, PlanModel plan);
+    ResponseMessage updatePlan(String planName,PlanModel plan);
 }

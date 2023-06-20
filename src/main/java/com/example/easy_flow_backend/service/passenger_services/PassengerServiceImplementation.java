@@ -132,12 +132,14 @@ public class PassengerServiceImplementation implements PassengerService {
 
 
     @Override
-    public ResponseMessage makeSubscription(String passengerUsername, String planId) {
-        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(passengerUsername);
+    public ResponseMessage makeSubscription(String ownerName, String planName) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getPrincipal().toString();
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null) {
             return new ResponseMessage("Passenger not found", HttpStatus.BAD_REQUEST);
         }
-        Plan plan = planRepository.findById(planId, Plan.class);
+        Plan plan = planRepository.findByNameAndOwnerName(planName, ownerName, Plan.class);
         if (plan == null) {
             return new ResponseMessage("Invalid plan id", HttpStatus.BAD_REQUEST);
         }

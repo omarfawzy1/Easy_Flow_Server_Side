@@ -14,6 +14,10 @@ public interface PlanRepository extends JpaRepository<Plan, String> {
 
     <T> List<T> findAllBy(Class<T> type);
 
+    <T> T findByNameAndOwnerName(String name, String owner_name, Class<T> type);
+
     <T> List<T> findAllByOwnerName(String ownerName, Class<T> type);
 
+    boolean existsByNameAndOwnerName(String name, String owner_name);
+    void deleteByNameAndOwnerName(String name, String owner_name);
 }
