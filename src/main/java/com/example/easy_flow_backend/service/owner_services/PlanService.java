@@ -12,9 +12,12 @@ public interface PlanService {
     List<PlanView> getAllPlans();
 
     List<PlanView> getAllOwnerPlans(String ownerName);
+
     ResponseMessage addPlan(PlanModel plan);
 
     PlanView getPlan(String planId) throws NotFoundException;
 
     ResponseMessage deletePlan(String planId);
+
+    ResponseMessage updatePlan(String planId, PlanModel plan);
 }

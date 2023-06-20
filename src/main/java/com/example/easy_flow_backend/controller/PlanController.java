@@ -46,4 +46,9 @@ public class PlanController {
         return planService.deletePlan(planId);
     }
 
+    @PutMapping("plan/{planId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseMessage deletePlan(@PathVariable String planId, @RequestBody PlanModel planModel) {
+        return planService.updatePlan(planId, planModel);
+    }
 }

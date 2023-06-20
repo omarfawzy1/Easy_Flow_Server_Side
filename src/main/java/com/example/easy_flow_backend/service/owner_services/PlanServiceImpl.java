@@ -65,4 +65,23 @@ public class PlanServiceImpl implements PlanService {
         return new ResponseMessage("Success", HttpStatus.OK);
 
     }
+
+    @Override
+    public ResponseMessage updatePlan(String planId, PlanModel planModel) {
+        if (!planRepository.existsById(planId)) {
+            return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
+        }
+        Plan plan = planRepository.findById(planId, Plan.class);
+        plan.setName(planModel.getName());
+        plan.setDiscountRate(planModel.getDiscountRate());
+        plan.setDurationDays(planModel.getDurationDays());
+        plan.setMaxCompanion(planModel.getMaxCompanion());
+        plan.setPrivilege(planModel.getPrivilege());
+        plan.setNumberOfTrips(plan.getNumberOfTrips());
+        plan.setPrice(planModel.getPrice());
+        planRepository.save(plan);
+        return new ResponseMessage("Success", HttpStatus.OK);
+
+    }
+
 }
