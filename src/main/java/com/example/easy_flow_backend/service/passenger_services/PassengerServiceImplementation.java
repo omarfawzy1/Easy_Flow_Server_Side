@@ -141,9 +141,22 @@ public class PassengerServiceImplementation implements PassengerService {
         }
         Plan plan = planRepository.findByNameAndOwnerName(planName, ownerName, Plan.class);
         if (plan == null) {
-            return new ResponseMessage("Invalid plan id", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("The plan not exist", HttpStatus.BAD_REQUEST);
         }
+
         return subscriptionService.makeSubscription(passenger, plan);
+    }
+
+    @Override
+    public List<SubscriptionView> getMySubscriptions() throws NotFoundException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getPrincipal().toString();
+        if (!passengerRepo.existsByUsernameIgnoreCase(username)) {
+            throw new NotFoundException("Sorry, The passenger Not found");
+        }
+
+        return subscriptionRepo.findAllByPassengerUsername(username, SubscriptionView.class);
+
     }
 
 

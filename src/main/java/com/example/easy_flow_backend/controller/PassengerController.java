@@ -1,12 +1,13 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.SubscriptionView;
 import com.example.easy_flow_backend.dto.Views.TripId;
+import com.example.easy_flow_backend.dto.Views.TripView;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
-import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
-import com.example.easy_flow_backend.dto.Views.TripView;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -55,5 +56,10 @@ public class PassengerController {
     @PostMapping("subscribe")
     public ResponseMessage makeSubscription(String owner_name, String plan_name) {
         return passengerService.makeSubscription(owner_name, plan_name);
+    }
+
+    @GetMapping("subscriptions")
+    public List<SubscriptionView> getMySubscriptions() throws NotFoundException {
+        return passengerService.getMySubscriptions();
     }
 }
