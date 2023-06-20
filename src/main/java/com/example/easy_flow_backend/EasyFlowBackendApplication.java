@@ -9,12 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
 
 
 @SpringBootApplication
 @EnableCaching
+@EnableScheduling
 public class EasyFlowBackendApplication {
 
     public static void main(String[] args) {

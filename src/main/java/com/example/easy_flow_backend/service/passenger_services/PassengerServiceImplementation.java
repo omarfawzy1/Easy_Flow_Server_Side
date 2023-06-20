@@ -141,15 +141,6 @@ public class PassengerServiceImplementation implements PassengerService {
         if (plan == null) {
             return new ResponseMessage("Invalid plan id", HttpStatus.BAD_REQUEST);
         }
-        if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
-            return new ResponseMessage("Sorry, you are not compatible with this plan", HttpStatus.BAD_REQUEST);
-        }
-        boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
-        if (!canWithdraw) {
-            return new ResponseMessage("Sorry, No enough money", HttpStatus.BAD_REQUEST);
-        }
-
-        walletService.withdraw(passenger.getWallet(), plan.getPrice());
         return subscriptionService.makeSubscription(passenger, plan);
     }
 

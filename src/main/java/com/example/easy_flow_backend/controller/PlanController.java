@@ -41,4 +41,5 @@ public class PlanController {
     public ResponseMessage addPlan(@RequestBody PlanModel plan) {
         return planService.addPlan(plan);
     }
+
 }

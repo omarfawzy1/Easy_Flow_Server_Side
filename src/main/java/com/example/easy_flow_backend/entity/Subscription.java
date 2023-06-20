@@ -1,22 +1,19 @@
 package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
 @Entity
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"plan_id", "passenger_id"})})
 public class Subscription {
     public Subscription(int remainingTrips, Date expireDate, boolean repurchase, Plan plan, Passenger passenger) {
+
         this.remainingTrips = remainingTrips;
         this.expireDate = expireDate;
         this.repurchase = repurchase;
@@ -35,13 +32,14 @@ public class Subscription {
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date expireDate;
     @Column(name = "repurchase")
-    private boolean repurchase = false;
+    private boolean repurchase ;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "plan_id")
     private Plan plan;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
+
 
     public boolean isExpired() {
         return new Date().after(this.getExpireDate());

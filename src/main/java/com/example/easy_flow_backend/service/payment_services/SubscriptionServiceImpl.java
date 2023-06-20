@@ -8,6 +8,7 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.SubscriptionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.List;
 public class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     SubscriptionRepo subscriptionRepo;
+    @Autowired
+    WalletService walletService;
 
     @Override
     public Subscription getbestSubscription(List<Subscription> subscriptions, RideModel rideModel) {
@@ -34,9 +37,30 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return bestSubscription;
     }
 
+
+    public boolean canSubscribe(Passenger passenger, Plan plan) {
+
+        if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
+            return false;
+        }
+        boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
+        return canWithdraw;
+    }
+
     @Override
     public ResponseMessage makeSubscription(Passenger passenger, Plan plan) {
 
+        if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
+            return new ResponseMessage("Sorry, you are not compatible with this plan", HttpStatus.BAD_REQUEST);
+        }
+        boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
+        if (!canWithdraw) {
+            return new ResponseMessage("Sorry, No enough money", HttpStatus.BAD_REQUEST);
+        }
+        if (!plan.isAvailable()) {
+            return new ResponseMessage("Sorry, The plan is closed", HttpStatus.BAD_REQUEST);
+        }
+        walletService.withdraw(passenger.getWallet(), plan.getPrice());
         Date expirationDate = new Date();
         final long ONE_DAY_IN_MILLISECOND = 1000 * 60 * 60 * 24;
         expirationDate.setTime(expirationDate.getTime() + plan.getDurationDays() * ONE_DAY_IN_MILLISECOND);
@@ -50,5 +74,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return new ResponseMessage("Success", HttpStatus.OK);
     }
 
+    @Scheduled(cron = "0 0 0 * * *")
+    public void endSubscription() {
+        System.out.println("I'm event end subscription");
+        List<Subscription> expiredSubscriptions = subscriptionRepo.getAllByExpireDateBefore(new Date());
+        for (Subscription subscription : expiredSubscriptions) {
+            if (subscription.isRepurchase() && canSubscribe(subscription.getPassenger(), subscription.getPlan())) {
+                makeSubscription(subscription.getPassenger(), subscription.getPlan());
+            }
+            subscriptionRepo.delete(subscription);
+        }
+
+    }
 
 }
