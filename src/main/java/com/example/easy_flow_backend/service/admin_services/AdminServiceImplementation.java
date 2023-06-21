@@ -290,11 +290,17 @@ public class AdminServiceImplementation implements AdminService {
         Owner owner=ownerRepo.findByName(name);
         if(owner == null)
             return new ResponseMessage("this owner is not found",HttpStatus.BAD_REQUEST);
-        owner.setImageData(ImageData.builder()
-                .name(file.getOriginalFilename())
-                .type(file.getContentType())
-                .imageData(ImageUtil.compressImage(file.getBytes())).build());
-        ownerRepo.save(owner);
+        try{
+            owner.setImageData(ImageData.builder()
+                    .name(file.getOriginalFilename())
+                    .type(file.getContentType())
+                    .imageData(ImageUtil.compressImage(file.getBytes())).build());
+            ownerRepo.save(owner);
+        }
+        catch (Exception e){
+            return new ResponseMessage("image size is too big",HttpStatus.BAD_REQUEST);
+
+        }
         return new ResponseMessage("Success",HttpStatus.OK);
     }
 
