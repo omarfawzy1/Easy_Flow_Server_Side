@@ -6,7 +6,9 @@ import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AdminService {
@@ -98,4 +100,6 @@ public interface AdminService {
 
     List<TicketView> getLineTickets(String name);
 
+
+    ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException;
 }

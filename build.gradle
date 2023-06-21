@@ -2,11 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
+
 }
 
-
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '17'
 
 configurations {
@@ -73,7 +73,10 @@ dependencies {
 
     // firebase admin notification
     implementation 'com.google.firebase:firebase-admin:9.1.1'
+    // image
+
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()

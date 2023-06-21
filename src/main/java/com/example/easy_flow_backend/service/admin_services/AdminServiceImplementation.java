@@ -8,8 +8,6 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.service.UserService;
-import com.example.easy_flow_backend.service.graph_services.GraphEdgeService;
-import com.example.easy_flow_backend.service.graph_services.GraphService;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.payment_services.TicketService;
@@ -17,10 +15,14 @@ import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.station_line_services.StationService;
 import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
+import com.example.easy_flow_backend.service.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -283,6 +285,18 @@ public class AdminServiceImplementation implements AdminService {
         return ticketService.getLineTickets(name);
     }
 
+    @Override
+    public ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException {
+        Owner owner=ownerRepo.findByName(name);
+        if(owner == null)
+            return new ResponseMessage("this owner is not found",HttpStatus.BAD_REQUEST);
+        owner.setImageData(ImageData.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtil.compressImage(file.getBytes())).build());
+        ownerRepo.save(owner);
+        return new ResponseMessage("Success",HttpStatus.OK);
+    }
 
     @Override
     public ResponseMessage deleteOwner(String username) throws BadRequestException {

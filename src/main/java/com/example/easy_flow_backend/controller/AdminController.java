@@ -15,7 +15,9 @@ import com.example.easy_flow_backend.service.utils.Utility;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -25,8 +27,6 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private AdminService adminService;
-
-
 
     @GetMapping("owners")
     public List<OwnerView> getALlOwners() {
@@ -237,7 +237,10 @@ public class AdminController {
     public List<TicketView> getLineTickets(@PathVariable String name) {
         return adminService.getLineTickets(name);
     }
-
+    @PostMapping("owners/setImage/{name}")
+    public ResponseMessage setOwnerImage(@PathVariable String name, @RequestBody MultipartFile file) throws IOException {
+        return adminService.setOwnerImage(name,file);
+    }
 
 
 

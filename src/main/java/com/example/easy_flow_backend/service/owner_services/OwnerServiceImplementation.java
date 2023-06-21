@@ -9,6 +9,7 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
+import com.example.easy_flow_backend.service.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class OwnerServiceImplementation implements OwnerService {
         result.add(owner.getMail());
         result.add(owner.getBankAccount());
         result.add(lineService.getOwnerDetails(owner.getId()));
+        result.add(ImageUtil.decompressImage(owner.getImageData().getImageData()));
         return result;
 
     }
