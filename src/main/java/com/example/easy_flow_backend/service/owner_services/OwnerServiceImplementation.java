@@ -47,7 +47,10 @@ public class OwnerServiceImplementation implements OwnerService {
         result.add(owner.getMail());
         result.add(owner.getBankAccount());
         result.add(lineService.getOwnerDetails(owner.getId()));
-        result.add(ImageUtil.decompressImage(owner.getImageData().getImageData()));
+        if(owner.getImageData()==null)
+            result.add(null);
+        else
+            result.add(ImageUtil.decompressImage(owner.getImageData().getImageData()));
         return result;
 
     }
