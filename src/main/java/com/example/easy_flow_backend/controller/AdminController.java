@@ -224,9 +224,7 @@ public class AdminController {
     }
 
     @GetMapping("tickets/{id}")
-    public TicketView getTicket(@PathVariable String id) {
-        return adminService.getTicket(id);
-    }
+    public TicketView getTicket(@PathVariable String id) {return adminService.getTicket(id);}
 
     @GetMapping("owners/tickets/{name}")
     public List<TicketView> getOwnerTickets(@PathVariable String name) {

@@ -12,11 +12,11 @@ Feature: Admin access api
 
   Scenario: The admin send a request get a passenger using the username
     Given the passengers in the database are the following
-      | firstName | lastName | phoneNumber | type    | city  | gender | birthDay   | username | password | email           |
-      | Mona      | Mahmoud  | 12311561655 | Regular | Cairo | F      | 2023-02-10 | Mona     | omar     | mona@gmail.com  |
-      | ALy       | Khaled   | 01256156165 | Regular | Cairo | M      | 2023-02-10 | ALy      | omar     | aly@gmail.com   |
-      | Waled     | Yahia    | 01254556464 | Regular | Giza  | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
-      | Omar      | Fawzy    | 01251253311 | Regular | Cairo | M      | 2023-02-10 | Omar     | omar     | omar@gmail.com  |
+      | firstName | lastName | phoneNumber | city  | gender | birthDay   | username | password | email           |
+      | Mona      | Mahmoud  | 12311561655 | Cairo | F      | 2023-02-10 | Mona     | omar     | mona@gmail.com  |
+      | ALy       | Khaled   | 01256156165 | Cairo | M      | 2023-02-10 | ALy      | omar     | aly@gmail.com   |
+      | Waled     | Yahia    | 01254556464 | Giza  | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
+      | Omar      | Fawzy    | 01251253311 | Cairo | M      | 2023-02-10 | Omar     | omar     | omar@gmail.com  |
     And them wallets in the database are the following
       | creditCard       | balance |
       | 4532771649784837 | 157621  |
@@ -26,8 +26,8 @@ Feature: Admin access api
     And the admin logged in with username admin and password admin
     When the admin request a passenger with username Waled
     Then the server response with the following passenger
-      | firstName | lastName | phoneNumber | type    | city | gender | birthDay   | username | password | email           |
-      | Waled     | Yahia    | 01254556464 | Regular | Giza | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
+      | firstName | lastName | phoneNumber | city | gender | birthDay   | username | password | email           |
+      | Waled     | Yahia    | 01254556464 | Giza | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
     And this passenger wallet is
       | creditCard       | balance |
       | 4485467874182352 | 4657    |
@@ -35,11 +35,11 @@ Feature: Admin access api
 
   Scenario: The admin send a request get all the passengers
     Given the passengers in the database are the following
-      | firstName | lastName | phoneNumber | type    | city  | gender | birthDay   | username | password | email           |
-      | Mona      | Mahmoud  | 12311561655 | Regular | Cairo | F      | 2023-02-10 | Mona     | omar     | mona@gmail.com  |
-      | ALy       | Khaled   | 01256156165 | Regular | Cairo | M      | 2023-02-10 | ALy      | omar     | aly@gmail.com   |
-      | Waled     | Yahia    | 01254556464 | Regular | Giza  | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
-      | Omar      | Fawzy    | 01251253311 | Regular | Cairo | M      | 2023-02-10 | Omar     | omar     | omar@gmail.com  |
+      | firstName | lastName | phoneNumber | city  | gender | birthDay   | username | password | email           |
+      | Mona      | Mahmoud  | 12311561655 | Cairo | F      | 2023-02-10 | Mona     | omar     | mona@gmail.com  |
+      | ALy       | Khaled   | 01256156165 | Cairo | M      | 2023-02-10 | ALy      | omar     | aly@gmail.com   |
+      | Waled     | Yahia    | 01254556464 | Giza  | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
+      | Omar      | Fawzy    | 01251253311 | Cairo | M      | 2023-02-10 | Omar     | omar     | omar@gmail.com  |
     And them wallets in the database are the following
       | creditCard       | balance |
       | 4532771649784837 | 157621  |
@@ -49,11 +49,11 @@ Feature: Admin access api
     And the admin logged in with username admin and password admin
     When the admin request to get all the passengers
     Then the server response with the following passengers
-      | firstName | lastName | phoneNumber | type    | city  | gender | birthDay   | username | password | email           |
-      | Mona      | Mahmoud  | 12311561655 | Regular | Cairo | F      | 2023-02-10 | Mona     | omar     | mona@gmail.com  |
-      | ALy       | Khaled   | 01256156165 | Regular | Cairo | M      | 2023-02-10 | ALy      | omar     | aly@gmail.com   |
-      | Waled     | Yahia    | 01254556464 | Regular | Giza  | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
-      | Omar      | Fawzy    | 01251253311 | Regular | Cairo | M      | 2023-02-10 | Omar     | omar     | omar@gmail.com  |
+      | firstName | lastName | phoneNumber | city  | gender | birthDay   | username | password | email           |
+      | Mona      | Mahmoud  | 12311561655 | Cairo | F      | 2023-02-10 | Mona     | omar     | mona@gmail.com  |
+      | ALy       | Khaled   | 01256156165 | Cairo | M      | 2023-02-10 | ALy      | omar     | aly@gmail.com   |
+      | Waled     | Yahia    | 01254556464 | Giza  | M      | 2023-02-10 | Waled    | omar     | waled@gmail.com |
+      | Omar      | Fawzy    | 01251253311 | Cairo | M      | 2023-02-10 | Omar     | omar     | omar@gmail.com  |
     And this passengers wallets are
       | creditCard       | balance |
       | 4532771649784837 | 157621  |

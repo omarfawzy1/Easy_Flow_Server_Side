@@ -75,7 +75,7 @@ public class Passenger extends User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        return wallet.equals(passenger.wallet) && this.username.equals(passenger.username) ;
+        return this.username.equals(passenger.username) ;
     }
 
     @Override

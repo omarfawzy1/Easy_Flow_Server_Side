@@ -25,8 +25,6 @@ public class AdminGlue extends GlueConfig {
     public AdminGlue(){
     }
 
-
-
     @Given("^the admin table in the database contain are the following$")
     public void the_admin_in_the_database_are_the_following(io.cucumber.datatable.DataTable dataTable) {
         adminstratorsRepo.deleteAll();
@@ -86,10 +84,9 @@ public class AdminGlue extends GlueConfig {
     @When("^the admin request a passenger with username (.*)$")
     public void the_admin_request_a_passenger_with_username(String username) throws URISyntaxException, JsonProcessingException {
 
-
         String response =(testRestTemplate.exchange("http://localhost:8080/admin/passenger/"+username,
                 HttpMethod.GET,new HttpEntity<>(headers), String.class, params).getBody());
-        actual.add(gson.fromJson(response, Passenger.class));
+        actual.add(objectMapper.readValue(response,Passenger.class));
         headers.clear();
     }
     @Then("^the server response with the following passenger$")

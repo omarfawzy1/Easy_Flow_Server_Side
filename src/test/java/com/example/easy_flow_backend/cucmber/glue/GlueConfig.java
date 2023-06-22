@@ -80,7 +80,6 @@ public class GlueConfig {
                 entry.get("firstName"),
                 entry.get("lastName"),
                 entry.get("phoneNumber"),
-                entry.get("type"),
                 entry.get("city"),
                 Gender.valueOf(entry.get("gender")),
                 Date.valueOf(entry.get("birthDay")),
