@@ -41,8 +41,8 @@ public class AnalysisService {
     }
 
 
-    public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId) {
-        Optional<Long> revenue = tripRepo.getRevenueAvgByPassenger(timePeriod.getStart(), timePeriod.getEnd(), passengerId);
+    public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerName) {
+        Optional<Long> revenue = tripRepo.getRevenueAvgByPassenger(timePeriod.getStart(), timePeriod.getEnd(), passengerName);
         if (revenue.isEmpty())
             return 0;
         return revenue.get();
@@ -70,14 +70,14 @@ public class AnalysisService {
     }
 
 
-    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId) {
+    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) {
         long sum=0;
         int count=0;
         Long start = timePeriod.getStart().getTime();
         Long end = timePeriod.getEnd().getTime();
         while(start+timeUnit<=end){
             sum+= tripRepo.getTripAvgByTimeUnitForBusLine(new Date(start), new Date(start+timeUnit),
-                    lineId);
+                    lineName);
             start+=timeUnit;
             count++;
         }
@@ -85,9 +85,9 @@ public class AnalysisService {
     }
 
 
-    public List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType,
+    public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, TransportationType transportType,
                                      int peekNumber) {
-        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineId,
+        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineName,
                 transportType);
         if(result.size()<peekNumber){
             return result;

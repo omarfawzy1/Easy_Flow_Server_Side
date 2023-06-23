@@ -44,9 +44,9 @@ public interface TripRepo extends JpaRepository<Trip, String> {
 
     @Query("select avg (trip.price)" +
             "From Trip trip " +
-            "WHERE trip.startTime>= :start AND trip.endTime<= :end AND trip.passenger.id= :passengerId ")
+            "WHERE trip.startTime>= :start AND trip.endTime<= :end AND trip.passenger.username= :passengerName ")
     Optional<Long> getRevenueAvgByPassenger(@Param("start") Date start, @Param("end") Date end,
-                                            @Param("passengerId") String passengerId);
+                                            @Param("passengerName") String passengerName);
 
     @Query("select COUNT (trip.id)" +
             "From Trip trip " +
@@ -60,21 +60,21 @@ public interface TripRepo extends JpaRepository<Trip, String> {
             "From Trip trip Join MovingTurnstile mt " +
             "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) " +
             "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.endTime <= :end " +
-            "AND mt.line.id = :lineId ")
+            "AND mt.line.name = :lineName ")
     long getTripAvgByTimeUnitForBusLine(@Param("start") Date start,
                                         @Param("end") Date end,
-                                        @Param("lineId") String lineId);
+                                        @Param("lineName") String lineName);
 
     @Query(value = "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
             "From Trip trip Join MovingTurnstile mt " +
             "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) " +
             "WHERE trip.transportationType = :transportType AND trip.startTime >= :start AND trip.startTime <= :end " +
-            "AND mt.line.id = :lineId " +
+            "AND mt.line.name = :lineName " +
             "GROUP BY hour(trip.startTime) " +
             "ORDER BY number DESC ")
     List<Object> getPeekHours(@Param("start") Date start,
                               @Param("end") Date end,
-                              @Param("lineId") String lineId,
+                              @Param("lineName") String lineName,
                               @Param("transportType") TransportationType transportType);
 
     @Query("SELECT trip "+

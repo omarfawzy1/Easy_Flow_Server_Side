@@ -35,7 +35,7 @@ public interface AdminService {
 
     long getRevenueAvg(TimePeriod timePeriod);
 
-    long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId);
+    long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerName);
 
     int getNegativePassengerCount();
 
@@ -45,9 +45,9 @@ public interface AdminService {
 
     int getTripInStationCount(TimePeriod timePeriod, String stationName);
 
-    long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId);
+    long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName);
 
-    List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType, int peekNumber);
+    List<Object> getPeekHours(TimePeriod timePeriod, String lineName, TransportationType transportType, int peekNumber);
 
     int getTransactionCount();
 

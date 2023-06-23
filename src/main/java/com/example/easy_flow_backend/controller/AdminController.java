@@ -53,7 +53,7 @@ public class AdminController {
     public boolean addGraph(@Valid @RequestBody GraphModel graphModel) {
         return adminService.addGraph(graphModel);
     }*/
-
+    //TODO replace ID
     @GetMapping("graph/{ownerId}/{lineId}")
     public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId) throws NotFoundException {
         return adminService.getGraph(ownerId, lineId);
@@ -99,6 +99,7 @@ public class AdminController {
     public int getPassengersCount() {
         return adminService.getAllPassangersCount();
     }
+    //TODO change the passenger type implementation
 
     @GetMapping("passengers/count/{type}")
     public int getPassengersCountWithType(@PathVariable String type) {
@@ -114,10 +115,9 @@ public class AdminController {
     public long getRevenueAvg(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenueAvg(timePeriod);
     }
-
-    @GetMapping("{passengerId}/revenueAvg")
-    public long getRevenueAvgByPassenger(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String passengerId) {
-        return adminService.getRevenueAvgByPassenger(timePeriod, passengerId);
+    @GetMapping("{passengerName}/revenueAvg")
+    public long getRevenueAvgByPassenger(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String passengerName) {
+        return adminService.getRevenueAvgByPassenger(timePeriod, passengerName);
     }
 
     @GetMapping("passenger/negativeBalanceCount")
@@ -139,21 +139,20 @@ public class AdminController {
     public Object getTripInStationCount(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String stationName) {
         return adminService.getTripInStationCount(timePeriod, stationName);
     }
-
-    @GetMapping("line/tripAvg/{lineId}/{timeUnit}")
+    @GetMapping("line/tripAvg/{lineName}/{timeUnit}")
     public Object getTripAvgByTimeUnitForBusLine(@Valid @RequestBody TimePeriod timePeriod,
                                                  @PathVariable String timeUnit,
-                                                 @PathVariable String lineId) throws ParseException {
-        return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineId);
+                                                 @PathVariable String lineName) throws ParseException {
+        return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineName);
     }
-
-    @GetMapping("line/peek/{lineId}/{transportType}/{peekNumber}")
+    //TODO replace ID
+    @GetMapping("line/peek/{lineName}/{transportType}/{peekNumber}")
     public List<Object> getPeekHours(
             @Valid @RequestBody TimePeriod timePeriod,
-            @PathVariable String lineId,
+            @PathVariable String lineName,
             @PathVariable TransportationType transportType,
             @PathVariable int peekNumber) {
-        return adminService.getPeekHours(timePeriod, lineId, transportType, peekNumber);
+        return adminService.getPeekHours(timePeriod, lineName, transportType, peekNumber);
     }
 
     @GetMapping("transaction/count")
@@ -239,13 +238,4 @@ public class AdminController {
     public ResponseMessage setOwnerImage(@PathVariable String name, @RequestBody MultipartFile file) throws IOException {
         return adminService.setOwnerImage(name,file);
     }
-
-
-
-//ToDo
-//
-//View system-wide statistics:
-//Admin can view the total number of transactions in the system (e.g. trip purchases, wallet recharges).
-//Admin can view the system logs to monitor any errors or issues in the system.
-
 }

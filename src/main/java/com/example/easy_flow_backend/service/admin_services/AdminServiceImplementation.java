@@ -119,8 +119,8 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerId) {
-        return analysisService.getRevenueAvgByPassenger(timePeriod, passengerId);
+    public long getRevenueAvgByPassenger(TimePeriod timePeriod, String passengerName) {
+        return analysisService.getRevenueAvgByPassenger(timePeriod, passengerName);
     }
 
     @Override
@@ -144,13 +144,13 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineId) {
-        return analysisService.getTripAvgByTimeUnitForBusLine(timePeriod, timeUnit, lineId);
+    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) {
+        return analysisService.getTripAvgByTimeUnitForBusLine(timePeriod, timeUnit, lineName);
     }
 
     @Override
-    public List<Object> getPeekHours(TimePeriod timePeriod, String lineId, TransportationType transportType, int peekNumber) {
-        return analysisService.getPeekHours(timePeriod, lineId, transportType, peekNumber);
+    public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, TransportationType transportType, int peekNumber) {
+        return analysisService.getPeekHours(timePeriod, lineName, transportType, peekNumber);
     }
 
     @Override
