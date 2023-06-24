@@ -4,6 +4,7 @@ import com.example.easy_flow_backend.repos.UserRepositry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -97,12 +98,18 @@ public class SecurityConfiguration {
 //                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/passenger/**").hasRole("PASSENGER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/plan/**").hasAnyRole("ADMIN", "PASSENGER")
+                        .requestMatchers(HttpMethod.GET, "/plans/**").hasAnyRole("ADMIN", "PASSENGER")
+                        .requestMatchers("/plan/**").hasRole("ADMIN")
+                        .requestMatchers("/plans/**").hasRole("ADMIN")
+
                         .requestMatchers("/**").permitAll()
+
 //                        .requestMatchers("/api/public/test").permitAll()
 //                        .requestMatchers("/api/public/management/*").hasRole("MANAGER")
 //                        .requestMatchers("/api/public/admin/*").hasRole("ADMIN")
                         .anyRequest().authenticated()).
-        headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
+                headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST, GET"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
@@ -129,13 +136,13 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @EnableWebMvc
+   /* @EnableWebMvc
     public class CorsConfig implements WebMvcConfigurer {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**");
         }
-    }
+    }*/
 
 
 }

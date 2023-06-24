@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService, TurnstileService {
+public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService {
     @Autowired
     private TripRepo tripRepo;
     @Autowired
