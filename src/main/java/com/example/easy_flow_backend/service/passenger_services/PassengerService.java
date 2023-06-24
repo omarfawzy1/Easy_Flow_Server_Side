@@ -43,4 +43,7 @@ public interface PassengerService {
     ResponseMessage makeSubscription(String owner_name, String plan_name);
 
     List<SubscriptionView> getMySubscriptions() throws NotFoundException;
+    ResponseMessage resetPassword(String email) throws NotFoundException;
+
+
 }

@@ -36,4 +36,10 @@ public class HomeController {
     public ResponseMessage Register(@Valid @RequestBody RegisterModel registerModel) throws NotFoundException {
       return   homeService.Register(registerModel);
     }
+
+    @PostMapping("password_reset")
+    public ResponseMessage resetPassword(@RequestBody String email) throws NotFoundException {
+        return homeService.resetPassword(email);
+    }
+
 }

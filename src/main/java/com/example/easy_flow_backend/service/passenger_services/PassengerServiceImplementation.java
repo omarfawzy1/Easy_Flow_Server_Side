@@ -2,12 +2,19 @@ package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
+import com.example.easy_flow_backend.dto.Views.PassagnerBriefDetails;
+import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
+import com.example.easy_flow_backend.dto.Views.TripView;
+import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.service.payment_services.SubscriptionService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
+import com.example.easy_flow_backend.repos.PassengersRepo;
+import com.example.easy_flow_backend.repos.TripRepo;
+import com.example.easy_flow_backend.service.password_reset_services.ResetPasswordTokenService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +28,7 @@ import java.util.List;
 
 @Service
 public class PassengerServiceImplementation implements PassengerService {
-
+    private static final int TOKEN_LENGTH = 7;
     @Autowired
     private TripRepo tripRepo;
     @Autowired
@@ -38,6 +45,8 @@ public class PassengerServiceImplementation implements PassengerService {
     SubscriptionRepo subscriptionRepo;
     @Autowired
     PlanRepository planRepository;
+    @Autowired
+    private ResetPasswordTokenService resetPasswordTokenService;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -159,5 +168,28 @@ public class PassengerServiceImplementation implements PassengerService {
 
     }
 
+
+
+    @Override
+    public ResponseMessage resetPassword(String email) throws NotFoundException {
+        System.out.println(email);
+        Passenger passenger = passengerRepo.findByEmailIgnoreCase(email);
+        if (passenger == null) {
+            throw new NotFoundException("Incorrect email!");
+        }
+        String token = resetPasswordTokenService.getRandomToken(TOKEN_LENGTH);
+        resetPasswordTokenService.createPasswordResetTokenForUser(passenger, token);
+        String subject = "Reset your EasyFlow password\n";
+        String text = "Reset password code is " + token + ".\n";
+        try {
+            resetPasswordTokenService.sendMail(email, subject, text);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return new ResponseMessage("Sorry Something wrong,please try again letter.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+        return new ResponseMessage("Check your mail.", HttpStatus.OK);
+    }
 
 }
