@@ -4,12 +4,20 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 public class RedisConfig {
@@ -58,5 +66,29 @@ public class RedisConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")));
     }
+
+
+//    @Bean
+//    public DataSource getDataSource() {
+//        return DataSourceBuilder.create()
+//                .driverClassName("com.mysql.cj.jdbc.Driver")
+//                .url("jdbc:mysql://localhost:3306/mydb")
+//                .username("root")
+//                .password("0000")
+//                .build();
+//    }
+//    @Bean
+//    public Properties hibernateProperties() {
+//        Properties hibernateProperties = new Properties();
+//        hibernateProperties.setProperty(
+//                "spring.jpa.hibernate.ddl-auto", "create");
+//        hibernateProperties.setProperty(
+//                "spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+//        hibernateProperties.setProperty(
+//                "spring.jpa.properties.hibernate.format_sql", "true");
+//
+//        return hibernateProperties;
+//    }
+
 }
 
