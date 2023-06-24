@@ -13,8 +13,6 @@ public class MailServiceImpl {
     @Autowired
     private JavaMailSender emailSender;
     public void sendMail(String to, String subject, String text) {
-        System.out.println(env.getProperty("spring.mail.username"));
-        System.out.println(env.getProperty("spring.mail.password"));
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@EasyFlow.com");
         message.setTo(to);

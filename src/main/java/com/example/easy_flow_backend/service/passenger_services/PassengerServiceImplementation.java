@@ -45,7 +45,8 @@ public class PassengerServiceImplementation implements PassengerService {
     PlanRepository planRepository;
     @Autowired
     FirebaseNotificationService firebaseNotificationService;
-    private ResetPasswordTokenService resetPasswordTokenService;
+    @Autowired
+    ResetPasswordTokenService resetPasswordTokenService;
     @Autowired
     private ResetPasswordTokenRepo resetPasswordTokenRepo;
     @Autowired

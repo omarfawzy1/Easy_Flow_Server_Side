@@ -42,7 +42,7 @@ public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
         final boolean useNumbers = true;
         return RandomStringUtils.random(length, useLetters, useNumbers);
     }
-
+    @Override
     public ResponseMessage sendResetPasswordToken(Passenger passenger) {
 
         String token = getRandomToken(TOKEN_LENGTH);

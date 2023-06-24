@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface HomeService {
 
     ResponseMessage Register(RegisterModel registerModel) throws NotFoundException;
-    ResponseMessage sendResetPasswordToken(@RequestBody String email) throws NotFoundException;
+    ResponseMessage sendResetPasswordToken(String email) throws NotFoundException;
 
     ResponseMessage resetPassword(String key, ResetPassword newPassword);
 }
