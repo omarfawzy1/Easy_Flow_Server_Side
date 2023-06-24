@@ -5,10 +5,12 @@ import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
+import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.service.TokenValidationService;
 import com.example.easy_flow_backend.service.graph_services.GraphService;
 import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
 import com.example.easy_flow_backend.service.notification.FirebaseNotificationService;
+import com.example.easy_flow_backend.service.notification.PassengerNotification;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +74,8 @@ public class TestController {
 
     @GetMapping("notify")
     public String notifyTest() {
-        return firebaseNotificationService.sendAnyMessage();
+
+        return firebaseNotificationService.notifyPassenger("omar", new PassengerNotification("Hi Omar We have approved your VIP request", "Have a nice day")) ? "Sent Successfully": "Did not Work Sorry";
     }
 
     @Autowired
@@ -94,6 +97,8 @@ public class TestController {
 
     @Autowired
     private TokenValidationService tokenValidationService;
+    @Autowired
+    private PassengersRepo passengersRepo;
 
     @GetMapping("validateToken/{token}/{username}")
     public String testisvalid(@PathVariable("token") String token, @PathVariable("username") String username) {

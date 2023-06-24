@@ -6,6 +6,8 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
+import com.example.easy_flow_backend.service.notification.FirebaseNotificationService;
+import com.example.easy_flow_backend.service.notification.PassengerNotification;
 import com.example.easy_flow_backend.service.payment_services.SubscriptionService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
@@ -38,6 +40,8 @@ public class PassengerServiceImplementation implements PassengerService {
     SubscriptionRepo subscriptionRepo;
     @Autowired
     PlanRepository planRepository;
+    @Autowired
+    FirebaseNotificationService firebaseNotificationService;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -122,6 +126,10 @@ public class PassengerServiceImplementation implements PassengerService {
         Transaction transaction = new Transaction(passenger, amount);
         transactionRepo.save(transaction);
         walletService.recharge(passenger.getWallet().getId(), amount);
+        PassengerNotification passengerNotification = new PassengerNotification(
+                String.format("%f EGP have been successfully added to your wallet", amount),
+                "Successful Recharge");
+        firebaseNotificationService.notifyPassenger(username, passengerNotification);
     }
 
 

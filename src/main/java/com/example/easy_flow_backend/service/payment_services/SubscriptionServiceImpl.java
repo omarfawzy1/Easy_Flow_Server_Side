@@ -6,6 +6,8 @@ import com.example.easy_flow_backend.entity.Plan;
 import com.example.easy_flow_backend.entity.Subscription;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.SubscriptionRepo;
+import com.example.easy_flow_backend.service.notification.FirebaseNotificationService;
+import com.example.easy_flow_backend.service.notification.PassengerNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +22,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     SubscriptionRepo subscriptionRepo;
     @Autowired
     WalletService walletService;
+    @Autowired
+    FirebaseNotificationService firebaseNotificationService;
 
     @Override
     public Subscription getbestSubscription(List<Subscription> subscriptions, RideModel rideModel) {
@@ -39,7 +43,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     public boolean canSubscribe(Passenger passenger, Plan plan) {
-
         if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
             return false;
         }
@@ -79,9 +82,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         System.out.println("I'm event end subscription");
         List<Subscription> expiredSubscriptions = subscriptionRepo.getAllByExpireDateBefore(new Date());
         for (Subscription subscription : expiredSubscriptions) {
-            if (subscription.isRepurchase() && canSubscribe(subscription.getPassenger(), subscription.getPlan())) {
+            boolean canSubscribe = canSubscribe(subscription.getPassenger(), subscription.getPlan());
+            boolean canRepurchase = subscription.isRepurchase();
+
+            if (canRepurchase && canSubscribe) {
                 makeSubscription(subscription.getPassenger(), subscription.getPlan());
+                firebaseNotificationService.notifyPassenger(subscription.getPassenger().getUsername(), firebaseNotificationService.repurchaseNotification);
             }
+            else if(!canSubscribe){
+                firebaseNotificationService.notifyPassenger(subscription.getPassenger().getUsername(), firebaseNotificationService.repurchaseNoEnoughBalanceNotification);
+            }
+            else{
+                firebaseNotificationService.notifyPassenger(subscription.getPassenger().getUsername(), firebaseNotificationService.expiryNotification);
+            }
+
             subscriptionRepo.delete(subscription);
         }
 
