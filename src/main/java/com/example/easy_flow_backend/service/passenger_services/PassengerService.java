@@ -1,9 +1,8 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
+import com.example.easy_flow_backend.dto.Models.ResetPassword;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.Plan;
-import com.example.easy_flow_backend.entity.Subscription;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -43,7 +42,8 @@ public interface PassengerService {
     ResponseMessage makeSubscription(String owner_name, String plan_name);
 
     List<SubscriptionView> getMySubscriptions() throws NotFoundException;
-    ResponseMessage resetPassword(String email) throws NotFoundException;
+    ResponseMessage sendResetPasswordToken(String email) throws NotFoundException;
 
 
+    ResponseMessage resetPassengerPassword(String key, ResetPassword newPassword);
 }

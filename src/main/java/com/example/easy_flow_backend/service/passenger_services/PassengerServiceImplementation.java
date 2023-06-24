@@ -1,11 +1,16 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
+import com.example.easy_flow_backend.dto.Models.ResetPassword;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
+import com.example.easy_flow_backend.security.PasswordManager;
+import com.example.easy_flow_backend.service.notification.FirebaseNotificationService;
+import com.example.easy_flow_backend.service.notification.PassengerNotification;
+import com.example.easy_flow_backend.service.password_reset_services.ResetPasswordTokenService;
 import com.example.easy_flow_backend.service.payment_services.SubscriptionService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
@@ -40,6 +45,11 @@ public class PassengerServiceImplementation implements PassengerService {
     PlanRepository planRepository;
     @Autowired
     FirebaseNotificationService firebaseNotificationService;
+    private ResetPasswordTokenService resetPasswordTokenService;
+    @Autowired
+    private ResetPasswordTokenRepo resetPasswordTokenRepo;
+    @Autowired
+    PasswordManager passwordManager;
 
     @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
@@ -165,5 +175,25 @@ public class PassengerServiceImplementation implements PassengerService {
 
     }
 
+
+    @Override
+    public ResponseMessage sendResetPasswordToken(String email) throws NotFoundException {
+        Passenger passenger = passengerRepo.findByEmailIgnoreCase(email);
+        if (passenger == null) {
+            throw new NotFoundException("Incorrect email!");
+        }
+        return resetPasswordTokenService.sendResetPasswordToken(passenger);
+    }
+
+    @Override
+    public ResponseMessage resetPassengerPassword(String key, ResetPassword newPassword) {
+        ResetPasswordToken resetPasswordToken = resetPasswordTokenRepo.findByToken(key);
+        if (resetPasswordToken == null) {
+            return new ResponseMessage("Sorry, The token is invalid", HttpStatus.BAD_REQUEST);
+        }
+        Passenger passenger = resetPasswordToken.getPassenger();
+
+        return passwordManager.resetPassword(passenger, newPassword);
+    }
 
 }

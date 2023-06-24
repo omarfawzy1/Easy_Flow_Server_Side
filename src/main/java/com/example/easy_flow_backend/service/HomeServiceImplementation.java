@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Models.ResetPassword;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Wallet;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -31,13 +32,18 @@ public class HomeServiceImplementation implements HomeService {
             throw new NotFoundException("The Phone already Used");
         }
 
-        Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), registerModel.getCity(), registerModel.getGender(),registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()),registerModel.getEmail());
+        Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), registerModel.getCity(), registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()), registerModel.getEmail());
         passengersRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
-    public ResponseMessage resetPassword(String email) throws NotFoundException {
-        return passengerService.resetPassword(email);
+    public ResponseMessage sendResetPasswordToken(String email) throws NotFoundException {
+        return passengerService.sendResetPasswordToken(email);
+    }
+
+    @Override
+    public ResponseMessage resetPassword(String key, ResetPassword newPassword) {
+        return passengerService.resetPassengerPassword(key, newPassword);
     }
 }
