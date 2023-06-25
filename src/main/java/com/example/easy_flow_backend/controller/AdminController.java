@@ -145,7 +145,6 @@ public class AdminController {
                                                  @PathVariable String lineName) throws ParseException {
         return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineName);
     }
-    //TODO replace ID
     @GetMapping("line/peek/{lineName}/{transportType}/{peekNumber}")
     public List<Object> getPeekHours(
             @Valid @RequestBody TimePeriod timePeriod,

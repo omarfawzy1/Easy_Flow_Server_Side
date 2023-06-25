@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.SubscriptionView;
 import com.example.easy_flow_backend.dto.Views.TripId;
@@ -9,6 +10,7 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +41,15 @@ public class PassengerController {
     public PassagnerDetails getMyProfile() throws BadRequestException {
         return passengerService.getMyProfile();
     }
+    @PutMapping ("updateProfile")
+    public ResponseMessage updateProfile(Principal principal, @Valid @RequestBody UpdateProfileModel profileModel){
+        return passengerService.updateProfile(principal,profileModel);
+    }
 
     // Dummy
     @PutMapping("recharge/{amount}")
     @Operation(summary = "Passenger Wallet Recharge", description = "Passenger Wallet Recharge")
     public void recharge(@PathVariable double amount, Principal principal) {
-
         passengerService.rechargePassenger(principal.getName(), amount);
     }
 
