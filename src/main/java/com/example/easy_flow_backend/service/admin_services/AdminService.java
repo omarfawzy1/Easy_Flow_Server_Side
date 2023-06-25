@@ -102,4 +102,8 @@ public interface AdminService {
 
 
     ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException;
+
+    boolean addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) throws Exception;
+
+    boolean addMovingMachineModel(AddMovingMachineModel addMovingMachineModel) throws NotFoundException, BadRequestException;
 }

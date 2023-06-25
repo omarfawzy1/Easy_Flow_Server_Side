@@ -1,9 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
-import com.example.easy_flow_backend.dto.Models.AddLineModel;
-import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
-import com.example.easy_flow_backend.dto.Models.TicketModel;
-import com.example.easy_flow_backend.dto.Models.TimePeriod;
+import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.entity.TransportationType;
@@ -14,6 +11,7 @@ import com.example.easy_flow_backend.service.admin_services.AdminService;
 import com.example.easy_flow_backend.service.utils.Utility;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -200,6 +198,28 @@ public class AdminController {
     @GetMapping("machine/stationery")
     public List<StationeryMachineView> getStationMachines() {
         return adminService.getStationMachines();
+    }
+
+    @PutMapping("machine/moving/add")
+    public ResponseMessage addMovingMachine(AddMovingMachineModel addMovingMachineModel) {
+        try{
+            adminService.addMovingMachineModel(addMovingMachineModel);
+            return new ResponseMessage(HttpStatus.OK, "Machine added successfully");
+        }
+        catch (Exception e){
+            return new ResponseMessage(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @PutMapping("machine/stationary/add")
+    public ResponseMessage addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) {
+        try{
+            adminService.addStationaryMachine(addStationaryMachineModel);
+            return new ResponseMessage(HttpStatus.OK, "Machine added successfully");
+        }
+        catch (Exception e){
+            return new ResponseMessage(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @DeleteMapping("machine/stationery/{username}")

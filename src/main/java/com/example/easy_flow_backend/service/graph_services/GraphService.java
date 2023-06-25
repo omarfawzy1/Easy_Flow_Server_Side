@@ -13,6 +13,6 @@ public interface GraphService {
 
     GraphWithStations getLineWeightedGraph(String lineId) throws NotFoundException;
 
-    //concatinate all the lines of the owner with each other like the metro
+    //concatenate all the lines of the owner with each other like the metro
     GraphWithStations getOwnerWeightedGraph(String ownerId);
 }

@@ -18,6 +18,7 @@ import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnsti
 import com.example.easy_flow_backend.service.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,6 +57,14 @@ public class AdminServiceImplementation implements AdminService {
     private TicketService ticketService;
     @Autowired
     private PlanRepository planRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private StationaryTurnstileRepo stationaryTurnstileRepo;
+    @Autowired
+    private UserRepositry userRepositry;
+    @Autowired
+    private MovingTurnstileRepo movingTurnstileRepo;
 
     @Override
     public List<LineView> getAllLines() {
@@ -302,6 +311,55 @@ public class AdminServiceImplementation implements AdminService {
 
         }
         return new ResponseMessage("Success",HttpStatus.OK);
+    }
+
+    @Override
+    public boolean addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) throws Exception {
+
+        User user = userRepositry.findUserByUsername(addStationaryMachineModel.getMachineName());
+        if(user != null)
+            throw new BadRequestException("Username already exists");
+
+        Owner owner = ownerRepo.findByName(addStationaryMachineModel.getOwnerName());
+        if(owner == null)
+            throw new NotFoundException("Owner not Found");
+
+        Station station = stationService.getStation(addStationaryMachineModel.getStationName());
+        if(station == null)
+            throw new NotFoundException("Station not Found");
+        StationaryTurnstile machine = new StationaryTurnstile(addStationaryMachineModel.getMachineName(),
+                passwordEncoder.encode(addStationaryMachineModel.getPassword()),
+                owner);
+
+        machine.setActive(true);
+        machine.setStation(station);
+        stationaryTurnstileRepo.save(machine);
+        return true;
+    }
+
+    @Override
+    public boolean addMovingMachineModel(AddMovingMachineModel addMovingMachineModel) throws BadRequestException, NotFoundException {
+
+
+        User user = userRepositry.findUserByUsername(addMovingMachineModel.getMachineName());
+        if(user != null)
+            throw new BadRequestException("Username already exists");
+
+        Owner owner = ownerRepo.findByName(addMovingMachineModel.getOwnerName());
+        if(owner == null)
+            throw new NotFoundException("Owner not found");
+
+        Line line = lineService.getLineByName(addMovingMachineModel.getLineName());
+        if(line == null)
+            throw new NotFoundException("Line not found");
+        MovingTurnstile machine = new MovingTurnstile(addMovingMachineModel.getMachineName(),
+                passwordEncoder.encode(addMovingMachineModel.getPassword()),
+                owner
+                );
+        machine.setActive(true);
+        machine.setLine(line);
+        movingTurnstileRepo.save(machine);
+        return true;
     }
 
     @Override
