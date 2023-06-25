@@ -1,7 +1,8 @@
 package com.example.easy_flow_backend.dto.Views;
 
-public interface MovingMachineView extends MachineView {
-    String getLineName();
+import org.springframework.beans.factory.annotation.Value;
 
-    String getLineOwnerName();
+public interface MovingMachineView extends MachineView {
+    @Value("#{target.line.name}")
+    String getLineName();
 }

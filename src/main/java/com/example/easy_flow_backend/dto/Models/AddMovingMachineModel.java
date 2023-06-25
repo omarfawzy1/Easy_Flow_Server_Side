@@ -14,7 +14,7 @@ import lombok.Setter;
 public class AddMovingMachineModel {
     @NotBlank(message = "machineName Should Not be Blank")
     @NotNull(message = "machineName Should Not be Null")
-    String machineName;
+    String username;
 
     @NotBlank(message = "password Should Not be Blank")
     @NotNull(message = "password Should Not be Null")

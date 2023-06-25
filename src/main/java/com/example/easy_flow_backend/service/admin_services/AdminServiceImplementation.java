@@ -316,7 +316,7 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public boolean addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) throws Exception {
 
-        User user = userRepositry.findUserByUsername(addStationaryMachineModel.getMachineName());
+        User user = userRepositry.findUserByUsername(addStationaryMachineModel.getUsername());
         if(user != null)
             throw new BadRequestException("Username already exists");
 
@@ -327,7 +327,7 @@ public class AdminServiceImplementation implements AdminService {
         Station station = stationService.getStation(addStationaryMachineModel.getStationName());
         if(station == null)
             throw new NotFoundException("Station not Found");
-        StationaryTurnstile machine = new StationaryTurnstile(addStationaryMachineModel.getMachineName(),
+        StationaryTurnstile machine = new StationaryTurnstile(addStationaryMachineModel.getUsername(),
                 passwordEncoder.encode(addStationaryMachineModel.getPassword()),
                 owner);
 
@@ -341,7 +341,7 @@ public class AdminServiceImplementation implements AdminService {
     public boolean addMovingMachineModel(AddMovingMachineModel addMovingMachineModel) throws BadRequestException, NotFoundException {
 
 
-        User user = userRepositry.findUserByUsername(addMovingMachineModel.getMachineName());
+        User user = userRepositry.findUserByUsername(addMovingMachineModel.getUsername());
         if(user != null)
             throw new BadRequestException("Username already exists");
 
@@ -352,7 +352,7 @@ public class AdminServiceImplementation implements AdminService {
         Line line = lineService.getLineByName(addMovingMachineModel.getLineName());
         if(line == null)
             throw new NotFoundException("Line not found");
-        MovingTurnstile machine = new MovingTurnstile(addMovingMachineModel.getMachineName(),
+        MovingTurnstile machine = new MovingTurnstile(addMovingMachineModel.getUsername(),
                 passwordEncoder.encode(addMovingMachineModel.getPassword()),
                 owner
                 );

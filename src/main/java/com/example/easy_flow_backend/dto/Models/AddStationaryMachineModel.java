@@ -14,7 +14,7 @@ import lombok.Setter;
 public class AddStationaryMachineModel {
     @NotBlank(message = "username Should Not be Blank")
     @NotNull(message = "username Should Not be Null")
-    String machineName;
+    String username;
 
     @NotBlank(message = "password Should Not be Blank")
     @NotNull(message = "password Should Not be Null")
