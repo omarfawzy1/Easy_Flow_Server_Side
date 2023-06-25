@@ -28,7 +28,7 @@ public class Passenger extends User {
     private String city;
     @Column(nullable = false)
     private Gender gender;
-    @Column(name = "email",nullable = false)
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
     @Column(name = "pin")
     private int pin;

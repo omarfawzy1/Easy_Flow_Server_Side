@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Models.ResetPassword;
+import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.BadRequestException;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -195,6 +197,29 @@ public class PassengerServiceImplementation implements PassengerService {
         Passenger passenger = resetPasswordToken.getPassenger();
 
         return passwordManager.resetPassword(passenger, newPassword);
+    }
+
+    @Override
+    public ResponseMessage updateProfile(Principal principal, UpdateProfileModel UpdateProfileModel) {
+        String username = principal.getName();
+        Passenger passenger=passengerRepo.findByUsernameIgnoreCase(username);
+        try{
+            passenger.setFirstName(UpdateProfileModel.getFirstName());
+
+            passenger.setLastName(UpdateProfileModel.getLastName());
+
+            passenger.setEmail(UpdateProfileModel.getEmail());
+
+            passenger.setPhoneNumber(UpdateProfileModel.getPhoneNumber());
+
+            passenger.setGender(UpdateProfileModel.getGender());
+            passengerRepo.save(passenger);
+        }
+        catch (Exception e){
+            return new ResponseMessage("invalid data", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseMessage("done", HttpStatus.OK);
+
     }
 
 }

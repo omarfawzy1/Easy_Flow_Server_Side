@@ -22,7 +22,7 @@ public class Owner {
     private String id;
     @Column(nullable = false, unique = true)
     private String name;
-
+    @Column(name = "email",nullable = false, unique = true)
     private String mail;
 
     @Column(name = "bank_account")
