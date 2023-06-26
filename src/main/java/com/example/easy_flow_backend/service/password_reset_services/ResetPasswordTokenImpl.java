@@ -12,10 +12,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 @Service
 public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
@@ -42,6 +44,7 @@ public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
         final boolean useNumbers = true;
         return RandomStringUtils.random(length, useLetters, useNumbers);
     }
+
     @Override
     public ResponseMessage sendResetPasswordToken(Passenger passenger) {
 
@@ -50,7 +53,7 @@ public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
 
         String subject = "EasyFlow Reset password\n";
 
-        String link = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + "/reset/" + token;
+        String link = "http://ec2-16-170-103-177.eu-north-1.compute.amazonaws.com/" + "/reset/" + token;
 
         String text = "Please click on the link below to change your password.\n" + link + "\nTake care The link will be expire after 5 minutes.\n";
 
@@ -63,6 +66,10 @@ public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
         }
         return new ResponseMessage("Check your mail.", HttpStatus.OK);
     }
-
+    //TODO BUG
+    @Scheduled(cron = "0 0/5 * * * ?")
+    private void removeExpiredTokens() {
+        resetPasswordTokenRepo.deleteAllByExpiryDateAfter(new Date());
+    }
 
 }
