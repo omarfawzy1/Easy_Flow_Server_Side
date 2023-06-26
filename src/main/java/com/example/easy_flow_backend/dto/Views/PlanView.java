@@ -1,10 +1,10 @@
 package com.example.easy_flow_backend.dto.Views;
 
-import com.example.easy_flow_backend.entity.Privilege;
+import org.springframework.beans.factory.annotation.Value;
 
 public interface PlanView {
-
-    Privilege getPrivilege();
+    @Value("#{target.privilege.name}")
+    String privilegeName();
 
     float getPrice();
 

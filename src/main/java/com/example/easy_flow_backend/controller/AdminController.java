@@ -30,14 +30,17 @@ public class AdminController {
     public List<OwnerView> getALlOwners() {
         return adminService.getAllOwners();
     }
+
     @GetMapping("owners/{username}")
     public OwnerViewDetails getOwner(@PathVariable("username") String username) throws BadRequestException {
         return adminService.getOwner(username);
     }
+
     @GetMapping("passengers")
     public List<PassagnerBriefDetails> getAllPassengers() {
         return adminService.getAllPassangers();
     }
+
     @GetMapping("passenger/{username}")
     public PassagnerDetails getPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPassengerDetails(username);
@@ -55,72 +58,89 @@ public class AdminController {
     public ResponseMessage deletePassenger(@PathVariable String username) {
         return adminService.deletePassenger(username);
     }
+
     @PutMapping("user/active/{username}")
     public ResponseMessage flipUserActive(@PathVariable String username) throws NotFoundException {
         return adminService.flipUserActive(username);
     }
+
     @GetMapping("lines")
     public List<LineView> getAllLines() {
         return adminService.getAllLines();
     }
+
     @GetMapping("lineDetails/{name}")
     public LiveWithStationsView getLineDetails(@PathVariable String name) {
         return adminService.getLineDetails(name);
     }
+
     @DeleteMapping("line/{name}")
     public ResponseMessage deleteLine(@PathVariable String name) throws NotFoundException {
         return adminService.deleteLine(name);
     }
+
     @DeleteMapping("station/{name}")
     public ResponseMessage deleteStation(@PathVariable String name) throws NotFoundException, BadRequestException {
         return adminService.deleteStation(name);
     }
+
     @PostMapping("line")
     public ResponseMessage addLine(@Valid @RequestBody AddLineModel addLineModel) throws BadRequestException {
         return adminService.addLine(addLineModel);
     }
+
     @GetMapping("passengers/count")
     public int getPassengersCount() {
         return adminService.getAllPassangersCount();
     }
+
     @GetMapping("passengers/count/{privilege}")
     public int getPassengersCountWithPrivilege(@PathVariable String privilege) {
         return adminService.getPassengersCountWithPrivilege(privilege);
     }
+
     @GetMapping("revenue")
     public long getRevenue(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenue(timePeriod);
     }
+
     @GetMapping("revenueAvg")
     public long getRevenueAvg(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenueAvg(timePeriod);
     }
+
     @GetMapping("{passengerName}/revenueAvg")
     public long getRevenueAvgByPassenger(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String passengerName) {
         return adminService.getRevenueAvgByPassenger(timePeriod, passengerName);
     }
+
     @GetMapping("passenger/negativeBalanceCount")
     public int getNegativePassengerCount() {
         return adminService.getNegativePassengerCount();
     }
+
     @GetMapping("passenger/belowThresholdCount/{threshold}")
     public int getBelowThresholdCount(@PathVariable long threshold) {
         return adminService.getBelowThresholdCount(threshold);
     }
+
     @GetMapping("turnstile/status")
     public Object getTurnstilesStatus() {
         return adminService.getTurnstilesStatus();
     }
+
     @GetMapping("station/passengersCount/{stationName}")
     public Object getTripInStationCount(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String stationName) {
         return adminService.getTripInStationCount(timePeriod, stationName);
     }
+
     @GetMapping("line/tripAvgForBus/{lineName}/{timeUnit}")
     public Object getTripAvgByTimeUnitForBusLine(@Valid @RequestBody TimePeriod timePeriod,
                                                  @PathVariable String timeUnit,
                                                  @PathVariable String lineName) throws ParseException, BadRequestException {
         return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineName);
     }
+
     //get the most (peekNumber) hours and them trip count for bus line
     @GetMapping("line/busPeek/{lineName}/{peekNumber}")
     public List<Object> getPeekHours(
@@ -129,26 +149,32 @@ public class AdminController {
             @PathVariable int peekNumber) {
         return adminService.getPeekHours(timePeriod, lineName, peekNumber);
     }
+
     @GetMapping("transaction/count")
     public int getTransactionCount() {
         return adminService.getTransactionCount();
     }
+
     @GetMapping("trip/count")
     public int getTripCount() {
         return adminService.getTripCount();
     }
+
     @PostMapping("owner/add")
     public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel) throws BadRequestException {
         return adminService.addOwner(addOwnerModel);
     }
+
     @DeleteMapping("owner/delete/{username}")
     public ResponseMessage deleteOwner(@PathVariable String username) throws BadRequestException {
         return adminService.deleteOwner(username);
     }
+
     @GetMapping("owner/getDetails/{ownerName}")
     public List<Object> getOwnerDetails(@PathVariable String ownerName) throws BadRequestException {
         return adminService.getOwnerDetails(ownerName);
     }
+
     @GetMapping("machine/stationery/{username}")
     public StationeryMachineView getStationMachine(@PathVariable String username) throws NotFoundException {
         return adminService.getStationMachine(username);
@@ -158,6 +184,7 @@ public class AdminController {
     public MovingMachineView getMovingMachine(@PathVariable String username) throws NotFoundException {
         return adminService.getMovingMachine(username);
     }
+
     @GetMapping("machine/moving")
     public List<MovingMachineView> getMovingMachines() {
         return adminService.getMovingMachines();
@@ -168,24 +195,22 @@ public class AdminController {
         return adminService.getStationMachines();
     }
 
-    @PutMapping("machine/moving/add")
-    public ResponseMessage addMovingMachine(AddMovingMachineModel addMovingMachineModel) {
-        try{
+    @PostMapping("machine/moving")
+    public ResponseMessage addMovingMachine(@RequestBody AddMovingMachineModel addMovingMachineModel) {
+        try {
             adminService.addMovingMachineModel(addMovingMachineModel);
             return new ResponseMessage(HttpStatus.OK, "Machine added successfully");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseMessage(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
-    @PutMapping("machine/stationary/add")
-    public ResponseMessage addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) {
-        try{
+    @PostMapping("machine/stationary")
+    public ResponseMessage addStationaryMachine(@RequestBody AddStationaryMachineModel addStationaryMachineModel) {
+        try {
             adminService.addStationaryMachine(addStationaryMachineModel);
             return new ResponseMessage(HttpStatus.OK, "Machine added successfully");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseMessage(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -199,10 +224,12 @@ public class AdminController {
     public ResponseMessage deleteMovingMachine(@PathVariable String username) throws NotFoundException {
         return adminService.deleteMovingMachine(username);
     }
+
     @PostMapping("tickets")
     public ResponseMessage addTicket(@RequestBody TicketModel ticketModel) throws NotFoundException {
         return adminService.addTicket(ticketModel);
     }
+
     @DeleteMapping("tickets/{id}")
     public void deleteTicket(@PathVariable String id) {
         adminService.deleteTicket(id);
@@ -220,20 +247,24 @@ public class AdminController {
     public List<TicketView> getLineTickets(@PathVariable String name) {
         return adminService.getLineTickets(name);
     }
+
     @PostMapping("owners/setImage/{name}")
     public ResponseMessage setOwnerImage(@PathVariable String name, @RequestBody MultipartFile file) throws IOException {
-        return adminService.setOwnerImage(name,file);
+        return adminService.setOwnerImage(name, file);
     }
+
     @PostMapping("privilege/add/{privilege}")
-    public ResponseMessage addPrivilege(@PathVariable String privilege){
+    public ResponseMessage addPrivilege(@PathVariable String privilege) {
         return adminService.addPrivilege(privilege);
     }
+
     @DeleteMapping("privilege/delete/{privilege}")
-    public ResponseMessage deletePrivilege(@PathVariable String privilege){
+    public ResponseMessage deletePrivilege(@PathVariable String privilege) {
         return adminService.deletePrivilege(privilege);
     }
+
     @DeleteMapping("passengerPrivilege/delete/{username}/{privilege}")
-    public ResponseMessage deletePassengerPrivilege(@PathVariable String username ,@PathVariable String privilege){
-        return adminService.deletePassengerPrivilege(username,privilege);
+    public ResponseMessage deletePassengerPrivilege(@PathVariable String username, @PathVariable String privilege) {
+        return adminService.deletePassengerPrivilege(username, privilege);
     }
 }
