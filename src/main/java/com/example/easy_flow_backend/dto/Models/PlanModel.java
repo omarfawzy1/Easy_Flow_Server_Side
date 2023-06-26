@@ -1,11 +1,10 @@
 package com.example.easy_flow_backend.dto.Models;
 
-import com.example.easy_flow_backend.entity.PassengerPrivilege;
+import com.example.easy_flow_backend.entity.Privilege;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
@@ -19,7 +18,7 @@ public class PlanModel {
     private String ownerName;
 
     @NotNull(message = "privilege is mandatory")
-    private PassengerPrivilege privilege;
+    private Privilege privilege;
 
     @NotNull(message = "price is mandatory")
     @Min(0)

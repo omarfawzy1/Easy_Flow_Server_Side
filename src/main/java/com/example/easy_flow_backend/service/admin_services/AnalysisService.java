@@ -2,11 +2,14 @@ package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.entity.TransportationType;
+import com.example.easy_flow_backend.error.BadRequestException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TransactionRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.repos.UserRepositry;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -14,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 @Service
 public class AnalysisService {
     @Autowired
@@ -70,25 +74,29 @@ public class AnalysisService {
     }
 
 
-    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) {
-        long sum=0;
-        int count=0;
-        Long start = timePeriod.getStart().getTime();
-        Long end = timePeriod.getEnd().getTime();
-        while(start+timeUnit<=end){
+    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) throws BadRequestException {
+
+        long start = timePeriod.getStart().getTime();
+        long end = timePeriod.getEnd().getTime();
+        int sum= 0;
+        if(end<start)
+            throw new BadRequestException("invalid time period");
+        int count= (int) ((end-start)/timeUnit);
+        if(count==0)
+            throw new BadRequestException("the time unit is bigger than the time period");
+        int i=0;
+        while(i<count){
             sum+= tripRepo.getTripAvgByTimeUnitForBusLine(new Date(start), new Date(start+timeUnit),
                     lineName);
             start+=timeUnit;
-            count++;
+            i++;
         }
-        return sum/count;
+        return (long) (sum/count*1l);
     }
 
 
-    public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, TransportationType transportType,
-                                     int peekNumber) {
-        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineName,
-                transportType);
+    public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, int peekNumber) {
+        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineName);
         if(result.size()<peekNumber){
             return result;
         }

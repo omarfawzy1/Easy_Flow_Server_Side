@@ -7,6 +7,7 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.dto.Models.RegisterModel;
+import com.example.easy_flow_backend.repos.PrivilegeRepo;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ public class HomeServiceImplementation implements HomeService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private PassengerService passengerService;
+    @Autowired
+    private PrivilegeRepo privilegeRepo;
 
     @Override
     public ResponseMessage Register(RegisterModel registerModel) throws NotFoundException {
@@ -33,6 +36,7 @@ public class HomeServiceImplementation implements HomeService {
         }
 
         Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), registerModel.getCity(), registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()), registerModel.getEmail());
+        passenger.addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
         passengersRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
     }

@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 
-import java.time.Duration;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +26,10 @@ public class Plan {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "plan_id")
     private String id;
-    @Column(name = "privilege", nullable = false)
-    private PassengerPrivilege privilege;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "privilege_id", referencedColumnName ="privilege_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Privilege privilege;
     @Column(name = "price", nullable = false)
     private float price;
     @Column(name = "duration")
@@ -50,7 +53,7 @@ public class Plan {
     @Range(min = 0, max = 1)
     private float discountRate;
 
-    public Plan(PassengerPrivilege privilege, float price, int durationDays, int numberOfTrips, String name, int maxCompanion, Owner owner, float discountRate) {
+    public Plan(Privilege privilege, float price, int durationDays, int numberOfTrips, String name, int maxCompanion, Owner owner, float discountRate) {
         this.privilege = privilege;
         this.price = price;
         this.durationDays = durationDays;

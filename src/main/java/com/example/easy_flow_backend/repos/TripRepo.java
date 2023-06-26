@@ -58,7 +58,7 @@ public interface TripRepo extends JpaRepository<Trip, String> {
 
     @Query("SELECT COUNT (trip.id)" +
             "From Trip trip Join MovingTurnstile mt " +
-            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) " +
+            "ON (trip.startTurnstile.id = mt.id) " +
             "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.endTime <= :end " +
             "AND mt.line.name = :lineName ")
     long getTripAvgByTimeUnitForBusLine(@Param("start") Date start,
@@ -67,15 +67,14 @@ public interface TripRepo extends JpaRepository<Trip, String> {
 
     @Query(value = "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
             "From Trip trip Join MovingTurnstile mt " +
-            "ON (trip.endTurnstile.id = mt.id) OR (trip.startTurnstile.id = mt.id) " +
-            "WHERE trip.transportationType = :transportType AND trip.startTime >= :start AND trip.startTime <= :end " +
+            "ON trip.startTurnstile.id = mt.id " +
+            "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.startTime <= :end " +
             "AND mt.line.name = :lineName " +
             "GROUP BY hour(trip.startTime) " +
             "ORDER BY number DESC ")
     List<Object> getPeekHours(@Param("start") Date start,
                               @Param("end") Date end,
-                              @Param("lineName") String lineName,
-                              @Param("transportType") TransportationType transportType);
+                              @Param("lineName") String lineName);
 
     @Query("SELECT trip "+
             "FROM Trip trip "+

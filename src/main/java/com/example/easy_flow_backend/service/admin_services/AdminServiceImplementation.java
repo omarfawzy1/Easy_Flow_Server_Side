@@ -33,8 +33,6 @@ public class AdminServiceImplementation implements AdminService {
 
     @Autowired
     private OwnerRepo ownerRepo;
-
-
     @Autowired
     private LineService lineService;
     @Autowired
@@ -43,7 +41,6 @@ public class AdminServiceImplementation implements AdminService {
     private AnalysisService analysisService;
     @Autowired
     private OwnerService ownerService;
-
     @Autowired
     private StationeryTurnstileService stationeryTurnstileService;
     @Autowired
@@ -52,11 +49,12 @@ public class AdminServiceImplementation implements AdminService {
     private UserService userService;
     @Autowired
     private StationService stationService;
-
     @Autowired
     private TicketService ticketService;
     @Autowired
     private PlanRepository planRepository;
+    @Autowired
+    private PrivilegeRepo privilegeRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -87,7 +85,7 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage deletePassenger(String username) throws NotFoundException {
+    public ResponseMessage deletePassenger(String username) {
         return passengerService.deletePassenger(username);
     }
 
@@ -113,8 +111,8 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public int getAllPassangersCountWithType(String type) {
-        return passengerService.getAllPassangersCountWithType(type);
+    public int getPassengersCountWithPrivilege(String privilege) {
+        return passengerService.getPassengersCountWithPrivilege(privilege);
     }
 
     @Override
@@ -153,13 +151,13 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) {
+    public long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) throws BadRequestException {
         return analysisService.getTripAvgByTimeUnitForBusLine(timePeriod, timeUnit, lineName);
     }
 
     @Override
-    public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, TransportationType transportType, int peekNumber) {
-        return analysisService.getPeekHours(timePeriod, lineName, transportType, peekNumber);
+    public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, int peekNumber) {
+        return analysisService.getPeekHours(timePeriod, lineName, peekNumber);
     }
 
     @Override
@@ -314,6 +312,35 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
+    public ResponseMessage addPrivilege(String privilege) {
+        Privilege temp=privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if(temp!=null)
+            return new ResponseMessage("this privilege already exist",HttpStatus.CONFLICT);
+        try{
+            temp=new Privilege(privilege);
+            privilegeRepo.save(temp);
+        }
+        catch (Exception e){
+            return new ResponseMessage( e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseMessage( "Success",HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseMessage deletePrivilege(String privilege) {
+        Privilege temp=privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if(temp==null)
+            return new ResponseMessage("there is no privilege with this name",HttpStatus.BAD_REQUEST);
+        try{
+            privilegeRepo.delete(temp);
+        }
+        catch (Exception e){
+            return new ResponseMessage( e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseMessage( "Success",HttpStatus.OK);
+    }
+
+    @Override
     public boolean addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) throws Exception {
 
         User user = userRepositry.findUserByUsername(addStationaryMachineModel.getUsername());
@@ -360,6 +387,27 @@ public class AdminServiceImplementation implements AdminService {
         machine.setLine(line);
         movingTurnstileRepo.save(machine);
         return true;
+    }
+
+    @Override
+    public ResponseMessage deletePassengerPrivilege(String username, String privilege) {
+        Passenger passenger= (Passenger) userRepositry.findUserByUsername(username);
+        if(passenger==null)
+            return new ResponseMessage("this passenger dose not exist",HttpStatus.BAD_REQUEST);
+        Privilege privilege1=  privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if(privilege1==null)
+            return new ResponseMessage("this privilege dose not exist",HttpStatus.BAD_REQUEST);
+        if(!passenger.getPrivileges().contains(privilege1))
+            return new ResponseMessage("this passenger don't have this privilege",HttpStatus.BAD_REQUEST);
+        try{
+            privilege1.getPassengers().remove(passenger);
+            passenger.getPrivileges().remove(privilege1);
+            privilegeRepo.save(privilege1);
+        }
+        catch (Exception e){
+            return new ResponseMessage(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseMessage("privilege successfully removed",HttpStatus.OK);
     }
 
     @Override

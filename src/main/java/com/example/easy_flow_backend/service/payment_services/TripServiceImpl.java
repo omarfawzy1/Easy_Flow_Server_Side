@@ -191,6 +191,7 @@ public class TripServiceImpl implements TripService {
             }
             Trip closedTrip = new Trip(passenger, machine, machine, rideModel.getTime(), rideModel.getTime(), TransportationType.BUS, price, Status.Closed, startStation, endStation, rideModel.getCompanionCount());
             closedTrip.setId(trip.getId());
+            closedTrip.setEndTime(rideModel.getTime());
             tripRepo.save(closedTrip);
 
         } else {

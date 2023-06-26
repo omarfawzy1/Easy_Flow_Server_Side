@@ -1,11 +1,10 @@
 package com.example.easy_flow_backend.dto.Views;
 
-import com.example.easy_flow_backend.entity.Owner;
-import com.example.easy_flow_backend.entity.PassengerPrivilege;
+import com.example.easy_flow_backend.entity.Privilege;
 
 public interface PlanView {
 
-    PassengerPrivilege getPrivilege();
+    Privilege getPrivilege();
 
     float getPrice();
 

@@ -43,7 +43,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     public boolean canSubscribe(Passenger passenger, Plan plan) {
-        if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
+        if (!passenger.getPrivileges().contains(plan.getPrivilege())) {
             return false;
         }
         boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
@@ -53,7 +53,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public ResponseMessage makeSubscription(Passenger passenger, Plan plan) {
 
-        if (!passenger.getPrivlages().contains(plan.getPrivilege())) {
+        if (!passenger.getPrivileges().contains(plan.getPrivilege())) {
             return new ResponseMessage("Sorry, you are not compatible with this plan", HttpStatus.BAD_REQUEST);
         }
         boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());

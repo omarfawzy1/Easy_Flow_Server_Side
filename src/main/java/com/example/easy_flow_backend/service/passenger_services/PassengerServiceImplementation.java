@@ -17,7 +17,6 @@ import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PassengerServiceImplementation implements PassengerService {
@@ -103,11 +103,21 @@ public class PassengerServiceImplementation implements PassengerService {
     }
 
     @Override
-    public ResponseMessage deletePassenger(String username) throws NotFoundException {
+    public ResponseMessage deletePassenger(String username){
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
-        passengerRepo.deleteByUsernameIgnoreCase(username);
+            return new ResponseMessage("Passenger Not Found",HttpStatus.BAD_REQUEST);
+        try{
+            for(Trip t:passenger.getTrips())
+                t.setPassenger(null);
+            for(Privilege p :passenger.getPrivileges())
+                p.getPassengers().remove(passenger);
+
+            passengerRepo.deleteByUsernameIgnoreCase(username);
+        }
+        catch (Exception e){
+            return new ResponseMessage(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
         return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
     }
 
@@ -127,8 +137,8 @@ public class PassengerServiceImplementation implements PassengerService {
     }
 
     @Override
-    public int getAllPassangersCountWithType(String type) {
-        return passengerRepo.getAllPassangersCountWithType(type);
+    public int getPassengersCountWithPrivilege(String privilege) {
+        return passengerRepo.getPassengersCountWithPrivilege(privilege);
     }
 
     @Override

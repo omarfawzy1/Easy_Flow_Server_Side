@@ -49,15 +49,36 @@ public class DbInit implements CommandLineRunner {
     private LineService lineService;
     @Autowired
     private PlanRepository planRepository;
+    @Autowired
+    private PrivilegeRepo privilegeRepo;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    ArrayList<Privilege> privileges = new ArrayList<>();
 
 
     @Override
     public void run(String... args) throws ParseException {
+
+        privileges.add(new Privilege("Regular"));
+        privileges.add(new Privilege("Army"));
+        privileges.add(new Privilege("Elder"));
+        privileges.add(new Privilege("journalist"));
+        privilegeRepo.saveAll(privileges);
+
+
         ArrayList<Line> lines = new ArrayList<>();
         ArrayList<User> users = usersInit();
-
+        userRepositry.saveAll(users);
+        //add passengers privlages
+        ((Passenger)users.get(1)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(1)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
+        ((Passenger)users.get(2)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(3)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(3)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Elder"));
+        ((Passenger)users.get(4)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(4)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
+        ((Passenger)users.get(4)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("journalist"));
+        userRepositry.saveAll(users);
         //owner
         Owner owner1 = new Owner("ehab", "ehab@mail.com", "1148 1124 2247 2247");
         ownerRepo.save(owner1);
@@ -67,7 +88,6 @@ public class DbInit implements CommandLineRunner {
         Line line2 = new Line("line2", TransportationType.BUS, owner1);
         Station station1 = new Station("first station");
         Station station2 = new Station("second station");
-        userRepositry.saveAll(users);
         lines.add(line1);
         lines.add(line2);
         lineRepo.saveAll(lines);
@@ -506,6 +526,9 @@ public class DbInit implements CommandLineRunner {
                 talbiaStation.getStationName(),
                 medanRyhmiaStation.getStationName(), 1)
         );
+        for(Trip t :trips){
+            t.setEndTime(t.getStartTime());
+        }
         tripRepository.saveAll(trips);
     }
 
@@ -616,6 +639,9 @@ public class DbInit implements CommandLineRunner {
                 talbiaStation.getStationName(),
                 medanRyhmiaStation.getStationName(), 1)
         );
+        for(Trip t :trips){
+            t.setEndTime(t.getStartTime());
+        }
         tripRepository.saveAll(trips);
 
     }
@@ -624,10 +650,10 @@ public class DbInit implements CommandLineRunner {
     void addplans() {
         Owner owner1 = ownerRepo.findByName("Cairo government");
         Owner owner2 = ownerRepo.findByName("mwasalatmisr");
-        Plan plan1 = new Plan(PassengerPrivilege.Regular, 20, 30, 60, "Gold", 3, owner1, 0.5F);
-        Plan plan2 = new Plan(PassengerPrivilege.Student, 5, 90, 120, "Silver", 1, owner1, 0.8F);
-        Plan plan3 = new Plan(PassengerPrivilege.Regular, 10, 20, 40, "Silver", 1, owner2, 0.3F);
-        Plan plan4 = new Plan(PassengerPrivilege.Army, 3, 30, 10, "Army Silver", 1, owner2, 0.5F);
+        Plan plan1 = new Plan(privileges.get(0), 20, 30, 60, "Gold", 3, owner1, 0.5F);
+        Plan plan2 = new Plan(privileges.get(1), 5, 90, 120, "Silver", 1, owner1, 0.8F);
+        Plan plan3 = new Plan(privileges.get(2), 10, 20, 40, "Silver", 1, owner2, 0.3F);
+        Plan plan4 = new Plan(privileges.get(3), 3, 30, 10, "Army Silver", 1, owner2, 0.5F);
         List<Plan> plans = new ArrayList<>();
         plans.add(plan1);
         plans.add(plan2);

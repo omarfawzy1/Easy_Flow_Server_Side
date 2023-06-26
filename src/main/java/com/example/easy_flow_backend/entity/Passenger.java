@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.*;
 
@@ -24,7 +26,10 @@ public class Passenger extends User {
     private String lastName;
     @Column(name = "phone_number",unique = true ,nullable = false)
     private String phoneNumber;
-    private Set<PassengerPrivilege>privlages= new HashSet<>();;
+    @ManyToMany(cascade = {jakarta.persistence.CascadeType.PERSIST,jakarta.persistence.CascadeType.MERGE})
+    @JoinTable(name="passenger_privilege", joinColumns=@JoinColumn(name="passenger_id"),
+            inverseJoinColumns=@JoinColumn(name="privilege_id"))
+    private Set<Privilege> privileges= new HashSet<>();
     private String city;
     @Column(nullable = false)
     private Gender gender;
@@ -36,7 +41,7 @@ public class Passenger extends User {
     @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     @Column(name = "birth_day",nullable = false)
     private java.util.Date birthDay;
-    @OneToMany(mappedBy = "passenger", cascade = jakarta.persistence.CascadeType.ALL)
+    @OneToMany(mappedBy = "passenger")
     private Set<Trip> trips= new HashSet<>();
     @OneToMany(mappedBy = "passenger", cascade = jakarta.persistence.CascadeType.ALL)
     private Set<Subscription> subscriptions= new HashSet<>();
@@ -52,7 +57,6 @@ public class Passenger extends User {
         this.gender = gender;
         this.birthDay = birthDay;
         this.email=email;
-        this.privlages.add(PassengerPrivilege.Regular);
     }
     public Passenger( String firstName, String lastName, String phoneNumber, String city, Gender gender, Date birthDay, String username, String password, String email) {
         super(username, password);
@@ -64,10 +68,12 @@ public class Passenger extends User {
         this.gender = gender;
         this.birthDay = birthDay;
         this.email=email;
-        this.privlages.add(PassengerPrivilege.Regular);
     }
-    void addPrivlage(PassengerPrivilege passengerPrivilege){
-        this.privlages.add(passengerPrivilege);
+    public void addPrivlage(Privilege privilege){
+        this.privileges.add(privilege);
+    }
+    public void removePrivlage(Privilege privilege){
+        this.privileges.remove(privilege);
     }
 
     @Override

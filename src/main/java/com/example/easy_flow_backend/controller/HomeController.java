@@ -25,7 +25,6 @@ public class HomeController {
      */
     @GetMapping("index")
     public String index() throws UnknownHostException {
-
         return "index";
     }
 

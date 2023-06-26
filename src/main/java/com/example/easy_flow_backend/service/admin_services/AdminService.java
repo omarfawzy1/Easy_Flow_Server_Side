@@ -21,7 +21,7 @@ public interface AdminService {
 
     Passenger getPassenger(String username) throws NotFoundException;
 
-    ResponseMessage deletePassenger(String username) throws NotFoundException;
+    ResponseMessage deletePassenger(String username);
 
     ResponseMessage deleteLine(String name) throws NotFoundException;
 
@@ -29,7 +29,7 @@ public interface AdminService {
 
     int getAllPassangersCount();
 
-    int getAllPassangersCountWithType(String type);
+    int getPassengersCountWithPrivilege(String privilege);
 
     long getRevenue(TimePeriod timePeriod);
 
@@ -45,9 +45,9 @@ public interface AdminService {
 
     int getTripInStationCount(TimePeriod timePeriod, String stationName);
 
-    long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName);
+    long getTripAvgByTimeUnitForBusLine(TimePeriod timePeriod, Long timeUnit, String lineName) throws BadRequestException;
 
-    List<Object> getPeekHours(TimePeriod timePeriod, String lineName, TransportationType transportType, int peekNumber);
+    List<Object> getPeekHours(TimePeriod timePeriod, String lineName, int peekNumber);
 
     int getTransactionCount();
 
@@ -83,7 +83,6 @@ public interface AdminService {
 
     ResponseMessage deleteStation(String name) throws BadRequestException;
 
-
     ResponseMessage flipUserActive(String username) throws NotFoundException;
 
     ResponseMessage deleteStationeryMachine(String username) throws NotFoundException;
@@ -103,7 +102,13 @@ public interface AdminService {
 
     ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException;
 
+    ResponseMessage addPrivilege(String privilege);
+
+    ResponseMessage deletePrivilege(String privilege);
+
     boolean addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) throws Exception;
 
     boolean addMovingMachineModel(AddMovingMachineModel addMovingMachineModel) throws NotFoundException, BadRequestException;
+
+    ResponseMessage deletePassengerPrivilege(String username, String privilege);
 }
