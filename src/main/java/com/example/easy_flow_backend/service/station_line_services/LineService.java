@@ -59,13 +59,13 @@ public class LineService {
     public boolean addLine(AddLineModel addLineModel) {
 //        if (lineRepo.existsByNameIgnoreCase(line.getName()))
 //            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
-        Optional<Owner> owner = ownerRepo.findById(addLineModel.getOwnerId());
+        Owner owner = ownerRepo.findByName(addLineModel.getOwnerName());
 
-        if (owner.isEmpty()) {
+        if (owner == null) {
             return false;
         }
         Line tmpLine = new Line(addLineModel.getLineName()
-                , TransportationType.valueOf(addLineModel.getType()), owner.get());
+                , TransportationType.valueOf(addLineModel.getType()), owner);
 
         try {
             lineRepo.save(tmpLine);

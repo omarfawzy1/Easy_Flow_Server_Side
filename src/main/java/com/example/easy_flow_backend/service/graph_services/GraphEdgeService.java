@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.service.graph_services;
 
 import com.example.easy_flow_backend.entity.GraphEdge;
 import com.example.easy_flow_backend.entity.Line;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

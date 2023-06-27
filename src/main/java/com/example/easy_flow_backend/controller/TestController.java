@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -75,7 +76,7 @@ public class TestController {
     @GetMapping("notify")
     public String notifyTest() {
 
-        return firebaseNotificationService.notifyPassenger("omar", new PassengerNotification("Hi Omar We have approved your VIP request", "Have a nice day")) ? "Sent Successfully": "Did not Work Sorry";
+        return firebaseNotificationService.notifyPassenger("omar", new PassengerNotification("Hi Omar We have approved your VIP request", "Have a nice day")) ? "Sent Successfully" : "Did not Work Sorry";
     }
 
     @Autowired
@@ -90,9 +91,9 @@ public class TestController {
     @Autowired
     private GraphService graphService;
 
-    @GetMapping("getLineStations/{lineId}")
-    public List<String> no(@PathVariable("lineId") String lineId) throws NotFoundException {
-        return graphService.getOrderedStationOfLine(lineId);
+    @GetMapping("getLineStations/{line_name}")
+    public Pair<List<String>, List<Number>> no(@PathVariable("line_name") String lineName) throws NotFoundException {
+        return graphService.getOrderedStationOfLine(lineName);
     }
 
     @Autowired

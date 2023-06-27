@@ -11,7 +11,6 @@ import com.example.easy_flow_backend.repos.PrivilegeRepo;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,7 @@ public class HomeServiceImplementation implements HomeService {
         }
 
         Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), registerModel.getCity(), registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()), registerModel.getEmail());
-        passenger.addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        passenger.addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
         passengersRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
     }

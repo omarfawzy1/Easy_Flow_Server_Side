@@ -45,15 +45,19 @@ public class AdminController {
     public PassagnerDetails getPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPassengerDetails(username);
     }
-    //TODO
-        //    @GetMapping("graph")
-        //    public boolean addGraph(@Valid @RequestBody GraphModel graphModel) {
-        //        return adminService.addGraph(graphModel);
-        //    }
-    @GetMapping("graph/{ownerId}/{lineId}")
-    public List<GraphEdge> getGraph(@PathVariable String ownerId, @PathVariable String lineId) throws NotFoundException {
-        return adminService.getGraph(ownerId, lineId);
+
+
+    @GetMapping("line/graph/{line_name}")
+    public Pair<List<String>, List<Number>> getGraph(@PathVariable("line_name") String lineName) throws NotFoundException {
+        return adminService.getGraph(lineName);
     }
+
+    @PostMapping("line/graph")
+    public ResponseMessage addGraph(@Valid @RequestBody GraphModel graphModel) throws NotFoundException {
+        return adminService.addGraph(graphModel);
+    }
+
+
     @DeleteMapping("passenger/{username}")
     public ResponseMessage deletePassenger(@PathVariable String username) {
         return adminService.deletePassenger(username);
@@ -236,7 +240,9 @@ public class AdminController {
     }
 
     @GetMapping("tickets/{id}")
-    public TicketView getTicket(@PathVariable String id) {return adminService.getTicket(id);}
+    public TicketView getTicket(@PathVariable String id) {
+        return adminService.getTicket(id);
+    }
 
     @GetMapping("owners/tickets/{name}")
     public List<TicketView> getOwnerTickets(@PathVariable String name) {

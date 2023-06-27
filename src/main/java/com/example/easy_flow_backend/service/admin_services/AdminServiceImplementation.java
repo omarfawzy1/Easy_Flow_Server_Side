@@ -8,6 +8,7 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.service.UserService;
+import com.example.easy_flow_backend.service.graph_services.GraphService;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.payment_services.TicketService;
@@ -21,7 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,8 +52,6 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private TicketService ticketService;
     @Autowired
-    private PlanRepository planRepository;
-    @Autowired
     private PrivilegeRepo privilegeRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -63,6 +61,9 @@ public class AdminServiceImplementation implements AdminService {
     private UserRepositry userRepositry;
     @Autowired
     private MovingTurnstileRepo movingTurnstileRepo;
+
+    @Autowired
+    private GraphService graphService;
 
     @Override
     public List<LineView> getAllLines() {
@@ -186,9 +187,8 @@ public class AdminServiceImplementation implements AdminService {
     }
 */
     @Override
-    public List<GraphEdge> getGraph(String ownerId, String lineId) throws NotFoundException {
-        return new ArrayList<>(lineService.getLineById(lineId).getGraphEdges());
-//        return graphEdgeService.getEdges(graphService.getLineGraph(ownerId, lineId));
+    public Pair<List<String>, List<Number>> getGraph(String lineName) throws NotFoundException {
+        return graphService.getOrderedStationOfLine(lineName);
     }
 
     @Override
@@ -294,65 +294,62 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException {
-        Owner owner=ownerRepo.findByName(name);
-        if(owner == null)
-            return new ResponseMessage("this owner is not found",HttpStatus.BAD_REQUEST);
-        try{
+        Owner owner = ownerRepo.findByName(name);
+        if (owner == null)
+            return new ResponseMessage("this owner is not found", HttpStatus.BAD_REQUEST);
+        try {
             owner.setImageData(ImageData.builder()
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())
                     .imageData(ImageUtil.compressImage(file.getBytes())).build());
             ownerRepo.save(owner);
-        }
-        catch (Exception e){
-            return new ResponseMessage("image size is too big",HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseMessage("image size is too big", HttpStatus.BAD_REQUEST);
 
         }
-        return new ResponseMessage("Success",HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
     public ResponseMessage addPrivilege(String privilege) {
-        Privilege temp=privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
-        if(temp!=null)
-            return new ResponseMessage("this privilege already exist",HttpStatus.CONFLICT);
-        try{
-            temp=new Privilege(privilege);
+        Privilege temp = privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if (temp != null)
+            return new ResponseMessage("this privilege already exist", HttpStatus.CONFLICT);
+        try {
+            temp = new Privilege(privilege);
             privilegeRepo.save(temp);
+        } catch (Exception e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        catch (Exception e){
-            return new ResponseMessage( e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseMessage( "Success",HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
     public ResponseMessage deletePrivilege(String privilege) {
-        Privilege temp=privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
-        if(temp==null)
-            return new ResponseMessage("there is no privilege with this name",HttpStatus.BAD_REQUEST);
-        try{
+        Privilege temp = privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if (temp == null)
+            return new ResponseMessage("there is no privilege with this name", HttpStatus.BAD_REQUEST);
+        try {
             privilegeRepo.delete(temp);
+        } catch (Exception e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        catch (Exception e){
-            return new ResponseMessage( e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseMessage( "Success",HttpStatus.OK);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
     public boolean addStationaryMachine(AddStationaryMachineModel addStationaryMachineModel) throws Exception {
 
         User user = userRepositry.findUserByUsername(addStationaryMachineModel.getUsername());
-        if(user != null)
+        if (user != null)
             throw new BadRequestException("Username already exists");
 
         Owner owner = ownerRepo.findByName(addStationaryMachineModel.getOwnerName());
-        if(owner == null)
+        if (owner == null)
             throw new NotFoundException("Owner not Found");
 
         Station station = stationService.getStation(addStationaryMachineModel.getStationName());
-        if(station == null)
+        if (station == null)
             throw new NotFoundException("Station not Found");
         StationaryTurnstile machine = new StationaryTurnstile(addStationaryMachineModel.getUsername(),
                 passwordEncoder.encode(addStationaryMachineModel.getPassword()),
@@ -369,20 +366,20 @@ public class AdminServiceImplementation implements AdminService {
 
 
         User user = userRepositry.findUserByUsername(addMovingMachineModel.getUsername());
-        if(user != null)
+        if (user != null)
             throw new BadRequestException("Username already exists");
 
         Owner owner = ownerRepo.findByName(addMovingMachineModel.getOwnerName());
-        if(owner == null)
+        if (owner == null)
             throw new NotFoundException("Owner not found");
 
         Line line = lineService.getLineByName(addMovingMachineModel.getLineName());
-        if(line == null)
+        if (line == null)
             throw new NotFoundException("Line not found");
         MovingTurnstile machine = new MovingTurnstile(addMovingMachineModel.getUsername(),
                 passwordEncoder.encode(addMovingMachineModel.getPassword()),
                 owner
-                );
+        );
         machine.setActive(true);
         machine.setLine(line);
         movingTurnstileRepo.save(machine);
@@ -391,23 +388,27 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public ResponseMessage deletePassengerPrivilege(String username, String privilege) {
-        Passenger passenger= (Passenger) userRepositry.findUserByUsername(username);
-        if(passenger==null)
-            return new ResponseMessage("this passenger dose not exist",HttpStatus.BAD_REQUEST);
-        Privilege privilege1=  privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
-        if(privilege1==null)
-            return new ResponseMessage("this privilege dose not exist",HttpStatus.BAD_REQUEST);
-        if(!passenger.getPrivileges().contains(privilege1))
-            return new ResponseMessage("this passenger don't have this privilege",HttpStatus.BAD_REQUEST);
-        try{
+        Passenger passenger = (Passenger) userRepositry.findUserByUsername(username);
+        if (passenger == null)
+            return new ResponseMessage("this passenger dose not exist", HttpStatus.BAD_REQUEST);
+        Privilege privilege1 = privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if (privilege1 == null)
+            return new ResponseMessage("this privilege dose not exist", HttpStatus.BAD_REQUEST);
+        if (!passenger.getPrivileges().contains(privilege1))
+            return new ResponseMessage("this passenger don't have this privilege", HttpStatus.BAD_REQUEST);
+        try {
             privilege1.getPassengers().remove(passenger);
             passenger.getPrivileges().remove(privilege1);
             privilegeRepo.save(privilege1);
+        } catch (Exception e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        catch (Exception e){
-            return new ResponseMessage(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseMessage("privilege successfully removed",HttpStatus.OK);
+        return new ResponseMessage("privilege successfully removed", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseMessage addGraph(GraphModel graphModel) {
+        return graphService.addGraph(graphModel);
     }
 
     @Override

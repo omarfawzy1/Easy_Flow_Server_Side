@@ -15,9 +15,9 @@ import lombok.Setter;
 
 public class AddLineModel {
 
-    @NotBlank(message = "Owner id Should Not be Blank")
-    @NotNull(message = "Owner id Should Not be Null")
-    String ownerId;
+    @NotBlank(message = "Owner name Should Not be Blank")
+    @NotNull(message = "Owner name Should Not be Null")
+    String ownerName;
     @NotNull(message = "Price Should Not be Null")
     String type;
     @NotNull(message = "Line Name Should Not be Null")

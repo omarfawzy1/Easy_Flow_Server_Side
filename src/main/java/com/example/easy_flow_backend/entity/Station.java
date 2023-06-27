@@ -26,14 +26,18 @@ public class Station {
     private String id;
     @Column(name = "station_name", nullable = false, unique = true)
     private String stationName;
+    @Column(name = "latitude")
+    private Float latitude;
+    @Column(name = "longitude")
+    private Float longitude;
     @ManyToMany(mappedBy = "stations", fetch = FetchType.EAGER)
     Set<Line> lines = new HashSet<>();
     @OneToMany(mappedBy = "fromStation", cascade = CascadeType.ALL)
-    private Set<GraphEdge> fromGraphEdges= new HashSet<>();
+    private Set<GraphEdge> fromGraphEdges = new HashSet<>();
     @OneToMany(mappedBy = "toStation", cascade = CascadeType.ALL)
-    private Set<GraphEdge> toGraphEdges= new HashSet<>();
+    private Set<GraphEdge> toGraphEdges = new HashSet<>();
     @OneToMany(mappedBy = "station")
-    private Set<StationaryTurnstile> stationaryTurnstiles= new HashSet<>();
+    private Set<StationaryTurnstile> stationaryTurnstiles = new HashSet<>();
 
     public Station(String stationName) {
 
@@ -59,6 +63,7 @@ public class Station {
         Station station = (Station) o;
         return stationName.equals(station.stationName);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(stationName);

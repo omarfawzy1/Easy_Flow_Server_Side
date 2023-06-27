@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.*;
 
@@ -69,12 +67,10 @@ public class Passenger extends User {
         this.birthDay = birthDay;
         this.email=email;
     }
-    public void addPrivlage(Privilege privilege){
+    public void addPrivilege(Privilege privilege){
         this.privileges.add(privilege);
     }
-    public void removePrivlage(Privilege privilege){
-        this.privileges.remove(privilege);
-    }
+
 
     @Override
     public boolean equals(Object o) {

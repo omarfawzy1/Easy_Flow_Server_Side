@@ -58,7 +58,7 @@ public interface AdminService {
 
 //    boolean addGraph(GraphModel graphModel);
 
-    List<GraphEdge> getGraph(String ownerId, String lineId) throws NotFoundException;
+    Pair<List<String>, List<Number>> getGraph(String lineName) throws NotFoundException;
 
     ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException;
 
@@ -111,4 +111,6 @@ public interface AdminService {
     boolean addMovingMachineModel(AddMovingMachineModel addMovingMachineModel) throws NotFoundException, BadRequestException;
 
     ResponseMessage deletePassengerPrivilege(String username, String privilege);
+
+    ResponseMessage addGraph(GraphModel graphModel);
 }

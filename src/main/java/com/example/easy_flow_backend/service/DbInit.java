@@ -70,14 +70,14 @@ public class DbInit implements CommandLineRunner {
         ArrayList<User> users = usersInit();
         userRepositry.saveAll(users);
         //add passengers privlages
-        ((Passenger)users.get(1)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(1)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
-        ((Passenger)users.get(2)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(3)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(3)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Elder"));
-        ((Passenger)users.get(4)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(4)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
-        ((Passenger)users.get(4)).addPrivlage(privilegeRepo.findPrivilegeByNameIgnoreCase("journalist"));
+        ((Passenger)users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
+        ((Passenger)users.get(2)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(3)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(3)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Elder"));
+        ((Passenger)users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger)users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
+        ((Passenger)users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("journalist"));
         userRepositry.saveAll(users);
         //owner
         Owner owner1 = new Owner("ehab", "ehab@mail.com", "1148 1124 2247 2247");
@@ -250,7 +250,7 @@ public class DbInit implements CommandLineRunner {
         for (Station station : line1Stations) {
             line1 = lineService.addStationToLine(station, line1);
         }
-        line1Stations.forEach(station -> stationRepo.findByStationName(station.getStationName()));
+//        line1Stations.forEach(station -> stationRepo.findByStationName(station.getStationName()));
 
         for (Station station : line2Stations) {
             line2 = lineService.addStationToLine(station, line2);
@@ -270,7 +270,7 @@ public class DbInit implements CommandLineRunner {
 
         ArrayList<GraphEdge> graphEdges1 = new ArrayList<>();
         for (int i = 0; i < line1Stations.size() - 1; i++) {
-            graphEdges1.add(new GraphEdge(line2, line1Stations.get(i), line1Stations.get(i + 1), 1D));
+            graphEdges1.add(new GraphEdge(line1, line1Stations.get(i), line1Stations.get(i + 1), 1D));
         }
 
         graphEdgeRepo.saveAll(graphEdges1);

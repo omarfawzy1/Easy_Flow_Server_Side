@@ -56,7 +56,7 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     public ResponseMessage inRide(RideModel rideModel) throws BadRequestException, NotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
-        inRideValidation( machineUsername);
+        inRideValidation(machineUsername);
 
         return tripService.makeTrip(rideModel, machineUsername);
     }
@@ -70,9 +70,9 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         MovingTurnstile machine = movingTurnstileRepo.findUserByUsername(machineUsername);
         if (machine.getLine() == null) return null;
 
-        String lineId = machine.getLine().getId();
+        String lineName = machine.getLine().getName();
 
-        return new Pair<>(machine.getLine().getName(), graphService.getOrderedStationOfLine(lineId));
+        return new Pair<>(machine.getLine().getName(), graphService.getOrderedStationOfLine(lineName).getFirst());
     }
 
     @Override
