@@ -233,8 +233,8 @@ public class AdminController {
     }
 
     @PatchMapping("machine/stationary")
-    public ResponseMessage updateMovingMachineLine(@Valid @RequestBody UpateStationaryMachine stationaryMachine) {
-        return adminService.updateMovingMachineLine(stationaryMachine.getUsername(), stationaryMachine.getNewStation());
+    public ResponseMessage updateStationaryMachineStation(@Valid @RequestBody UpateStationaryMachine stationaryMachine) {
+        return adminService.updateStationaryMachineStation(stationaryMachine.getUsername(), stationaryMachine.getNewStation());
     }
 
     @PostMapping("tickets")
