@@ -2,8 +2,6 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
-import com.example.easy_flow_backend.entity.GraphEdge;
-import com.example.easy_flow_backend.entity.Privilege;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -227,6 +225,16 @@ public class AdminController {
     @DeleteMapping("machine/moving/{username}")
     public ResponseMessage deleteMovingMachine(@PathVariable String username) throws NotFoundException {
         return adminService.deleteMovingMachine(username);
+    }
+
+    @PatchMapping("machine/moving")
+    public ResponseMessage updateMovingMachineLine(@Valid @RequestBody UpdateMovingMachine updateMovingMachine) {
+        return adminService.updateMovingMachineLine(updateMovingMachine.getUsername(), updateMovingMachine.getNewLine());
+    }
+
+    @PatchMapping("machine/stationary")
+    public ResponseMessage updateMovingMachineLine(@Valid @RequestBody UpateStationaryMachine stationaryMachine) {
+        return adminService.updateMovingMachineLine(stationaryMachine.getUsername(), stationaryMachine.getNewStation());
     }
 
     @PostMapping("tickets")

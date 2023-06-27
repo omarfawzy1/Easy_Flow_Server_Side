@@ -113,4 +113,8 @@ public interface AdminService {
     ResponseMessage deletePassengerPrivilege(String username, String privilege);
 
     ResponseMessage addGraph(GraphModel graphModel);
+
+    ResponseMessage updateMovingMachineLine(String username, String newLine);
+
+    ResponseMessage updateStationaryMachineStation(String username, String newStation);
 }
