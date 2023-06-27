@@ -443,6 +443,23 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
+    public List<String> getPrivileges() {
+        List<String>result = new ArrayList<>();
+        for(Privilege p: privilegeRepo.findAll())
+            result.add(p.getName());
+        return result;
+    }
+
+    @Override
+    public List<String> getPrivilegesForPassenger(String username) throws NotFoundException {
+        Passenger passenger=passengerService.getPassenger(username);
+        List<String>result = new ArrayList<>();
+        for(Privilege p: passenger.getPrivileges())
+            result.add(p.getName());
+        return result;
+    }
+
+    @Override
     public ResponseMessage deleteOwner(String username) throws BadRequestException {
         return ownerService.deleteOwner(username);
     }
