@@ -91,10 +91,10 @@ public class TestController {
     @Autowired
     private GraphService graphService;
 
-    @GetMapping("getLineStations/{line_name}")
+    /*@GetMapping("getLineStations/{line_name}")
     public Pair<List<String>, List<Number>> no(@PathVariable("line_name") String lineName) throws NotFoundException {
         return graphService.getOrderedStationOfLine(lineName);
-    }
+    }*/
 
     @Autowired
     private TokenValidationService tokenValidationService;

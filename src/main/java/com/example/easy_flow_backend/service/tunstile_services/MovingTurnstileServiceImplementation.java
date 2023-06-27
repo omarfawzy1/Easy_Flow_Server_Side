@@ -4,6 +4,7 @@ import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
 import com.example.easy_flow_backend.dto.Views.MovingMachineView;
 import com.example.easy_flow_backend.entity.MovingTurnstile;
+import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
@@ -71,8 +72,12 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
         if (machine.getLine() == null) return null;
 
         String lineName = machine.getLine().getName();
-
-        return new Pair<>(machine.getLine().getName(), graphService.getOrderedStationOfLine(lineName).getFirst());
+        List<Station> stations = graphService.getOrderedStationOfLine(lineName).getFirst();
+        List<String> stationNames = new ArrayList<>();
+        for (Station station : stations) {
+            stationNames.add(station.getStationName());
+        }
+        return new Pair<>(machine.getLine().getName(), stationNames);
     }
 
     @Override

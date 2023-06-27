@@ -46,7 +46,7 @@ public class AdminController {
 
 
     @GetMapping("line/graph/{line_name}")
-    public Pair<List<String>, List<Number>> getGraph(@PathVariable("line_name") String lineName) throws NotFoundException {
+    public GetGraphModel getGraph(@PathVariable("line_name") String lineName) throws NotFoundException {
         return adminService.getGraph(lineName);
     }
 

@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.Pair;
 import com.example.easy_flow_backend.dto.Models.RideModel;
+import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;

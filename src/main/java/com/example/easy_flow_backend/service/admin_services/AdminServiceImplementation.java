@@ -187,8 +187,9 @@ public class AdminServiceImplementation implements AdminService {
     }
 */
     @Override
-    public Pair<List<String>, List<Number>> getGraph(String lineName) throws NotFoundException {
-        return graphService.getOrderedStationOfLine(lineName);
+    public GetGraphModel getGraph(String lineName) throws NotFoundException {
+        Pair<List<Station>, List<Number>> orderedStation = graphService.getOrderedStationOfLine(lineName);
+        return new GetGraphModel(orderedStation.getFirst(), orderedStation.getSecond());
     }
 
     @Override

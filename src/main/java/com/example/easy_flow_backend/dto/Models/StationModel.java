@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StationModel {
     String name;
-    float latitude;
-    float longitude;
+    Float latitude;
+    Float longitude;
 
 }

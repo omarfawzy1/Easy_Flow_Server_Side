@@ -58,7 +58,7 @@ public interface AdminService {
 
 //    boolean addGraph(GraphModel graphModel);
 
-    Pair<List<String>, List<Number>> getGraph(String lineName) throws NotFoundException;
+    GetGraphModel getGraph(String lineName) throws NotFoundException;
 
     ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException;
 
