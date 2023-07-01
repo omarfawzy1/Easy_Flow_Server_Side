@@ -117,4 +117,8 @@ public interface AdminService {
     ResponseMessage updateMovingMachineLine(String username, String newLine);
 
     ResponseMessage updateStationaryMachineStation(String username, String newStation);
+
+    List<String> getPrivileges();
+
+    List<String> getPrivilegesForPassenger(String username) throws NotFoundException;
 }

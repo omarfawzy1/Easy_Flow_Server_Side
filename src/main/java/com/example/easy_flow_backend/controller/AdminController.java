@@ -281,4 +281,12 @@ public class AdminController {
     public ResponseMessage deletePassengerPrivilege(@PathVariable String username, @PathVariable String privilege) {
         return adminService.deletePassengerPrivilege(username, privilege);
     }
+    @GetMapping("privilege")
+    public List<String> getPrivileges(){
+        return adminService.getPrivileges();
+    }
+    @GetMapping("privilege/{username}")
+    public List<String> getPrivilegesForPassenger(@PathVariable String username) throws NotFoundException {
+        return adminService.getPrivilegesForPassenger(username);
+    }
 }
