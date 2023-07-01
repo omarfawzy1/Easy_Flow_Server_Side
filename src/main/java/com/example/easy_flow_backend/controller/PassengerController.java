@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.SubscriptionModel;
 import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.SubscriptionView;
@@ -41,9 +42,10 @@ public class PassengerController {
     public PassagnerDetails getMyProfile() throws BadRequestException {
         return passengerService.getMyProfile();
     }
-    @PutMapping ("updateProfile")
-    public ResponseMessage updateProfile(Principal principal, @Valid @RequestBody UpdateProfileModel profileModel){
-        return passengerService.updateProfile(principal,profileModel);
+
+    @PutMapping("updateProfile")
+    public ResponseMessage updateProfile(Principal principal, @Valid @RequestBody UpdateProfileModel profileModel) {
+        return passengerService.updateProfile(principal, profileModel);
     }
 
     // Dummy
@@ -59,8 +61,8 @@ public class PassengerController {
     }
 
     @PostMapping("subscribe")
-    public ResponseMessage makeSubscription(String owner_name, String plan_name) {
-        return passengerService.makeSubscription(owner_name, plan_name);
+    public ResponseMessage makeSubscription(@RequestBody SubscriptionModel subscriptionModel) {
+        return passengerService.makeSubscription(subscriptionModel.getOwner_name(), subscriptionModel.getPlan_name());
     }
 
     @GetMapping("subscriptions")
