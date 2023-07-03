@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -38,28 +39,29 @@ public class PassengerServiceImplementation implements PassengerService {
     @Autowired
     private TransactionRepo transactionRepo;
     @Autowired
-    TripService tripService;
+    private TripService tripService;
     @Autowired
-    SubscriptionService subscriptionService;
+    private SubscriptionService subscriptionService;
     @Autowired
-    SubscriptionRepo subscriptionRepo;
+    private SubscriptionRepo subscriptionRepo;
     @Autowired
-    PlanRepository planRepository;
+    private PlanRepository planRepository;
     @Autowired
-    FirebaseNotificationService firebaseNotificationService;
+    private FirebaseNotificationService firebaseNotificationService;
     @Autowired
-    ResetPasswordTokenService resetPasswordTokenService;
+    private ResetPasswordTokenService resetPasswordTokenService;
     @Autowired
     private ResetPasswordTokenRepo resetPasswordTokenRepo;
     @Autowired
-    PasswordManager passwordManager;
+    private PasswordManager passwordManager;
+    @Autowired
+    private OwnerRepo ownerRepo;
 
-    @Override
     public List<TripView> getMytrips(String username) throws BadRequestException {
         if (username == null || username.equalsIgnoreCase("anonymous"))
             throw new BadRequestException("Not Authenticated");
 
-        return tripRepo.findAllProjectedByPassengerUsername(username);
+        return tripRepo.findAllByPassengerUsernameAndStatus(username, Status.Closed,TripView.class);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class PassengerServiceImplementation implements PassengerService {
         if (username == null || username.equalsIgnoreCase("anonymous"))
             throw new BadRequestException("Not Authenticated");
 
-        return tripRepo.findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(username, date);
+        return tripRepo.findAllByPassengerUsernameAndStatusAndStartTimeGreaterThanEqual(username,Status.Closed, date,TripView.class);
     }
 
     @Override
@@ -103,20 +105,19 @@ public class PassengerServiceImplementation implements PassengerService {
     }
 
     @Override
-    public ResponseMessage deletePassenger(String username){
+    public ResponseMessage deletePassenger(String username) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
-            return new ResponseMessage("Passenger Not Found",HttpStatus.BAD_REQUEST);
-        try{
-            for(Trip t:passenger.getTrips())
+            return new ResponseMessage("Passenger Not Found", HttpStatus.BAD_REQUEST);
+        try {
+            for (Trip t : passenger.getTrips())
                 t.setPassenger(null);
-            for(Privilege p :passenger.getPrivileges())
+            for (Privilege p : passenger.getPrivileges())
                 p.getPassengers().remove(passenger);
 
             passengerRepo.deleteByUsernameIgnoreCase(username);
-        }
-        catch (Exception e){
-            return new ResponseMessage(e.getMessage(),HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
     }
@@ -212,8 +213,8 @@ public class PassengerServiceImplementation implements PassengerService {
     @Override
     public ResponseMessage updateProfile(Principal principal, UpdateProfileModel UpdateProfileModel) {
         String username = principal.getName();
-        Passenger passenger=passengerRepo.findByUsernameIgnoreCase(username);
-        try{
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
+        try {
             passenger.setFirstName(UpdateProfileModel.getFirstName());
 
             passenger.setLastName(UpdateProfileModel.getLastName());
@@ -224,12 +225,43 @@ public class PassengerServiceImplementation implements PassengerService {
 
             passenger.setGender(UpdateProfileModel.getGender());
             passengerRepo.save(passenger);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseMessage("invalid data", HttpStatus.BAD_REQUEST);
         }
         return new ResponseMessage("done", HttpStatus.OK);
 
+    }
+
+    @Override
+    public ResponseMessage setPin(Principal principal, String pin) {
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(principal.getName());
+        if (passenger == null) {
+            return new ResponseMessage("The passenger not exist", HttpStatus.BAD_REQUEST);
+        }
+        passenger.setPin(pin);
+        passengerRepo.save(passenger);
+        return new ResponseMessage("Success", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseMessage reverseSubscriptionRepurchase(Principal principal, String ownerName, String planName) {
+        System.out.println(principal.getName()+" "+ownerName+" "+planName);
+        Subscription subscription = subscriptionRepo.findByPassengerUsernameAndPlanOwnerNameAndPlanName(principal.getName(), ownerName, planName);
+        if (subscription == null) {
+            return new ResponseMessage("Subscription not found", HttpStatus.BAD_REQUEST);
+        }
+        subscription.setRepurchase(!subscription.isRepurchase());
+        subscriptionRepo.save(subscription);
+        return new ResponseMessage("Success", HttpStatus.OK);
+    }
+
+    @Override
+    public byte[] getOwnerImage(String ownerName) throws NotFoundException {
+        Owner owner = ownerRepo.findByName(ownerName);
+        if (owner == null) {
+            throw new NotFoundException("The owner not found");
+        }
+        return owner.getImageData().getImageData();
     }
 
 }

@@ -51,4 +51,10 @@ public interface PassengerService {
     ResponseMessage resetPassengerPassword(String key, ResetPassword newPassword);
 
     ResponseMessage updateProfile(Principal principal, UpdateProfileModel profileModel);
+
+    ResponseMessage setPin(Principal principal,String pin);
+
+    ResponseMessage reverseSubscriptionRepurchase(Principal principal, String ownerName, String planName);
+
+    byte[] getOwnerImage(String ownerName) throws NotFoundException;
 }

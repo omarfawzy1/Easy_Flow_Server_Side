@@ -1,5 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
+import com.example.easy_flow_backend.dto.Models.PinModel;
 import com.example.easy_flow_backend.dto.Models.SubscriptionModel;
 import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
@@ -68,5 +69,20 @@ public class PassengerController {
     @GetMapping("subscriptions")
     public List<SubscriptionView> getMySubscriptions() throws NotFoundException {
         return passengerService.getMySubscriptions();
+    }
+
+    @PutMapping("subscription/repurchase/{owner-name}/{plan-name}")
+    public ResponseMessage reverseSubscriptionRepurchase(Principal principal, @PathVariable("owner-name") String ownerName, @PathVariable("plan-name") String planName) {
+        return passengerService.reverseSubscriptionRepurchase(principal, ownerName, planName);
+    }
+
+    @PutMapping("set-pin")
+    public ResponseMessage setPin(Principal principal, @Valid @RequestBody PinModel pinModel) {
+        return passengerService.setPin(principal, pinModel.getPin());
+    }
+
+    @GetMapping("owner/image/{owner-name}")
+    public byte[] getOwnerImage(@PathVariable("owner-name") String ownerName) throws NotFoundException {
+        return passengerService.getOwnerImage(ownerName);
     }
 }

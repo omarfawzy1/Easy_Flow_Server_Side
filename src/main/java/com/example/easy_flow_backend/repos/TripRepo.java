@@ -19,14 +19,10 @@ import java.util.Optional;
 public interface TripRepo extends JpaRepository<Trip, String> {
     <T> T findById(String id, Class<T> type);
 
-    List<TripView> findAllProjectedBy();
 
     <T> List<T> findAllByPassengerUsernameAndStatus(String passenger_username, Status status, Class<T> type);
 
-    List<TripView> findAllProjectedByPassengerUsername(String passenger_username);
-
-    List<TripView> findAllProjectedByPassengerUsernameAndStartTimeGreaterThanEqual(String passenger_username, Date start_time);
-
+    <T>List<T>findAllByPassengerUsernameAndStatusAndStartTimeGreaterThanEqual(String passenger_username, Status status, Date startTime,Class<T>type);
     boolean existsByPassengerUsernameAndStatus(String passengerUsername, Status status);
 
     Trip findByPassengerUsernameAndStatus(String passenger_username, Status status);
@@ -76,8 +72,8 @@ public interface TripRepo extends JpaRepository<Trip, String> {
                               @Param("end") Date end,
                               @Param("lineName") String lineName);
 
-    @Query("SELECT trip "+
-            "FROM Trip trip "+
+    @Query("SELECT trip " +
+            "FROM Trip trip " +
             "WHERE trip.status = 1 AND trip.passenger.id= :passengerId ")
     Trip outRideForgetTicket(@Param("passengerId") String passengerId);
 
