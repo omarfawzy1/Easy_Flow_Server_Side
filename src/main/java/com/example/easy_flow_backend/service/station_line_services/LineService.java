@@ -7,13 +7,10 @@ import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
-import com.example.easy_flow_backend.repos.StationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class LineService {
@@ -22,8 +19,6 @@ public class LineService {
     @Autowired
     OwnerRepo ownerRepo;
 
-    @Autowired
-    StationRepo stationRepo;
     @Autowired
     StationService stationService;
 

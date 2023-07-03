@@ -121,4 +121,6 @@ public interface AdminService {
     List<String> getPrivileges();
 
     List<String> getPrivilegesForPassenger(String username) throws NotFoundException;
+
+    List<StationView> getAllStation();
 }

@@ -1,7 +1,6 @@
 package com.example.easy_flow_backend.service.station_line_services;
 
 import com.example.easy_flow_backend.entity.Line;
-import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.entity.StationaryTurnstile;
 import com.example.easy_flow_backend.error.BadRequestException;

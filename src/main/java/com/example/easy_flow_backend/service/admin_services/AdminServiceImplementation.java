@@ -64,6 +64,8 @@ public class AdminServiceImplementation implements AdminService {
 
     @Autowired
     private GraphService graphService;
+    @Autowired
+    private StationRepo stationRepo;
 
     @Override
     public List<LineView> getAllLines() {
@@ -445,19 +447,24 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public List<String> getPrivileges() {
-        List<String>result = new ArrayList<>();
-        for(Privilege p: privilegeRepo.findAll())
+        List<String> result = new ArrayList<>();
+        for (Privilege p : privilegeRepo.findAll())
             result.add(p.getName());
         return result;
     }
 
     @Override
     public List<String> getPrivilegesForPassenger(String username) throws NotFoundException {
-        Passenger passenger=passengerService.getPassenger(username);
-        List<String>result = new ArrayList<>();
-        for(Privilege p: passenger.getPrivileges())
+        Passenger passenger = passengerService.getPassenger(username);
+        List<String> result = new ArrayList<>();
+        for (Privilege p : passenger.getPrivileges())
             result.add(p.getName());
         return result;
+    }
+
+    @Override
+    public List<StationView> getAllStation() {
+        return stationRepo.findAllBy(StationView.class);
     }
 
     @Override

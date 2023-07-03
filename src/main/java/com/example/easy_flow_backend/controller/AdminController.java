@@ -2,6 +2,7 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
+import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -281,12 +282,20 @@ public class AdminController {
     public ResponseMessage deletePassengerPrivilege(@PathVariable String username, @PathVariable String privilege) {
         return adminService.deletePassengerPrivilege(username, privilege);
     }
+
     @GetMapping("privilege")
-    public List<String> getPrivileges(){
+    public List<String> getPrivileges() {
         return adminService.getPrivileges();
     }
+
     @GetMapping("privilege/{username}")
     public List<String> getPrivilegesForPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPrivilegesForPassenger(username);
     }
+
+    @GetMapping("stations")
+    public List<StationView> getAllStation() {
+        return adminService.getAllStation();
+    }
+
 }
