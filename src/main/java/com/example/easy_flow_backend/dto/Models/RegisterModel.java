@@ -39,7 +39,7 @@ public class RegisterModel {
     @Length(min = 8, max = 64, message = "Password length should be at least 8")
     private String password;
     @NotBlank(message = "Phone is mandatory")
-    @Length(min = 11, max = 11)
+    @Length(min = 11, max = 11,message = "phone number must be exactly 11 number")
     @Pattern(regexp = "(^$|[0-9]{11})", message = "phone number consists of numbers only")
     private String phoneNumber;
     @NotNull(message = "Gender is mandatory")

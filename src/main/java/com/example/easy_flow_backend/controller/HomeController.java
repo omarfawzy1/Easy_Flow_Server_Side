@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -42,8 +43,8 @@ public class HomeController {
     }
 
     @PostMapping("reset")
-    public ResponseMessage sendResetPasswordToken(@RequestBody String email) throws NotFoundException {
-        return homeService.sendResetPasswordToken(email);
+    public ResponseMessage sendResetPasswordToken(@RequestBody Map<String, String> jsonBody) throws NotFoundException {
+        return homeService.sendResetPasswordToken(jsonBody.get("email"));
     }
 
     @PostMapping("reset/{key}")

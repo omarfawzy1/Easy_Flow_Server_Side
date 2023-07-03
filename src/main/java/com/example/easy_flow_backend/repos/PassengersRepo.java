@@ -24,6 +24,8 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     boolean existsByPhoneNumber(String phoneNumber);
 
+    boolean existsByEmail(String email);
+
     void deleteByUsernameIgnoreCase(String username);
 
     PassagnerDetails findProjectedByUsername(String passenger_username);

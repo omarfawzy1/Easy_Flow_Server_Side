@@ -33,6 +33,11 @@ public class HomeServiceImplementation implements HomeService {
         } else if (passengersRepo.existsByPhoneNumber(registerModel.getPhoneNumber())) {
             throw new NotFoundException("The Phone already Used");
         }
+        else if (passengersRepo.existsByEmail(registerModel.getEmail())) {
+            throw new NotFoundException("The email already Used");
+        }
+
+
 
         Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), registerModel.getCity(), registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()), registerModel.getEmail());
         passenger.addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
