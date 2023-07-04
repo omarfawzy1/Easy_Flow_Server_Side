@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Models.ResetPassword;
+import com.example.easy_flow_backend.dto.Models.UpdatePassword;
 import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.Passenger;
@@ -57,4 +58,6 @@ public interface PassengerService {
     ResponseMessage reverseSubscriptionRepurchase(Principal principal, String ownerName, String planName);
 
     byte[] getOwnerImage(String ownerName) throws NotFoundException;
+
+    ResponseMessage updatePassword(String name, UpdatePassword updatePassword);
 }

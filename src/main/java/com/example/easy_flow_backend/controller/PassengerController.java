@@ -1,8 +1,6 @@
 package com.example.easy_flow_backend.controller;
 
-import com.example.easy_flow_backend.dto.Models.PinModel;
-import com.example.easy_flow_backend.dto.Models.SubscriptionModel;
-import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
+import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.SubscriptionView;
 import com.example.easy_flow_backend.dto.Views.TripId;
@@ -47,6 +45,11 @@ public class PassengerController {
     @PutMapping("updateProfile")
     public ResponseMessage updateProfile(Principal principal, @Valid @RequestBody UpdateProfileModel profileModel) {
         return passengerService.updateProfile(principal, profileModel);
+    }
+
+    @PutMapping("password")
+    public ResponseMessage updatePassword(Principal principal, @Valid @RequestBody UpdatePassword updatePassword) {
+        return passengerService.updatePassword(principal.getName(), updatePassword);
     }
 
     // Dummy

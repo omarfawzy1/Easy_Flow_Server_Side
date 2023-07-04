@@ -18,7 +18,7 @@ import java.sql.Date;
 public class RideModel {
 
     public RideModel(String tripId, String startStation, String endStation, Date time) {
-        TripId = tripId;
+        this.tripId = tripId;
         this.startStation = startStation;
         this.endStation = endStation;
         this.time = time;
@@ -26,9 +26,9 @@ public class RideModel {
 
     @NotBlank(message = "Trip Id should not be blank")
     @NotNull(message = "Trip Id should not be null")
-    String TripId;
+    String tripId;
     @Min(1)
-    int CompanionCount;
+    int companionCount;
 
     @NotBlank(message = "Start Station should not be blank")
     @NotNull(message = "Start Station should not be null")

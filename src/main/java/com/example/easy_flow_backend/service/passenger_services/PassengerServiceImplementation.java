@@ -1,6 +1,7 @@
 package com.example.easy_flow_backend.service.passenger_services;
 
 import com.example.easy_flow_backend.dto.Models.ResetPassword;
+import com.example.easy_flow_backend.dto.Models.UpdatePassword;
 import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.*;
@@ -15,6 +16,7 @@ import com.example.easy_flow_backend.service.password_reset_services.ResetPasswo
 import com.example.easy_flow_backend.service.payment_services.SubscriptionService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
+import com.google.api.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -56,12 +58,14 @@ public class PassengerServiceImplementation implements PassengerService {
     private PasswordManager passwordManager;
     @Autowired
     private OwnerRepo ownerRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<TripView> getMytrips(String username) throws BadRequestException {
         if (username == null || username.equalsIgnoreCase("anonymous"))
             throw new BadRequestException("Not Authenticated");
 
-        return tripRepo.findAllByPassengerUsernameAndStatus(username, Status.Closed,TripView.class);
+        return tripRepo.findAllByPassengerUsernameAndStatus(username, Status.Closed, TripView.class);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class PassengerServiceImplementation implements PassengerService {
         if (username == null || username.equalsIgnoreCase("anonymous"))
             throw new BadRequestException("Not Authenticated");
 
-        return tripRepo.findAllByPassengerUsernameAndStatusAndStartTimeGreaterThanEqual(username,Status.Closed, date,TripView.class);
+        return tripRepo.findAllByPassengerUsernameAndStatusAndStartTimeGreaterThanEqual(username, Status.Closed, date, TripView.class);
     }
 
     @Override
@@ -245,7 +249,7 @@ public class PassengerServiceImplementation implements PassengerService {
 
     @Override
     public ResponseMessage reverseSubscriptionRepurchase(Principal principal, String ownerName, String planName) {
-        System.out.println(principal.getName()+" "+ownerName+" "+planName);
+        System.out.println(principal.getName() + " " + ownerName + " " + planName);
         Subscription subscription = subscriptionRepo.findByPassengerUsernameAndPlanOwnerNameAndPlanName(principal.getName(), ownerName, planName);
         if (subscription == null) {
             return new ResponseMessage("Subscription not found", HttpStatus.BAD_REQUEST);
@@ -262,6 +266,18 @@ public class PassengerServiceImplementation implements PassengerService {
             throw new NotFoundException("The owner not found");
         }
         return owner.getImageData().getImageData();
+    }
+
+    @Override
+    public ResponseMessage updatePassword(String name, UpdatePassword updatePassword) {
+        User user = passengerRepo.findByUsernameIgnoreCase(name);
+        if (user == null) {
+            return new ResponseMessage("Passenger Not found", HttpStatus.BAD_REQUEST);
+        }
+        if (!passwordEncoder.matches(updatePassword.getOldPassword(), user.getPassword())) {
+            return new ResponseMessage("The old password is incorrect", HttpStatus.BAD_REQUEST);
+        }
+        return passwordManager.resetPassword(user, updatePassword.getResetPassword());
     }
 
 }
