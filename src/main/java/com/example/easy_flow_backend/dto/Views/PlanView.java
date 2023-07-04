@@ -3,8 +3,7 @@ package com.example.easy_flow_backend.dto.Views;
 import org.springframework.beans.factory.annotation.Value;
 
 public interface PlanView {
-    @Value("#{target.privilege.name}")
-    String privilegeName();
+    String getPrivilegeName();
 
     float getPrice();
 
