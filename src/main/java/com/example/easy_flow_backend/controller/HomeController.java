@@ -17,13 +17,6 @@ import java.util.Map;
 public class HomeController {
     @Autowired
     private HomeService homeService;
-
-    /*
-    TODO 3/2/2023
-        Passenger API
-            History Return trips
-            Request Privilege
-     */
     @GetMapping("index")
     public String index() throws UnknownHostException {
         return "index";

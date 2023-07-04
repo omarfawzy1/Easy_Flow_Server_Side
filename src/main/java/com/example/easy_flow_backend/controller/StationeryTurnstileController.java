@@ -26,6 +26,7 @@ public class StationeryTurnstileController {
     public ResponseMessage outRide(@Valid @RequestBody RideModel rideModel) throws BadRequestException, NotFoundException {
         return stationeryTurnstileService.outRide(rideModel);
     }
+    //TODO
     @PostMapping("out-ride/forgetTicket")
     public ResponseMessage outRideForgetTicket(@Valid @RequestBody ForgetTicketModel forgetTicketModel) throws BadRequestException, NotFoundException {
         return stationeryTurnstileService.outRideForgetTicket(forgetTicketModel);

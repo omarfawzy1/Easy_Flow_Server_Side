@@ -61,11 +61,12 @@ public class AdminServiceImplementation implements AdminService {
     private UserRepositry userRepositry;
     @Autowired
     private MovingTurnstileRepo movingTurnstileRepo;
-
     @Autowired
     private GraphService graphService;
     @Autowired
     private StationRepo stationRepo;
+    @Autowired
+    private PassengersRepo passengersRepo;
 
     @Override
     public List<LineView> getAllLines() {
@@ -117,12 +118,14 @@ public class AdminServiceImplementation implements AdminService {
     public int getPassengersCountWithPrivilege(String privilege) {
         return passengerService.getPassengersCountWithPrivilege(privilege);
     }
-
     @Override
     public long getRevenue(TimePeriod timePeriod) {
         return analysisService.getRevenue(timePeriod);
     }
-
+    @Override
+    public List<Object> getRevenue(TimePeriod timePeriod, String groupBy) throws BadRequestException {
+        return analysisService.getRevenue(timePeriod,groupBy);
+    }
     @Override
     public long getRevenueAvg(TimePeriod timePeriod) {
         return analysisService.getRevenueAvg(timePeriod);
@@ -367,7 +370,6 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public boolean addMovingMachineModel(AddMovingMachineModel addMovingMachineModel) throws BadRequestException, NotFoundException {
 
-
         User user = userRepositry.findUserByUsername(addMovingMachineModel.getUsername());
         if (user != null)
             throw new BadRequestException("Username already exists");
@@ -465,6 +467,26 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public List<StationView> getAllStation() {
         return stationRepo.findAllBy(StationView.class);
+    }
+
+    @Override
+    public ResponseMessage addPrivilegesToPassenger(String username, String privilege) {
+        Passenger passenger =passengersRepo.findByUsernameIgnoreCase(username);
+        if(passenger==null)
+            return new ResponseMessage("passenger not found",HttpStatus.NOT_FOUND);
+        Privilege privilege1 =privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if(privilege1==null)
+            return new ResponseMessage("privilege not found",HttpStatus.NOT_FOUND);
+        if(passenger.getPrivileges().contains(privilege1))
+            return new ResponseMessage("passenger already have this privilege",HttpStatus.ALREADY_REPORTED);
+        passenger.addPrivilege(privilege1);
+        passengersRepo.save(passenger);
+        return new ResponseMessage("privilege added to the passenger",HttpStatus.OK);
+    }
+
+    @Override
+    public List<Object> getTripPerHour(TimePeriod timePeriod) {
+        return analysisService.getTripPerHour(timePeriod);
     }
 
     @Override

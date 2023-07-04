@@ -1,10 +1,7 @@
 package com.example.easy_flow_backend.repos;
 
-import com.example.easy_flow_backend.dto.Models.TimePeriod;
 import com.example.easy_flow_backend.entity.Status;
-import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.entity.Trip;
-import com.example.easy_flow_backend.dto.Views.TripView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -31,6 +27,24 @@ public interface TripRepo extends JpaRepository<Trip, String> {
             "FROM Trip trip " +
             "WHERE trip.startTime>= :start AND trip.endTime<= :end ")
     Optional<Long> getRevenue(@Param("start") Date start, @Param("end") Date end);
+    @Query("SELECT day (trip.startTime), SUM (trip.price) " +
+            "FROM Trip trip " +
+            "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
+            "GROUP BY day(trip.startTime) " +
+            "order by day(trip.startTime) ASC")
+    Optional<List<Object>> getRevenuePerDay(@Param("start") Date start, @Param("end") Date end);
+    @Query("SELECT month(trip.startTime),SUM (trip.price) " +
+            "FROM Trip trip " +
+            "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
+            "GROUP BY month(trip.startTime) " +
+            "order by month(trip.startTime) ASC")
+    Optional<List<Object>> getRevenuePerMonth(@Param("start") Date start, @Param("end") Date end);
+    @Query("SELECT year(trip.startTime),SUM (trip.price) " +
+            "FROM Trip trip " +
+            "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
+            "GROUP BY year(trip.startTime) " +
+            "order by year(trip.startTime) ASC")
+    Optional<List<Object>> getRevenuePerYear(@Param("start") Date start, @Param("end") Date end);
 
     @Query("SELECT AVG(avgRevenue) FROM " +
             "(SELECT AVG(trip.price) as avgRevenue " +
@@ -61,7 +75,7 @@ public interface TripRepo extends JpaRepository<Trip, String> {
                                         @Param("end") Date end,
                                         @Param("lineName") String lineName);
 
-    @Query(value = "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
+    @Query( "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
             "From Trip trip Join MovingTurnstile mt " +
             "ON trip.startTurnstile.id = mt.id " +
             "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.startTime <= :end " +
@@ -76,12 +90,11 @@ public interface TripRepo extends JpaRepository<Trip, String> {
             "FROM Trip trip " +
             "WHERE trip.status = 1 AND trip.passenger.id= :passengerId ")
     Trip outRideForgetTicket(@Param("passengerId") String passengerId);
-
-
-//    @Query( "SELECT hour(trip.startTime) , COUNT (trip.id) " +
-//            "From Trip trip  " +
-//            "WHERE trip.startTime >= :start AND trip.endTime <= :end "+
-//            "GROUP BY hour(trip.startTime)")
-//    List<Object> getPeekHours(@Param("start") Date start,
-//                     @Param("end") Date end);
+    @Query("SELECT hour(trip.startTime), COUNT (trip.id) " +
+            "From Trip trip "+
+            "WHERE trip.startTime >= :start AND trip.startTime <= :end " +
+            "GROUP BY hour(trip.startTime) " +
+            "ORDER BY hour(trip.startTime) ASC")
+    List<Object>getTripPerHour(@Param("start") Date start,
+                               @Param("end") Date end);
 }

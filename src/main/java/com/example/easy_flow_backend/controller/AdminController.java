@@ -2,7 +2,6 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
-import com.example.easy_flow_backend.entity.Station;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -50,12 +48,11 @@ public class AdminController {
     public GetGraphModel getGraph(@PathVariable("line_name") String lineName) throws NotFoundException {
         return adminService.getGraph(lineName);
     }
-
+    //TODO
     @PostMapping("line/graph")
     public ResponseMessage addGraph(@Valid @RequestBody GraphModel graphModel) throws NotFoundException {
         return adminService.addGraph(graphModel);
     }
-
 
     @DeleteMapping("passenger/{username}")
     public ResponseMessage deletePassenger(@PathVariable String username) {
@@ -71,7 +68,7 @@ public class AdminController {
     public List<LineView> getAllLines() {
         return adminService.getAllLines();
     }
-
+    //TODO change name
     @GetMapping("lineDetails/{name}")
     public LiveWithStationsView getLineDetails(@PathVariable String name) {
         return adminService.getLineDetails(name);
@@ -102,17 +99,16 @@ public class AdminController {
         return adminService.getPassengersCountWithPrivilege(privilege);
     }
 
-    @GetMapping("revenue")
+    @PostMapping("revenue")
     public long getRevenue(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenue(timePeriod);
     }
-
-    @GetMapping("revenueAvg")
+    @PostMapping("revenueAvg")
     public long getRevenueAvg(@Valid @RequestBody TimePeriod timePeriod) {
         return adminService.getRevenueAvg(timePeriod);
     }
 
-    @GetMapping("{passengerName}/revenueAvg")
+    @PostMapping("{passengerName}/revenueAvg")
     public long getRevenueAvgByPassenger(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String passengerName) {
         return adminService.getRevenueAvgByPassenger(timePeriod, passengerName);
     }
@@ -132,12 +128,12 @@ public class AdminController {
         return adminService.getTurnstilesStatus();
     }
 
-    @GetMapping("station/passengersCount/{stationName}")
+    @PostMapping("station/passengersCount/{stationName}")
     public Object getTripInStationCount(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String stationName) {
         return adminService.getTripInStationCount(timePeriod, stationName);
     }
 
-    @GetMapping("line/tripAvgForBus/{lineName}/{timeUnit}")
+    @PostMapping("line/tripAvgForBus/{lineName}/{timeUnit}")
     public Object getTripAvgByTimeUnitForBusLine(@Valid @RequestBody TimePeriod timePeriod,
                                                  @PathVariable String timeUnit,
                                                  @PathVariable String lineName) throws ParseException, BadRequestException {
@@ -145,7 +141,7 @@ public class AdminController {
     }
 
     //get the most (peekNumber) hours and them trip count for bus line
-    @GetMapping("line/busPeek/{lineName}/{peekNumber}")
+    @PostMapping("line/busPeek/{lineName}/{peekNumber}")
     public List<Object> getPeekHours(
             @Valid @RequestBody TimePeriod timePeriod,
             @PathVariable String lineName,
@@ -172,32 +168,26 @@ public class AdminController {
     public ResponseMessage deleteOwner(@PathVariable String username) throws BadRequestException {
         return adminService.deleteOwner(username);
     }
-
     @GetMapping("owner/getDetails/{ownerName}")
     public List<Object> getOwnerDetails(@PathVariable String ownerName) throws BadRequestException {
         return adminService.getOwnerDetails(ownerName);
     }
-
     @GetMapping("machine/stationery/{username}")
     public StationeryMachineView getStationMachine(@PathVariable String username) throws NotFoundException {
         return adminService.getStationMachine(username);
     }
-
     @GetMapping("machine/moving/{username}")
     public MovingMachineView getMovingMachine(@PathVariable String username) throws NotFoundException {
         return adminService.getMovingMachine(username);
     }
-
     @GetMapping("machine/moving")
     public List<MovingMachineView> getMovingMachines() {
         return adminService.getMovingMachines();
     }
-
     @GetMapping("machine/stationery")
     public List<StationeryMachineView> getStationMachines() {
         return adminService.getStationMachines();
     }
-
     @PostMapping("machine/moving")
     public ResponseMessage addMovingMachine(@RequestBody AddMovingMachineModel addMovingMachineModel) {
         try {
@@ -207,7 +197,6 @@ public class AdminController {
             return new ResponseMessage(HttpStatus.CONFLICT, e.getMessage());
         }
     }
-
     @PostMapping("machine/stationary")
     public ResponseMessage addStationaryMachine(@RequestBody AddStationaryMachineModel addStationaryMachineModel) {
         try {
@@ -217,7 +206,6 @@ public class AdminController {
             return new ResponseMessage(HttpStatus.CONFLICT, e.getMessage());
         }
     }
-
     @DeleteMapping("machine/stationery/{username}")
     public ResponseMessage deleteStationeryMachine(@PathVariable String username) throws NotFoundException {
         return adminService.deleteStationeryMachine(username);
@@ -242,7 +230,6 @@ public class AdminController {
     public ResponseMessage addTicket(@RequestBody TicketModel ticketModel) throws NotFoundException {
         return adminService.addTicket(ticketModel);
     }
-
     @DeleteMapping("tickets/{id}")
     public void deleteTicket(@PathVariable String id) {
         adminService.deleteTicket(id);
@@ -257,7 +244,7 @@ public class AdminController {
     public List<TicketView> getOwnerTickets(@PathVariable String name) {
         return adminService.getOwnerTickets(name);
     }
-
+    //TODO
     @GetMapping("lines/tickets/{name}")
     public List<TicketView> getLineTickets(@PathVariable String name) {
         return adminService.getLineTickets(name);
@@ -277,12 +264,10 @@ public class AdminController {
     public ResponseMessage deletePrivilege(@PathVariable String privilege) {
         return adminService.deletePrivilege(privilege);
     }
-
     @DeleteMapping("passengerPrivilege/delete/{username}/{privilege}")
     public ResponseMessage deletePassengerPrivilege(@PathVariable String username, @PathVariable String privilege) {
         return adminService.deletePassengerPrivilege(username, privilege);
     }
-
     @GetMapping("privilege")
     public List<String> getPrivileges() {
         return adminService.getPrivileges();
@@ -292,10 +277,21 @@ public class AdminController {
     public List<String> getPrivilegesForPassenger(@PathVariable String username) throws NotFoundException {
         return adminService.getPrivilegesForPassenger(username);
     }
-
     @GetMapping("stations")
     public List<StationView> getAllStation() {
         return adminService.getAllStation();
+    }
+    @PutMapping("passengerPrivilege/add/{username}/{privilege}")
+    public ResponseMessage addPrivilegesToPassenger(@PathVariable String username, @PathVariable String privilege){
+        return adminService.addPrivilegesToPassenger(username,privilege);
+    }
+    @PostMapping("trip/countPerHour")
+    public List<Object> getTripPerHour(@Valid @RequestBody TimePeriod timePeriod) {
+        return adminService.getTripPerHour(timePeriod);
+    }
+    @PostMapping("revenue/{groupBy}")
+    public List<Object> getRevenue(@Valid @RequestBody TimePeriod timePeriod, @PathVariable String groupBy) throws BadRequestException {
+        return adminService.getRevenue(timePeriod,groupBy);
     }
 
 }

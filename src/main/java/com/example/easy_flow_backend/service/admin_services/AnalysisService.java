@@ -1,22 +1,18 @@
 package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.TimePeriod;
-import com.example.easy_flow_backend.entity.TransportationType;
 import com.example.easy_flow_backend.error.BadRequestException;
-import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TransactionRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.repos.UserRepositry;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AnalysisService {
@@ -28,11 +24,26 @@ public class AnalysisService {
     TransactionRepo transactionRepo;
     @Autowired
     PassengersRepo passengersRepo;
-
     public long getRevenue(TimePeriod timePeriod) {
-        Optional<Long> revenue = tripRepo.getRevenue(timePeriod.getStart(), timePeriod.getEnd());
-        if (revenue.isEmpty())
+        Optional<Long> revenue=tripRepo.getRevenue(timePeriod.getStart(),timePeriod.getEnd());
+        if(revenue.isEmpty())
             return 0;
+        return revenue.get();
+    }
+    public List<Object> getRevenue(TimePeriod timePeriod, String groupBy) throws BadRequestException {
+        Optional<List<Object>> revenue=null;
+        if(groupBy.equalsIgnoreCase("day")){
+            revenue= tripRepo.getRevenuePerDay(timePeriod.getStart(), timePeriod.getEnd());
+        }
+        else if(groupBy.equalsIgnoreCase("month")){
+            revenue= tripRepo.getRevenuePerMonth(timePeriod.getStart(), timePeriod.getEnd());
+        }
+        else if (groupBy.equalsIgnoreCase("year")) {
+            revenue= tripRepo.getRevenuePerYear(timePeriod.getStart(), timePeriod.getEnd());
+        }
+        else{
+            throw new BadRequestException("invalid group by parameter");
+        }
         return revenue.get();
     }
 
@@ -112,5 +123,10 @@ public class AnalysisService {
     public int getTripCount() {
         return (int) tripRepo.count();
     }
+
+    public List<Object> getTripPerHour(TimePeriod timePeriod) {
+        return tripRepo.getTripPerHour(timePeriod.getStart(),timePeriod.getEnd());
+    }
+
 
 }

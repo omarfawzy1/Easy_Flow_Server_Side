@@ -51,7 +51,6 @@ public class PassengerController {
     public ResponseMessage updatePassword(Principal principal, @Valid @RequestBody UpdatePassword updatePassword) {
         return passengerService.updatePassword(principal.getName(), updatePassword);
     }
-
     // Dummy
     @PutMapping("recharge/{amount}")
     @Operation(summary = "Passenger Wallet Recharge", description = "Passenger Wallet Recharge")

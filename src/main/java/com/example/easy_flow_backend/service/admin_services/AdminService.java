@@ -31,7 +31,7 @@ public interface AdminService {
 
     int getPassengersCountWithPrivilege(String privilege);
 
-    long getRevenue(TimePeriod timePeriod);
+    List<Object> getRevenue(TimePeriod timePeriod, String groupBy) throws BadRequestException;
 
     long getRevenueAvg(TimePeriod timePeriod);
 
@@ -123,4 +123,10 @@ public interface AdminService {
     List<String> getPrivilegesForPassenger(String username) throws NotFoundException;
 
     List<StationView> getAllStation();
+
+    ResponseMessage addPrivilegesToPassenger(String username, String privilege);
+
+    List<Object> getTripPerHour(TimePeriod timePeriod);
+
+    long getRevenue(TimePeriod timePeriod);
 }
