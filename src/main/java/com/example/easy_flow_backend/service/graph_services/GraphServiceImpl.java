@@ -79,7 +79,7 @@ public class GraphServiceImpl implements GraphService {
         try {
             line = lineService.getLineByName(graphModel.getLineName());
         } catch (NotFoundException e) {
-            return new ResponseMessage("Invalid Line Name", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Invalid Line Name", HttpStatus.NOT_FOUND);
         }
 
         List<StationModel> modelStations = graphModel.getStations();
@@ -116,7 +116,15 @@ public class GraphServiceImpl implements GraphService {
             }
             line.setStations(new HashSet<>(stations));
             graphEdgeService.addEdges(graphEdges);
+
             lineService.saveLine(line);
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(line.getOwner().getId()))) {
+                redisTemplate.delete(line.getOwner().getId());
+            }
+
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(line.getId()))) {
+                redisTemplate.delete(line.getId());
+            }
         } catch (Exception ex) {
             return new ResponseMessage("Field, something wrong happen", HttpStatus.BAD_REQUEST);
         }

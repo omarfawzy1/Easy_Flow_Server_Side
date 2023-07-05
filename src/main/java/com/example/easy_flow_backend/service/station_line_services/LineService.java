@@ -9,6 +9,7 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class LineService {
     LineRepo lineRepo;
     @Autowired
     OwnerRepo ownerRepo;
+
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
+
 
     @Autowired
     StationService stationService;
@@ -49,6 +54,15 @@ public class LineService {
             return false;
         for (MovingTurnstile temp : line.getMovingTurnstiles())
             temp.setLine(null);
+
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(line.getOwner().getId()))) {
+            redisTemplate.delete(line.getOwner().getId());
+        }
+
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(line.getId()))) {
+            redisTemplate.delete(line.getId());
+        }
+
         lineRepo.delete(line);
         return true;
     }

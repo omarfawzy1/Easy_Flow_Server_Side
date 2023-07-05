@@ -14,10 +14,10 @@ public class GraphWeightServiceImpl implements GraphWeightService {
 
     private void validateStationsIndexes(int idx1, int idx2) throws NotFoundException {
         if (idx1 == -1) {
-            throw new NotFoundException("Station one Not Belong to the line.");
+            throw new NotFoundException("Station one not belong to the line.");
         }
         if (idx2 == -1) {
-            throw new NotFoundException("Station Two Not Belong to the line.");
+            throw new NotFoundException("Station two not belong to the line.");
         }
     }
 
