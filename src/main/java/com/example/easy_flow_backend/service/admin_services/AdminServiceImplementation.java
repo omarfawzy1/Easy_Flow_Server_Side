@@ -338,7 +338,7 @@ public class AdminServiceImplementation implements AdminService {
         try {
             privilegeRepo.delete(temp);
         } catch (Exception e) {
-            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("this privilege can't be deleted because it is used in plan or passenger", HttpStatus.BAD_REQUEST);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }

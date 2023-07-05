@@ -26,7 +26,7 @@ public class Plan {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "plan_id")
     private String id;
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "privilege_id", referencedColumnName ="privilege_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Privilege privilege;
