@@ -35,7 +35,7 @@ public class Owner {
     private Set<Ticket> tickets = new HashSet<>();
     @OneToMany(mappedBy = "owner")
     private Set<Turnstile> turnstiles = new HashSet<>();
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner")
     private Set<Plan> plans = new HashSet<>();
     @OneToOne(optional = true)
     @JoinColumn(name = "image_id", referencedColumnName = "image_id")
