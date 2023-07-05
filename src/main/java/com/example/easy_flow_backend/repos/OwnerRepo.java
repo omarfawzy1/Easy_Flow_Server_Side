@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface OwnerRepo extends JpaRepository<Owner, String> {
     Owner findByName(String name);
-
+    boolean existsByName(String name);
     @Override
     boolean existsById(String id);
 

@@ -25,7 +25,7 @@ public interface AdminService {
 
     ResponseMessage deleteLine(String name) throws NotFoundException;
 
-    ResponseMessage addLine(AddLineModel addLineModel) throws BadRequestException;
+    ResponseMessage addLine(AddLineModel addLineModel);
 
     int getAllPassangersCount();
 

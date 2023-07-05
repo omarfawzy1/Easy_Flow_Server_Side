@@ -5,9 +5,11 @@ import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.LiveWithStationsView;
 import com.example.easy_flow_backend.entity.*;
 import com.example.easy_flow_backend.error.NotFoundException;
+import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,23 +53,23 @@ public class LineService {
         return true;
     }
 
-    public boolean addLine(AddLineModel addLineModel) {
-//        if (lineRepo.existsByNameIgnoreCase(line.getName()))
-//            return new ResponseEntity<>("The Line Already Exists", HttpStatus.NOT_FOUND);
+    public ResponseMessage addLine(AddLineModel addLineModel) {
+
+
         Owner owner = ownerRepo.findByName(addLineModel.getOwnerName());
 
         if (owner == null) {
-            return false;
+            return new ResponseMessage("Owner Not Found", HttpStatus.NOT_FOUND);
+        }
+
+        if (lineRepo.existsByName(addLineModel.getLineName())) {
+            return new ResponseMessage("Line name is used", HttpStatus.CONFLICT);
         }
         Line tmpLine = new Line(addLineModel.getLineName()
                 , TransportationType.valueOf(addLineModel.getType()), owner);
 
-        try {
-            lineRepo.save(tmpLine);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        return true;
+        lineRepo.save(tmpLine);
+        return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     public Line addStationToLine(Station station, Line line) {

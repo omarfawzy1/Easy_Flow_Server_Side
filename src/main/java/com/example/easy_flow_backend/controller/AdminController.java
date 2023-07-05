@@ -85,7 +85,7 @@ public class AdminController {
     }
 
     @PostMapping("line")
-    public ResponseMessage addLine(@Valid @RequestBody AddLineModel addLineModel) throws BadRequestException {
+    public ResponseMessage addLine(@Valid @RequestBody AddLineModel addLineModel)  {
         return adminService.addLine(addLineModel);
     }
 

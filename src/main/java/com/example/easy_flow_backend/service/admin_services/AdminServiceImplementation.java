@@ -102,11 +102,8 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage addLine(AddLineModel addLineModel) throws BadRequestException {
-        if (!lineService.addLine(addLineModel)) {
-            throw new BadRequestException("The Owner Not Exists");
-        }
-        return new ResponseMessage("Success", HttpStatus.OK);
+    public ResponseMessage addLine(AddLineModel addLineModel)  {
+        return lineService.addLine(addLineModel);
     }
 
     @Override
@@ -471,17 +468,17 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public ResponseMessage addPrivilegesToPassenger(String username, String privilege) {
-        Passenger passenger =passengersRepo.findByUsernameIgnoreCase(username);
-        if(passenger==null)
-            return new ResponseMessage("passenger not found",HttpStatus.NOT_FOUND);
-        Privilege privilege1 =privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
-        if(privilege1==null)
-            return new ResponseMessage("privilege not found",HttpStatus.NOT_FOUND);
-        if(passenger.getPrivileges().contains(privilege1))
-            return new ResponseMessage("passenger already have this privilege",HttpStatus.ALREADY_REPORTED);
+        Passenger passenger = passengersRepo.findByUsernameIgnoreCase(username);
+        if (passenger == null)
+            return new ResponseMessage("passenger not found", HttpStatus.NOT_FOUND);
+        Privilege privilege1 = privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
+        if (privilege1 == null)
+            return new ResponseMessage("privilege not found", HttpStatus.NOT_FOUND);
+        if (passenger.getPrivileges().contains(privilege1))
+            return new ResponseMessage("passenger already have this privilege", HttpStatus.ALREADY_REPORTED);
         passenger.addPrivilege(privilege1);
         passengersRepo.save(passenger);
-        return new ResponseMessage("privilege added to the passenger",HttpStatus.OK);
+        return new ResponseMessage("privilege added to the passenger", HttpStatus.OK);
     }
 
     @Override
