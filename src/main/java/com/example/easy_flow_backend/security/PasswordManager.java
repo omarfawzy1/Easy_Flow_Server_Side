@@ -32,7 +32,7 @@ public class PasswordManager  {
         try {
             userRepositry.save(user);
         } catch (Exception ex) {
-            return new ResponseMessage("Can not save the password!", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Can not save the password!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }

@@ -120,7 +120,7 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
             return new ResponseMessage("Invalid phone number or pin", HttpStatus.BAD_REQUEST);
         Trip trip =tripRepo.outRideForgetTicket(passenger.getId());
         if(trip==null)
-            return new ResponseMessage("No pending trips found", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("No pending trips found", HttpStatus.NOT_FOUND);
 
         RideModel rideModel=new RideModel
                 (trip.getId(),trip.getStartStation(),null,forgetTicketModel.getTime());

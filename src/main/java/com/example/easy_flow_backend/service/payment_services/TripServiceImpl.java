@@ -153,7 +153,7 @@ public class TripServiceImpl implements TripService {
             }
             tripRepo.save(trip);
         } else {
-            return new ResponseMessage("Can not End Trip", HttpStatus.OK);
+            return new ResponseMessage("Can not End Trip", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseMessage("Success", HttpStatus.OK);

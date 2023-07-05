@@ -417,14 +417,14 @@ public class AdminServiceImplementation implements AdminService {
     public ResponseMessage updateMovingMachineLine(String username, String newLine) {
         MovingTurnstile movingTurnstile = movingTurnstileRepo.findUserByUsername(username);
         if (movingTurnstile == null) {
-            return new ResponseMessage("Invalid username", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Invalid username", HttpStatus.NOT_FOUND);
         }
         try {
             Line line = lineService.getLineByName(newLine);
             movingTurnstile.setLine(line);
             movingTurnstileRepo.save(movingTurnstile);
         } catch (NotFoundException e) {
-            return new ResponseMessage("Invalid line Name", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Invalid line Name", HttpStatus.NOT_FOUND);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
@@ -433,11 +433,11 @@ public class AdminServiceImplementation implements AdminService {
     public ResponseMessage updateStationaryMachineStation(String username, String newStation) {
         StationaryTurnstile stationaryTurnstile = stationaryTurnstileRepo.findUserByUsername(username);
         if (stationaryTurnstile == null) {
-            return new ResponseMessage("Invalid username", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Invalid username", HttpStatus.NOT_FOUND);
         }
         Station station = stationService.getStation(newStation);
         if (station == null) {
-            return new ResponseMessage("Invalid Station name", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Invalid Station name", HttpStatus.NOT_FOUND);
         }
         stationaryTurnstile.setStation(station);
         stationaryTurnstileRepo.save(stationaryTurnstile);

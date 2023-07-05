@@ -54,14 +54,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public ResponseMessage makeSubscription(Passenger passenger, Plan plan) {
 
         if (!passenger.getPrivileges().contains(plan.getPrivilege())) {
-            return new ResponseMessage("Sorry, you are not compatible with this plan", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Sorry, you are not compatible with this plan", HttpStatus.FORBIDDEN);
         }
         boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
         if (!canWithdraw) {
             return new ResponseMessage("Sorry, No enough money", HttpStatus.BAD_REQUEST);
         }
         if (!plan.isAvailable()) {
-            return new ResponseMessage("Sorry, The plan is closed", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Sorry, The plan is closed", HttpStatus.FORBIDDEN);
         }
         walletService.withdraw(passenger.getWallet(), plan.getPrice());
         Date expirationDate = new Date();
@@ -72,7 +72,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             subscriptionRepo.save(subscription);
         } catch (Exception ex) {
-            return new ResponseMessage(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseMessage(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }

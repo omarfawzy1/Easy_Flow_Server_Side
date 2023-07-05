@@ -42,17 +42,17 @@ public class PlanServiceImpl implements PlanService {
 
         Owner owner = ownerRepo.findByName(plan.getOwnerName());
         if (owner == null) {
-            return new ResponseMessage("Owner Name is invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Owner Name is invalid", HttpStatus.NOT_FOUND);
         }
         Privilege privilege = privilegeRepo.findPrivilegeByNameIgnoreCase(plan.getPrivilegeName());
         if (privilege == null) {
-            return new ResponseMessage("Privilege Name is invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Privilege Name is invalid", HttpStatus.NOT_FOUND);
         }
         Plan newPlan = new Plan(privilege, plan.getPrice(), plan.getDurationDays(), plan.getTrips(), plan.getName(), plan.getMaxCompanion(), owner, plan.getDiscountRate());
         try {
             planRepository.save(newPlan);
         } catch (Exception ex) {
-            return new ResponseMessage(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseMessage(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseMessage("Saved successfully", HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public ResponseMessage deletePlan(String planName, String ownerName) {
         if (!planRepository.existsByNameAndOwnerName(planName, ownerName)) {
-            return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Sorry, the Plan not available", HttpStatus.NOT_FOUND);
         }
         Plan plan = planRepository.findByNameAndOwnerName(planName, ownerName, Plan.class);
         planRepository.deleteById(plan.getId());
@@ -78,11 +78,11 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public ResponseMessage updatePlan(String planName, PlanModel planModel) {
         if (!planRepository.existsByNameAndOwnerName(planName, planModel.getOwnerName())) {
-            return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Sorry, the Plan not available", HttpStatus.NOT_FOUND);
         }
         Privilege privilege = privilegeRepo.findPrivilegeByNameIgnoreCase(planModel.getPrivilegeName());
         if (privilege == null) {
-            return new ResponseMessage("Privilege Name is invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Privilege Name is invalid", HttpStatus.NOT_FOUND);
         }
         Plan plan = planRepository.findByNameAndOwnerName(planName, planModel.getOwnerName(), Plan.class);
         plan.setName(planModel.getName());

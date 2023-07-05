@@ -171,11 +171,11 @@ public class PassengerServiceImplementation implements PassengerService {
         String username = auth.getPrincipal().toString();
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null) {
-            return new ResponseMessage("Passenger not found", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Passenger not found", HttpStatus.NOT_FOUND);
         }
         Plan plan = planRepository.findByNameAndOwnerName(planName, ownerName, Plan.class);
         if (plan == null) {
-            return new ResponseMessage("The plan not exist", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("The plan not exist", HttpStatus.NOT_FOUND);
         }
 
         return subscriptionService.makeSubscription(passenger, plan);
@@ -207,7 +207,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public ResponseMessage resetPassengerPassword(String key, ResetPassword newPassword) {
         ResetPasswordToken resetPasswordToken = resetPasswordTokenRepo.findByToken(key);
         if (resetPasswordToken == null) {
-            return new ResponseMessage("Sorry, The token is invalid", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Sorry, The token is invalid", HttpStatus.NOT_FOUND);
         }
         Passenger passenger = resetPasswordToken.getPassenger();
 
@@ -240,7 +240,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public ResponseMessage setPin(Principal principal, String pin) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(principal.getName());
         if (passenger == null) {
-            return new ResponseMessage("The passenger not exist", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("The passenger not exist", HttpStatus.NOT_FOUND);
         }
         passenger.setPin(pin);
         passengerRepo.save(passenger);
@@ -252,7 +252,7 @@ public class PassengerServiceImplementation implements PassengerService {
         System.out.println(principal.getName() + " " + ownerName + " " + planName);
         Subscription subscription = subscriptionRepo.findByPassengerUsernameAndPlanOwnerNameAndPlanName(principal.getName(), ownerName, planName);
         if (subscription == null) {
-            return new ResponseMessage("Subscription not found", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Subscription not found", HttpStatus.NOT_FOUND);
         }
         subscription.setRepurchase(!subscription.isRepurchase());
         subscriptionRepo.save(subscription);
@@ -272,7 +272,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public ResponseMessage updatePassword(String name, UpdatePassword updatePassword) {
         User user = passengerRepo.findByUsernameIgnoreCase(name);
         if (user == null) {
-            return new ResponseMessage("Passenger Not found", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Passenger Not found", HttpStatus.NOT_FOUND);
         }
         if (!passwordEncoder.matches(updatePassword.getOldPassword(), user.getPassword())) {
             return new ResponseMessage("The old password is incorrect", HttpStatus.BAD_REQUEST);
