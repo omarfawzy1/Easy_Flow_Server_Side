@@ -3,11 +3,15 @@ package com.example.easy_flow_backend.dto.Models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ForgetTicketModel {
     @NotBlank(message = "phone number should not be blank")
     @NotNull(message = "phone number should not be null")

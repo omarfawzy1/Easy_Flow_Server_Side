@@ -5,7 +5,6 @@ import com.example.easy_flow_backend.repos.*;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.utils.Utility;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,40 +19,37 @@ import java.util.List;
 @Service
 public class DbInit implements CommandLineRunner {
 
-    @Autowired
-    private UserRepositry userRepositry;
-    @Autowired
-    private PassengersRepo passengersRepo;
+    private final UserRepositry userRepositry;
+    private final PassengersRepo passengersRepo;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private WalletRepo walletRepo;
-
-    @Autowired
-    private StationaryTurnstileRepo stationaryTurnstileRepo;
-    @Autowired
-    private OwnerRepo ownerRepo;
-    @Autowired
-    private LineRepo lineRepo;
-    @Autowired
-    private StationRepo stationRepo;
-    @Autowired
-    private TripRepo tripRepository;
-    @Autowired
-    private GraphEdgeRepo graphEdgeRepo;
-    @Autowired
-    private TicketRepo ticketRepo;
-    @Autowired
-    private LineService lineService;
-    @Autowired
-    private PlanRepository planRepository;
-    @Autowired
-    private PrivilegeRepo privilegeRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final OwnerRepo ownerRepo;
+    private final LineRepo lineRepo;
+    private final StationRepo stationRepo;
+    private final TripRepo tripRepository;
+    private final GraphEdgeRepo graphEdgeRepo;
+    private final TicketRepo ticketRepo;
+    private final LineService lineService;
+    private final PlanRepository planRepository;
+    private final PrivilegeRepo privilegeRepo;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     ArrayList<Privilege> privileges = new ArrayList<>();
+
+    public DbInit(PassengersRepo passengersRepo, UserRepositry userRepositry, PasswordEncoder passwordEncoder, OwnerRepo ownerRepo, LineRepo lineRepo, LineService lineService, PrivilegeRepo privilegeRepo, StationRepo stationRepo, TripRepo tripRepository, PlanRepository planRepository, GraphEdgeRepo graphEdgeRepo, TicketRepo ticketRepo) {
+        this.passengersRepo = passengersRepo;
+        this.userRepositry = userRepositry;
+        this.passwordEncoder = passwordEncoder;
+        this.ownerRepo = ownerRepo;
+        this.lineRepo = lineRepo;
+        this.lineService = lineService;
+        this.privilegeRepo = privilegeRepo;
+        this.stationRepo = stationRepo;
+        this.tripRepository = tripRepository;
+        this.planRepository = planRepository;
+        this.graphEdgeRepo = graphEdgeRepo;
+        this.ticketRepo = ticketRepo;
+    }
 
 
     @Override
@@ -70,14 +66,14 @@ public class DbInit implements CommandLineRunner {
         ArrayList<User> users = usersInit();
         userRepositry.saveAll(users);
         //add passengers privlages
-        ((Passenger)users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
-        ((Passenger)users.get(2)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(3)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(3)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Elder"));
-        ((Passenger)users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
-        ((Passenger)users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
-        ((Passenger)users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("journalist"));
+        ((Passenger) users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger) users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
+        ((Passenger) users.get(2)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger) users.get(3)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger) users.get(3)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Elder"));
+        ((Passenger) users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
+        ((Passenger) users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
+        ((Passenger) users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("journalist"));
         userRepositry.saveAll(users);
         //owner
         Owner owner1 = new Owner("ehab", "ehab@mail.com", "1148 1124 2247 2247");
@@ -526,7 +522,7 @@ public class DbInit implements CommandLineRunner {
                 talbiaStation.getStationName(),
                 medanRyhmiaStation.getStationName(), 1)
         );
-        for(Trip t :trips){
+        for (Trip t : trips) {
             t.setEndTime(t.getStartTime());
         }
         tripRepository.saveAll(trips);
@@ -639,7 +635,7 @@ public class DbInit implements CommandLineRunner {
                 talbiaStation.getStationName(),
                 medanRyhmiaStation.getStationName(), 1)
         );
-        for(Trip t :trips){
+        for (Trip t : trips) {
             t.setEndTime(t.getStartTime());
         }
         tripRepository.saveAll(trips);

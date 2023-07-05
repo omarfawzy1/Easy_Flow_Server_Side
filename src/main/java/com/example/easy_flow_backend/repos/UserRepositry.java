@@ -1,10 +1,8 @@
 package com.example.easy_flow_backend.repos;
 
-import jakarta.transaction.Transactional;
 import com.example.easy_flow_backend.entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.Map;
 
 @Transactional
 public interface UserRepositry extends AbstractRepo<User>

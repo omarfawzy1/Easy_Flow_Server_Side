@@ -1,7 +1,6 @@
 package com.example.easy_flow_backend.service.owner_services;
 
 import com.example.easy_flow_backend.dto.Models.AddOwnerModel;
-
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
@@ -10,7 +9,6 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
 import com.example.easy_flow_backend.service.utils.ImageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,20 +18,23 @@ import java.util.List;
 
 @Service
 public class OwnerServiceImplementation implements OwnerService {
-    @Autowired
-    private OwnerRepo ownerRepo;
-    @Autowired
-    private LineService lineService;
+    private final OwnerRepo ownerRepo;
+    private final LineService lineService;
+
+    public OwnerServiceImplementation(OwnerRepo ownerRepo, LineService lineService) {
+        this.ownerRepo = ownerRepo;
+        this.lineService = lineService;
+    }
 
     @Override
-    public boolean addOwner(AddOwnerModel addOwnerModel) throws BadRequestException {
+    public boolean addOwner(AddOwnerModel addOwnerModel) {
         Owner owner = ownerRepo.findByName(addOwnerModel.getName());
-        if (owner != null) throw new BadRequestException("this username already used.");
+        if (owner != null) return false;
         Owner tempOwner = new Owner(addOwnerModel.getName(), addOwnerModel.getMail(), addOwnerModel.getBankAccount());
         try {
             ownerRepo.save(tempOwner);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            return false;
         }
         return true;
     }
@@ -47,7 +48,7 @@ public class OwnerServiceImplementation implements OwnerService {
         result.add(owner.getMail());
         result.add(owner.getBankAccount());
         result.add(lineService.getOwnerDetails(owner.getId()));
-        if(owner.getImageData()==null)
+        if (owner.getImageData() == null)
             result.add(null);
         else
             result.add(ImageUtil.decompressImage(owner.getImageData().getImageData()));
@@ -56,11 +57,12 @@ public class OwnerServiceImplementation implements OwnerService {
     }
 
     @Override
-    public ResponseMessage deleteOwner(String username) throws BadRequestException {
+    public ResponseMessage deleteOwner(String username) {
         Owner temp = ownerRepo.findByName(username);
-        if (temp == null) throw new BadRequestException("there is no owner with this name.");
+        if (temp == null) return new ResponseMessage("there is no owner with this name.", HttpStatus.NOT_FOUND);
         for (Turnstile turnstile : temp.getTurnstiles())
             turnstile.setOwner(null);
+
         ownerRepo.delete(temp);
         return new ResponseMessage("Success", HttpStatus.OK);
     }

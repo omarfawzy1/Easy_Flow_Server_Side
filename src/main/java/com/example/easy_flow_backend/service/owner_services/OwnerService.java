@@ -9,11 +9,11 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import java.util.List;
 
 public interface OwnerService {
-    public boolean addOwner (AddOwnerModel addOwnerModel) throws BadRequestException;
+    public boolean addOwner(AddOwnerModel addOwnerModel);
 
-    List<Object> getOwnerDetails(String ownerName)throws BadRequestException;
+    List<Object> getOwnerDetails(String ownerName) throws BadRequestException;
 
-    ResponseMessage deleteOwner(String username) throws BadRequestException;
+    ResponseMessage deleteOwner(String username) ;
 
     Owner getOwnerByUsername(String name) throws NotFoundException;
 }

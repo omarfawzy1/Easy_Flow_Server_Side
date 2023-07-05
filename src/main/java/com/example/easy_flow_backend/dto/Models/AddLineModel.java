@@ -1,6 +1,5 @@
 package com.example.easy_flow_backend.dto.Models;
 
-import com.example.easy_flow_backend.entity.TransportationType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

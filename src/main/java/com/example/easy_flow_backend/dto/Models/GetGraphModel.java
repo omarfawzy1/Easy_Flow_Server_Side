@@ -1,8 +1,6 @@
 package com.example.easy_flow_backend.dto.Models;
 
-import com.example.easy_flow_backend.dto.Views.StationView;
 import com.example.easy_flow_backend.entity.Station;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

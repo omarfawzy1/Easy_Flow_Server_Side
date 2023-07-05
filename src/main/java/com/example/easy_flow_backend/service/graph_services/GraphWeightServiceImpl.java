@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 public class GraphWeightServiceImpl implements GraphWeightService {
 
 
-    @Autowired
-    private GraphService graphService;
+    private final GraphService graphService;
+
+    public GraphWeightServiceImpl(GraphService graphService) {
+        this.graphService = graphService;
+    }
 
     private void validateStationsIndexes(int idx1, int idx2) throws NotFoundException {
         if (idx1 == -1) {

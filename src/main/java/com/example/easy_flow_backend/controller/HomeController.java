@@ -2,7 +2,6 @@ package com.example.easy_flow_backend.controller;
 
 import com.example.easy_flow_backend.dto.Models.RegisterModel;
 import com.example.easy_flow_backend.dto.Models.ResetPassword;
-import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.HomeService;
 import jakarta.validation.Valid;
@@ -17,6 +16,7 @@ import java.util.Map;
 public class HomeController {
     @Autowired
     private HomeService homeService;
+
     @GetMapping("index")
     public String index() throws UnknownHostException {
         return "index";
@@ -31,17 +31,17 @@ public class HomeController {
     }
 
     @PostMapping(value = "Register")
-    public ResponseMessage Register(@Valid @RequestBody RegisterModel registerModel) throws NotFoundException {
+    public ResponseMessage Register(@Valid @RequestBody RegisterModel registerModel) {
         return homeService.Register(registerModel);
     }
 
     @PostMapping("reset")
-    public ResponseMessage sendResetPasswordToken(@RequestBody Map<String, String> jsonBody) throws NotFoundException {
+    public ResponseMessage sendResetPasswordToken(@RequestBody Map<String, String> jsonBody) {
         return homeService.sendResetPasswordToken(jsonBody.get("email"));
     }
 
     @PostMapping("reset/{key}")
-    public ResponseMessage resetPassword(@PathVariable("key") String key, @Valid @RequestBody ResetPassword newPassword) throws NotFoundException {
+    public ResponseMessage resetPassword(@PathVariable("key") String key, @Valid @RequestBody ResetPassword newPassword) {
         return homeService.resetPassword(key, newPassword);
     }
 

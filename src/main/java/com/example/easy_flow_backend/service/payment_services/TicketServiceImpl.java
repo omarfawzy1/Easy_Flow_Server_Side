@@ -10,23 +10,23 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.TicketRepo;
 import com.example.easy_flow_backend.service.owner_services.OwnerService;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
-import io.grpc.ManagedChannelProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-
 public class TicketServiceImpl implements TicketService {
 
-    @Autowired
-    private TicketRepo ticketRepo;
-    @Autowired
-    LineService lineService;
-    @Autowired
-    OwnerService ownerService;
+    private final TicketRepo ticketRepo;
+    private final LineService lineService;
+    private final OwnerService ownerService;
+
+    public TicketServiceImpl(TicketRepo ticketRepo, LineService lineService, OwnerService ownerService) {
+        this.ticketRepo = ticketRepo;
+        this.lineService = lineService;
+        this.ownerService = ownerService;
+    }
 
     public List<Ticket> getAllTickets(String ownerId, String lineID) {
         return ticketRepo.findAllByOwnerIdAndLineId(ownerId, lineID);
@@ -86,8 +86,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException {
-        Owner owner = ownerService.getOwnerByUsername(ticketModel.getOwnerName());
+    public ResponseMessage addTicket(TicketModel ticketModel) {
+        Owner owner = null;
+        try {
+            owner = ownerService.getOwnerByUsername(ticketModel.getOwnerName());
+        } catch (NotFoundException e) {
+            return new ResponseMessage("Owner Not found", HttpStatus.NOT_FOUND);
+        }
 
         Line line = null;
         try {
@@ -106,7 +111,7 @@ public class TicketServiceImpl implements TicketService {
             ticketRepo.save(ticket);
 
         } catch (Exception ex) {
-            return new ResponseMessage(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Can Not Save the ticket", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseMessage("Success", HttpStatus.OK);
@@ -135,7 +140,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketView> getLineTickets(String name) {
-        return ticketRepo.findByLineName(name,TicketView.class);
+        return ticketRepo.findByLineName(name, TicketView.class);
     }
 
 }

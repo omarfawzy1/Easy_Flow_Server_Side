@@ -2,13 +2,16 @@ package com.example.easy_flow_backend.service.payment_services;
 
 import com.example.easy_flow_backend.entity.Wallet;
 import com.example.easy_flow_backend.repos.WalletRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WalletServiceImpl implements WalletService {
-    @Autowired
-    private WalletRepo walletRepo;
+    private final WalletRepo walletRepo;
+
+    public WalletServiceImpl(WalletRepo walletRepo) {
+        this.walletRepo = walletRepo;
+    }
 
     public boolean withdraw(Wallet wallet, double value) {
         if (!canWithdraw(wallet, value)) {
@@ -21,7 +24,7 @@ public class WalletServiceImpl implements WalletService {
         return true;
     }
 
-    public boolean canWithdraw(Wallet wallet, double value) {
+    public boolean canWithdraw(@NotNull Wallet wallet, double value) {
         return wallet.getBalance() >= value;
     }
 

@@ -5,29 +5,25 @@ import com.example.easy_flow_backend.entity.ResetPasswordToken;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.ResetPasswordTokenRepo;
 import com.example.easy_flow_backend.service.MailServiceImpl;
-import lombok.Value;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Date;
 
 @Service
 public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
-    @Autowired
-    private ResetPasswordTokenRepo resetPasswordTokenRepo;
-    @Autowired
-    MailServiceImpl mailService;
+    private final ResetPasswordTokenRepo resetPasswordTokenRepo;
+    private final MailServiceImpl mailService;
 
 
     private static final int TOKEN_LENGTH = 7;
+
+    public ResetPasswordTokenImpl(ResetPasswordTokenRepo resetPasswordTokenRepo, MailServiceImpl mailService) {
+        this.resetPasswordTokenRepo = resetPasswordTokenRepo;
+        this.mailService = mailService;
+    }
 
     @Override
     public void createPasswordResetTokenForUser(Passenger passenger, String token) {
@@ -66,6 +62,7 @@ public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
         }
         return new ResponseMessage("Check your mail.", HttpStatus.OK);
     }
+
     //TODO BUG
     @Scheduled(cron = "0 0/5 * * * ?")
     private void removeExpiredTokens() {

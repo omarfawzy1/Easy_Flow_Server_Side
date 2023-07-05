@@ -1,15 +1,11 @@
 package com.example.easy_flow_backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.apache.tomcat.util.bcel.Const;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.Arrays;

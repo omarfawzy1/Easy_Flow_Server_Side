@@ -6,7 +6,6 @@ import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.owner_services.PlanService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class PlanController {
-    @Autowired
-    PlanService planService;
+    private final PlanService planService;
+
+    public PlanController(PlanService planService) {
+        this.planService = planService;
+    }
 
     @GetMapping("plans")
     public List<PlanView> getAllPlans() {

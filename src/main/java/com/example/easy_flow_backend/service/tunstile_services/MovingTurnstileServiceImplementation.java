@@ -10,12 +10,10 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.MovingTurnstileRepo;
-import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.service.TokenValidationService;
 import com.example.easy_flow_backend.service.UserService;
-import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.graph_services.GraphService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.easy_flow_backend.service.payment_services.TripService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,19 +23,19 @@ import java.util.List;
 
 @Service
 public class MovingTurnstileServiceImplementation implements MovingTurnstileService {
-    @Autowired
-    private PassengersRepo passengersRepo;
-    @Autowired
-    private MovingTurnstileRepo movingTurnstileRepo;
-    @Autowired
-    private GraphService graphService;
-    @Autowired
-    TripService tripService;
+    private final MovingTurnstileRepo movingTurnstileRepo;
+    private final GraphService graphService;
+    private final TripService tripService;
 
-    @Autowired
-    TokenValidationService tokenValidationService;
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public MovingTurnstileServiceImplementation(MovingTurnstileRepo movingTurnstileRepo, GraphService graphService, TripService tripService, UserService userService) {
+        this.movingTurnstileRepo = movingTurnstileRepo;
+        this.graphService = graphService;
+        this.tripService = tripService;
+        this.userService = userService;
+    }
+
 
     private void inRideValidation(String machineUsername) throws BadRequestException {
 
@@ -54,10 +52,14 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     }
 
     @Override
-    public ResponseMessage inRide(RideModel rideModel) throws BadRequestException, NotFoundException {
+    public ResponseMessage inRide(RideModel rideModel) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
-        inRideValidation(machineUsername);
+        try {
+            inRideValidation(machineUsername);
+        } catch (BadRequestException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
 
         return tripService.makeTrip(rideModel, machineUsername);
     }
@@ -98,9 +100,11 @@ public class MovingTurnstileServiceImplementation implements MovingTurnstileServ
     }
 
     @Override
-    public ResponseMessage deletMachine(String username) throws NotFoundException {
+    public ResponseMessage deletMachine(String username) {
         if (!movingTurnstileRepo.existsByUsername(username)) {
-            throw new NotFoundException("Invalid username!");
+
+            return new ResponseMessage("Invalid Username", HttpStatus.NOT_FOUND);
+
         }
         return userService.deleteUser(username);
     }

@@ -1,6 +1,9 @@
 package com.example.easy_flow_backend.controller;
 
-import com.example.easy_flow_backend.dto.Models.*;
+import com.example.easy_flow_backend.dto.Models.PinModel;
+import com.example.easy_flow_backend.dto.Models.SubscriptionModel;
+import com.example.easy_flow_backend.dto.Models.UpdatePassword;
+import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.PassagnerDetails;
 import com.example.easy_flow_backend.dto.Views.SubscriptionView;
 import com.example.easy_flow_backend.dto.Views.TripId;
@@ -11,7 +14,6 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,11 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("passenger")
 public class PassengerController {
-    @Autowired
-    private PassengerService passengerService;
+    private final PassengerService passengerService;
+
+    public PassengerController(PassengerService passengerService) {
+        this.passengerService = passengerService;
+    }
 
     @GetMapping("history")
     public List<TripView> getMytrips(Principal principal) throws BadRequestException {
@@ -51,6 +56,7 @@ public class PassengerController {
     public ResponseMessage updatePassword(Principal principal, @Valid @RequestBody UpdatePassword updatePassword) {
         return passengerService.updatePassword(principal.getName(), updatePassword);
     }
+
     // Dummy
     @PutMapping("recharge/{amount}")
     @Operation(summary = "Passenger Wallet Recharge", description = "Passenger Wallet Recharge")

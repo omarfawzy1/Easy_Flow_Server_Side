@@ -10,9 +10,6 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.repos.PlanRepository;
 import com.example.easy_flow_backend.repos.PrivilegeRepo;
-import org.checkerframework.checker.units.qual.A;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +17,15 @@ import java.util.List;
 
 @Service
 public class PlanServiceImpl implements PlanService {
-    @Autowired
-    PlanRepository planRepository;
-    @Autowired
-    OwnerRepo ownerRepo;
-    @Autowired
-    PrivilegeRepo privilegeRepo;
+    private final PlanRepository planRepository;
+    private final OwnerRepo ownerRepo;
+    private final PrivilegeRepo privilegeRepo;
+
+    public PlanServiceImpl(PlanRepository planRepository, OwnerRepo ownerRepo, PrivilegeRepo privilegeRepo) {
+        this.planRepository = planRepository;
+        this.ownerRepo = ownerRepo;
+        this.privilegeRepo = privilegeRepo;
+    }
 
     @Override
     public List<PlanView> getAllPlans() {

@@ -1,16 +1,11 @@
 package com.example.easy_flow_backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-import java.util.Objects;
 
 @Entity
 @Setter

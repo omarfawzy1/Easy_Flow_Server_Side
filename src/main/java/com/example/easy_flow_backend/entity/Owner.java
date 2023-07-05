@@ -1,7 +1,9 @@
 package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -22,7 +24,7 @@ public class Owner {
     private String id;
     @Column(nullable = false, unique = true)
     private String name;
-    @Column(name = "email",nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String mail;
 
     @Column(name = "bank_account")
@@ -33,10 +35,10 @@ public class Owner {
     private Set<Ticket> tickets = new HashSet<>();
     @OneToMany(mappedBy = "owner")
     private Set<Turnstile> turnstiles = new HashSet<>();
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Plan> plans = new HashSet<>();
     @OneToOne(optional = true)
-    @JoinColumn(name = "image_id", referencedColumnName ="image_id")
+    @JoinColumn(name = "image_id", referencedColumnName = "image_id")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private ImageData imageData;
 

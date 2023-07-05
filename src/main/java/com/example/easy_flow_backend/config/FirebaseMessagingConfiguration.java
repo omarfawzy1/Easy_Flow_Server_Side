@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 @Configuration
 public class FirebaseMessagingConfiguration {
@@ -28,31 +27,7 @@ public class FirebaseMessagingConfiguration {
         return FirebaseMessaging.getInstance(firebaseApp);
     }
 
-//    @Bean
-//    FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
-//        return FirebaseMessaging.getInstance(firebaseApp);
-//    }
-//
-//    @Bean
-//    FirebaseApp firebaseApp(GoogleCredentials credentials) {
-//        FirebaseOptions options = FirebaseOptions.builder()
-//                .setCredentials(credentials)
-//                .build();
-//        return FirebaseApp.initializeApp(options);
-//    }
-//
-//    @Bean
-//    GoogleCredentials googleCredentials() throws IOException {
-////        if (firebaseProperties.getServiceAccount() != null) {
-////            try (InputStream is = firebaseProperties.getServiceAccount().getInputStream()) {
-////                return GoogleCredentials.fromStream(is);
-////            }
-////        }
-////        else {
-//            // Use standard credentials chain. Useful when running inside GKE
-//            return GoogleCredentials.getApplicationDefault();
-////        }
-//    }
+
 
 
 }

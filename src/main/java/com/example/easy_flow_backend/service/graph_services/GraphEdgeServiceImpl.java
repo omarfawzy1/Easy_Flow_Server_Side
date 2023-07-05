@@ -11,8 +11,11 @@ import java.util.Set;
 
 @Service
 public class GraphEdgeServiceImpl implements GraphEdgeService {
-    @Autowired
-    private GraphEdgeRepo graphEdgeRepo;
+    private final GraphEdgeRepo graphEdgeRepo;
+
+    public GraphEdgeServiceImpl(GraphEdgeRepo graphEdgeRepo) {
+        this.graphEdgeRepo = graphEdgeRepo;
+    }
 
     public List<GraphEdge> getEdges(Line line) {
         return graphEdgeRepo.findAllByLine(line);

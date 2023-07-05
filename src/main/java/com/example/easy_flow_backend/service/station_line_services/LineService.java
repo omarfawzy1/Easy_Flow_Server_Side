@@ -4,11 +4,11 @@ import com.example.easy_flow_backend.dto.Models.AddLineModel;
 import com.example.easy_flow_backend.dto.Views.LineView;
 import com.example.easy_flow_backend.dto.Views.LiveWithStationsView;
 import com.example.easy_flow_backend.entity.*;
+import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.LineRepo;
 import com.example.easy_flow_backend.repos.OwnerRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,17 +17,20 @@ import java.util.List;
 
 @Service
 public class LineService {
-    @Autowired
-    LineRepo lineRepo;
-    @Autowired
-    OwnerRepo ownerRepo;
+    private final LineRepo lineRepo;
+    private final OwnerRepo ownerRepo;
 
-    @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
 
-    @Autowired
-    StationService stationService;
+    private final StationService stationService;
+
+    public LineService(LineRepo lineRepo, OwnerRepo ownerRepo, RedisTemplate<Object, Object> redisTemplate, StationService stationService) {
+        this.lineRepo = lineRepo;
+        this.ownerRepo = ownerRepo;
+        this.redisTemplate = redisTemplate;
+        this.stationService = stationService;
+    }
 
     public List<LineView> getAllLines() {
         return lineRepo.findBy(LineView.class);
@@ -48,7 +51,7 @@ public class LineService {
         return line;
     }
 
-    public boolean deleteLine(String name) {
+    public boolean deleteLine(String name) throws BadRequestException {
         Line line = lineRepo.findByName(name);
         if (line == null)
             return false;
@@ -62,8 +65,12 @@ public class LineService {
         if (Boolean.TRUE.equals(redisTemplate.hasKey(line.getId()))) {
             redisTemplate.delete(line.getId());
         }
+        try {
+            lineRepo.delete(line);
 
-        lineRepo.delete(line);
+        } catch (Exception ex) {
+            throw new BadRequestException("Can not delete Owner");
+        }
         return true;
     }
 

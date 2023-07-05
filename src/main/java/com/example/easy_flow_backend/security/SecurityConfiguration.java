@@ -18,9 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
@@ -48,38 +45,6 @@ public class SecurityConfiguration {
         auth.authenticationProvider(authenticationProvider());
     }
 
-    // Basic auth
-   /* @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-//                .anyRequest().authenticated() //any request must be authenticated
-                .antMatchers("/index.html").permitAll()//anyone can access this
-                .antMatchers("/profile/**").authenticated()//authenticated users only can access this
-                .antMatchers("/admin/**").hasRole("ADMIN")//Only users has admin role can access that
-                .antMatchers("/management/**").hasAnyRole("ADMIN", "MANAGER")//Only users has manager role or ADMIN role can access that
-
-                .antMatchers("/api/public/test1").hasAuthority("ACCESS_TEST1")
-                .antMatchers("/api/public/test2").hasAuthority("ACCESS_TEST2")
-                .antMatchers("/api/public/users").hasRole("ADMIN")
-                .and()
-//                .httpBasic();
-
-     .formLogin().loginProcessingUrl("/signin")
-                .loginPage("/login").permitAll()
-                .usernameParameter("txtUsername")
-                .passwordParameter("txtPassword")
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
-                .and()
-                .rememberMe()
-                .tokenValiditySeconds(2592000)
-                .key("mySecurity!")
-                .rememberMeParameter("checkRememberMe");
-    }
-*/
     //JWT
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http, final AuthenticationManagerBuilder auth, final AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -135,14 +100,6 @@ public class SecurityConfiguration {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-   /* @EnableWebMvc
-    public class CorsConfig implements WebMvcConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**");
-        }
-    }*/
 
 
 }

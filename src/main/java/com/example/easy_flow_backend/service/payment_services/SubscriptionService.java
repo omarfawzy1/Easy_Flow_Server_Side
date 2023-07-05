@@ -1,7 +1,6 @@
 package com.example.easy_flow_backend.service.payment_services;
 
 import com.example.easy_flow_backend.dto.Models.RideModel;
-import com.example.easy_flow_backend.dto.Views.PlanView;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Plan;
 import com.example.easy_flow_backend.entity.Subscription;

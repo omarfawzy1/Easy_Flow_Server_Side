@@ -6,42 +6,44 @@ import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.TransactionRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
 import com.example.easy_flow_backend.repos.UserRepositry;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AnalysisService {
-    @Autowired
-    TripRepo tripRepo;
-    @Autowired
-    UserRepositry userRepositry;
-    @Autowired
-    TransactionRepo transactionRepo;
-    @Autowired
-    PassengersRepo passengersRepo;
+    private final TripRepo tripRepo;
+    private final UserRepositry userRepositry;
+    private final TransactionRepo transactionRepo;
+    private final PassengersRepo passengersRepo;
+
+    public AnalysisService(TripRepo tripRepo, UserRepositry userRepositry, TransactionRepo transactionRepo, PassengersRepo passengersRepo) {
+        this.tripRepo = tripRepo;
+        this.userRepositry = userRepositry;
+        this.transactionRepo = transactionRepo;
+        this.passengersRepo = passengersRepo;
+    }
+
     public long getRevenue(TimePeriod timePeriod) {
-        Optional<Long> revenue=tripRepo.getRevenue(timePeriod.getStart(),timePeriod.getEnd());
-        if(revenue.isEmpty())
+        Optional<Long> revenue = tripRepo.getRevenue(timePeriod.getStart(), timePeriod.getEnd());
+        if (revenue.isEmpty())
             return 0;
         return revenue.get();
     }
+
     public List<Object> getRevenue(TimePeriod timePeriod, String groupBy) throws BadRequestException {
-        Optional<List<Object>> revenue=null;
-        if(groupBy.equalsIgnoreCase("day")){
-            revenue= tripRepo.getRevenuePerDay(timePeriod.getStart(), timePeriod.getEnd());
-        }
-        else if(groupBy.equalsIgnoreCase("month")){
-            revenue= tripRepo.getRevenuePerMonth(timePeriod.getStart(), timePeriod.getEnd());
-        }
-        else if (groupBy.equalsIgnoreCase("year")) {
-            revenue= tripRepo.getRevenuePerYear(timePeriod.getStart(), timePeriod.getEnd());
-        }
-        else{
+        Optional<List<Object>> revenue;
+        if (groupBy.equalsIgnoreCase("day")) {
+            revenue = tripRepo.getRevenuePerDay(timePeriod.getStart(), timePeriod.getEnd());
+        } else if (groupBy.equalsIgnoreCase("month")) {
+            revenue = tripRepo.getRevenuePerMonth(timePeriod.getStart(), timePeriod.getEnd());
+        } else if (groupBy.equalsIgnoreCase("year")) {
+            revenue = tripRepo.getRevenuePerYear(timePeriod.getStart(), timePeriod.getEnd());
+        } else {
             throw new BadRequestException("invalid group by parameter");
         }
         return revenue.get();
@@ -89,29 +91,29 @@ public class AnalysisService {
 
         long start = timePeriod.getStart().getTime();
         long end = timePeriod.getEnd().getTime();
-        int sum= 0;
-        if(end<start)
+        int sum = 0;
+        if (end < start)
             throw new BadRequestException("invalid time period");
-        int count= (int) ((end-start)/timeUnit);
-        if(count==0)
+        int count = (int) ((end - start) / timeUnit);
+        if (count == 0)
             throw new BadRequestException("the time unit is bigger than the time period");
-        int i=0;
-        while(i<count){
-            sum+= tripRepo.getTripAvgByTimeUnitForBusLine(new Date(start), new Date(start+timeUnit),
+        int i = 0;
+        while (i < count) {
+            sum += tripRepo.getTripAvgByTimeUnitForBusLine(new Date(start), new Date(start + timeUnit),
                     lineName);
-            start+=timeUnit;
+            start += timeUnit;
             i++;
         }
-        return (long) (sum/count*1l);
+        return ((long) sum / count);
     }
 
 
     public List<Object> getPeekHours(TimePeriod timePeriod, String lineName, int peekNumber) {
-        List<Object> result =tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineName);
-        if(result.size()<peekNumber){
+        List<Object> result = tripRepo.getPeekHours(timePeriod.getStart(), timePeriod.getEnd(), lineName);
+        if (result.size() < peekNumber) {
             return result;
         }
-        return result.subList(0,peekNumber);
+        return result.subList(0, peekNumber);
     }
 
 
@@ -125,7 +127,7 @@ public class AnalysisService {
     }
 
     public List<Object> getTripPerHour(TimePeriod timePeriod) {
-        return tripRepo.getTripPerHour(timePeriod.getStart(),timePeriod.getEnd());
+        return tripRepo.getTripPerHour(timePeriod.getStart(), timePeriod.getEnd());
     }
 
 

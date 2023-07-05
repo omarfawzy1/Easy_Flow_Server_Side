@@ -10,12 +10,8 @@ import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
 import com.example.easy_flow_backend.repos.StationaryTurnstileRepo;
 import com.example.easy_flow_backend.repos.TripRepo;
-import com.example.easy_flow_backend.service.TokenValidationService;
 import com.example.easy_flow_backend.service.UserService;
-import com.example.easy_flow_backend.service.payment_services.TicketService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
-import com.example.easy_flow_backend.service.payment_services.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,26 +23,21 @@ import java.util.List;
 
 @Service
 public class StationeryTurnstileServiceImplementation implements StationeryTurnstileService {
-    @Autowired
-    private TripRepo tripRepo;
-    @Autowired
-    private PassengersRepo passengersRepo;
-    @Autowired
-    private StationaryTurnstileRepo stationaryTurnstileRepo;
-    @Autowired
-    WalletService walletService;
+    private final TripRepo tripRepo;
+    private final PassengersRepo passengersRepo;
+    private final StationaryTurnstileRepo stationaryTurnstileRepo;
 
-    @Autowired
-    TicketService ticketService;
+    private final TripService tripService;
 
-    @Autowired
-    TripService tripService;
+    private final UserService userService;
 
-    @Autowired
-    TokenValidationService tokenValidationService;
-
-    @Autowired
-    UserService userService;
+    public StationeryTurnstileServiceImplementation(TripRepo tripRepo, PassengersRepo passengersRepo, StationaryTurnstileRepo stationaryTurnstileRepo, TripService tripService, UserService userService) {
+        this.tripRepo = tripRepo;
+        this.passengersRepo = passengersRepo;
+        this.stationaryTurnstileRepo = stationaryTurnstileRepo;
+        this.tripService = tripService;
+        this.userService = userService;
+    }
 
     private void rideValidation(String machineUsername) throws BadRequestException {
 
@@ -65,11 +56,15 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
 
     @Override
-    public ResponseMessage inRide(RideModel rideModel) throws BadRequestException, NotFoundException {
+    public ResponseMessage inRide(RideModel rideModel) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
 
-        rideValidation(machineUsername);
+        try {
+            rideValidation(machineUsername);
+        } catch (BadRequestException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
 
 
         return tripService.makePendingTrip(rideModel, machineUsername);
@@ -77,12 +72,16 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
 
 
     @Override
-    public ResponseMessage outRide(RideModel rideModel) throws BadRequestException, NotFoundException {
+    public ResponseMessage outRide(RideModel rideModel) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String machineUsername = auth.getPrincipal().toString();
 
         //validate
-        rideValidation(machineUsername);
+        try {
+            rideValidation(machineUsername);
+        } catch (BadRequestException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
         return tripService.makeFinalTrip(rideModel, machineUsername);
     }
@@ -114,16 +113,16 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     }
 
     @Override
-    public ResponseMessage outRideForgetTicket(ForgetTicketModel forgetTicketModel) throws BadRequestException, NotFoundException {
-        Passenger passenger=passengersRepo.findPassengerByPhoneNumberAndPin(forgetTicketModel.getPhoneNumber(),forgetTicketModel.getPin());
-        if(passenger==null)
+    public ResponseMessage outRideForgetTicket(ForgetTicketModel forgetTicketModel) {
+        Passenger passenger = passengersRepo.findPassengerByPhoneNumberAndPin(forgetTicketModel.getPhoneNumber(), forgetTicketModel.getPin());
+        if (passenger == null)
             return new ResponseMessage("Invalid phone number or pin", HttpStatus.BAD_REQUEST);
-        Trip trip =tripRepo.outRideForgetTicket(passenger.getId());
-        if(trip==null)
+        Trip trip = tripRepo.outRideForgetTicket(passenger.getId());
+        if (trip == null)
             return new ResponseMessage("No pending trips found", HttpStatus.NOT_FOUND);
 
-        RideModel rideModel=new RideModel
-                (trip.getId(),trip.getStartStation(),null,forgetTicketModel.getTime());
+        RideModel rideModel = new RideModel
+                (trip.getId(), trip.getStartStation(), null, forgetTicketModel.getTime());
         return outRide(rideModel);
 
     }
@@ -134,9 +133,10 @@ public class StationeryTurnstileServiceImplementation implements StationeryTurns
     }
 
     @Override
-    public ResponseMessage deletMachine(String username) throws NotFoundException {
+    public ResponseMessage deletMachine(String username) {
         if (!stationaryTurnstileRepo.existsByUsername(username)) {
-            throw new NotFoundException("Invalid username!");
+            return new ResponseMessage("Invalid Username", HttpStatus.NOT_FOUND);
+
         }
         return userService.deleteUser(username);
     }

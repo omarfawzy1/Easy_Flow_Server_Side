@@ -7,37 +7,38 @@ import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.*;
-import com.example.easy_flow_backend.service.passenger_services.PassengerService;
 import com.example.easy_flow_backend.service.graph_services.GraphWeightService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class TripServiceImpl implements TripService {
-    @Autowired
-    private TripRepo tripRepo;
+    private final TripRepo tripRepo;
 
-    @Autowired
-    private StationaryTurnstileRepo stationaryTurnstileRepo;
-    @Autowired
+    private final StationaryTurnstileRepo stationaryTurnstileRepo;
+    final
     WalletService walletService;
-    @Autowired
-    private GraphWeightService graphWeightService;
-    @Autowired
-    private MovingTurnstileRepo movingTurnstileRepo;
-    @Autowired
-    TicketService ticketService;
-    @Autowired
-    PassengersRepo passengersRepo;
-    @Autowired
-    SubscriptionService subscriptionService;
-    @Autowired
-    SubscriptionRepo subscriptionRepo;
+    private final GraphWeightService graphWeightService;
+    private final MovingTurnstileRepo movingTurnstileRepo;
+    private final TicketService ticketService;
+    private final PassengersRepo passengersRepo;
+    private final SubscriptionService subscriptionService;
+    private final SubscriptionRepo subscriptionRepo;
+
+    public TripServiceImpl(TripRepo tripRepo, StationaryTurnstileRepo stationaryTurnstileRepo, WalletService walletService, GraphWeightService graphWeightService, MovingTurnstileRepo movingTurnstileRepo, TicketService ticketService, PassengersRepo passengersRepo, SubscriptionService subscriptionService, SubscriptionRepo subscriptionRepo) {
+        this.tripRepo = tripRepo;
+        this.stationaryTurnstileRepo = stationaryTurnstileRepo;
+        this.walletService = walletService;
+        this.graphWeightService = graphWeightService;
+        this.movingTurnstileRepo = movingTurnstileRepo;
+        this.ticketService = ticketService;
+        this.passengersRepo = passengersRepo;
+        this.subscriptionService = subscriptionService;
+        this.subscriptionRepo = subscriptionRepo;
+    }
 
     private void makeOpenTrips(int numOfTrips, String passengerUsername) throws NotFoundException {
 
@@ -73,10 +74,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ResponseMessage makePendingTrip(RideModel rideModel, String machineUsername) throws NotFoundException {
+    public ResponseMessage makePendingTrip(RideModel rideModel, String machineUsername) {
 
         Trip trip = tripRepo.findById(rideModel.getTripId(), Trip.class);
-        validateTrip(trip);
+        try {
+            validateTrip(trip);
+
+        } catch (NotFoundException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
         Passenger passenger = trip.getPassenger();
 
         StationaryTurnstile machine = stationaryTurnstileRepo.findUserByUsername(machineUsername);
@@ -119,19 +125,30 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ResponseMessage makeFinalTrip(RideModel rideModel, String machineUsername) throws NotFoundException, BadRequestException {
+    public ResponseMessage makeFinalTrip(RideModel rideModel, String machineUsername) {
 
         StationaryTurnstile machine = stationaryTurnstileRepo.findUserByUsername(machineUsername);
 
-//        Trip trip = tripRepo.findByPassengerUsernameAndStatus(rideModel.getUsername(), Status.Pending);
         Trip trip = tripRepo.findById(rideModel.getTripId(), Trip.class);
 
         String ownerId = machine.getOwner().getId();
 
-        validateMakeFinalTrip(trip, ownerId);
+        try {
+            validateMakeFinalTrip(trip, ownerId);
+        } catch (NotFoundException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (BadRequestException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
         rideModel.setCompanionCount(trip.getCompanionCount());
 
-        double weight = graphWeightService.getOwnerWeight(ownerId, trip.getStartStation(), machine.getStation().getStationName());
+        double weight = 0;
+        try {
+            weight = graphWeightService.getOwnerWeight(ownerId, trip.getStartStation(), machine.getStation().getStationName());
+        } catch (NotFoundException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
 
         long totalTime = rideModel.getTime().getTime() - trip.getStartTime().getTime();
         double price = ticketService.getPrice(ownerId, weight, totalTime) * trip.getCompanionCount();
@@ -160,9 +177,13 @@ public class TripServiceImpl implements TripService {
 
     }
 
-    public ResponseMessage makeTrip(RideModel rideModel, String machineUsername) throws NotFoundException {
+    public ResponseMessage makeTrip(RideModel rideModel, String machineUsername) {
         Trip trip = tripRepo.findById(rideModel.getTripId(), Trip.class);
-        validateTrip(trip);
+        try {
+            validateTrip(trip);
+        } catch (NotFoundException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
         Passenger passenger = trip.getPassenger();
 
         MovingTurnstile machine = movingTurnstileRepo.findUserByUsername(machineUsername);
@@ -172,7 +193,12 @@ public class TripServiceImpl implements TripService {
         String startStation = rideModel.getStartStation();
         String endStation = rideModel.getEndStation();
 
-        double weight = graphWeightService.getLineWeight(lineId, startStation, endStation);
+        double weight = 0;
+        try {
+            weight = graphWeightService.getLineWeight(lineId, startStation, endStation);
+        } catch (NotFoundException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
 
 
         double price = ticketService.getPrice(ownerId, lineId, weight, 0L) * rideModel.getCompanionCount();

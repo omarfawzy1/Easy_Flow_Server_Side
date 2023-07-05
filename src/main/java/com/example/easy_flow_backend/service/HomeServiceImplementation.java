@@ -1,15 +1,13 @@
 package com.example.easy_flow_backend.service;
 
+import com.example.easy_flow_backend.dto.Models.RegisterModel;
 import com.example.easy_flow_backend.dto.Models.ResetPassword;
 import com.example.easy_flow_backend.entity.Passenger;
 import com.example.easy_flow_backend.entity.Wallet;
-import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.PassengersRepo;
-import com.example.easy_flow_backend.dto.Models.RegisterModel;
 import com.example.easy_flow_backend.repos.PrivilegeRepo;
 import com.example.easy_flow_backend.service.passenger_services.PassengerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,26 +15,30 @@ import org.springframework.stereotype.Service;
 @Service
 
 public class HomeServiceImplementation implements HomeService {
-    @Autowired
-    private PassengersRepo passengersRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private PassengerService passengerService;
-    @Autowired
-    private PrivilegeRepo privilegeRepo;
+    private final PassengersRepo passengersRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final PassengerService passengerService;
+    private final PrivilegeRepo privilegeRepo;
+
+    public HomeServiceImplementation(PassengersRepo passengersRepo, PasswordEncoder passwordEncoder, PassengerService passengerService, PrivilegeRepo privilegeRepo) {
+        this.passengersRepo = passengersRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.passengerService = passengerService;
+        this.privilegeRepo = privilegeRepo;
+    }
 
     @Override
-    public ResponseMessage Register(RegisterModel registerModel) throws NotFoundException {
+    public ResponseMessage Register(RegisterModel registerModel) {
         if (passengersRepo.existsByUsernameIgnoreCase(registerModel.getUsername())) {
-            throw new NotFoundException("The username already Used");
+            return new ResponseMessage("The username already Used", HttpStatus.CONFLICT);
         } else if (passengersRepo.existsByPhoneNumber(registerModel.getPhoneNumber())) {
-            throw new NotFoundException("The Phone already Used");
-        }
-        else if (passengersRepo.existsByEmail(registerModel.getEmail())) {
-            throw new NotFoundException("The email already Used");
-        }
+            return new ResponseMessage("The Phone already Used", HttpStatus.CONFLICT);
 
+        } else if (passengersRepo.existsByEmail(registerModel.getEmail())) {
+
+            return new ResponseMessage("The email already Used", HttpStatus.CONFLICT);
+
+        }
 
 
         Passenger passenger = new Passenger(new Wallet("cc"), registerModel.getFirstName(), registerModel.getLastName(), registerModel.getPhoneNumber(), registerModel.getCity(), registerModel.getGender(), registerModel.getBirthDay(), registerModel.getUsername(), passwordEncoder.encode(registerModel.getPassword()), registerModel.getEmail());
@@ -46,7 +48,7 @@ public class HomeServiceImplementation implements HomeService {
     }
 
     @Override
-    public ResponseMessage sendResetPasswordToken(String email) throws NotFoundException {
+    public ResponseMessage sendResetPasswordToken(String email) {
         return passengerService.sendResetPasswordToken(email);
     }
 

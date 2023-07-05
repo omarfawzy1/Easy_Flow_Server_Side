@@ -17,13 +17,11 @@ import com.example.easy_flow_backend.service.station_line_services.StationServic
 import com.example.easy_flow_backend.service.tunstile_services.MovingTurnstileService;
 import com.example.easy_flow_backend.service.tunstile_services.StationeryTurnstileService;
 import com.example.easy_flow_backend.service.utils.ImageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,42 +29,45 @@ import java.util.List;
 @Service
 public class AdminServiceImplementation implements AdminService {
 
-    @Autowired
-    private OwnerRepo ownerRepo;
-    @Autowired
-    private LineService lineService;
-    @Autowired
-    private PassengerService passengerService;
-    @Autowired
-    private AnalysisService analysisService;
-    @Autowired
-    private OwnerService ownerService;
-    @Autowired
-    private StationeryTurnstileService stationeryTurnstileService;
-    @Autowired
-    private MovingTurnstileService movingTurnstileService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private StationService stationService;
-    @Autowired
-    private TicketService ticketService;
-    @Autowired
-    private PrivilegeRepo privilegeRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private StationaryTurnstileRepo stationaryTurnstileRepo;
-    @Autowired
-    private UserRepositry userRepositry;
-    @Autowired
-    private MovingTurnstileRepo movingTurnstileRepo;
-    @Autowired
-    private GraphService graphService;
-    @Autowired
-    private StationRepo stationRepo;
-    @Autowired
-    private PassengersRepo passengersRepo;
+    private final OwnerRepo ownerRepo;
+    private final LineService lineService;
+    private final PassengerService passengerService;
+    private final AnalysisService analysisService;
+    private final OwnerService ownerService;
+    private final StationeryTurnstileService stationeryTurnstileService;
+    private final MovingTurnstileService movingTurnstileService;
+    private final UserService userService;
+    private final StationService stationService;
+    private final TicketService ticketService;
+    private final PrivilegeRepo privilegeRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final StationaryTurnstileRepo stationaryTurnstileRepo;
+    private final UserRepositry userRepositry;
+    private final MovingTurnstileRepo movingTurnstileRepo;
+    private final GraphService graphService;
+    private final StationRepo stationRepo;
+    private final PassengersRepo passengersRepo;
+
+    public AdminServiceImplementation(AnalysisService analysisService, OwnerRepo ownerRepo, LineService lineService, PassengerService passengerService, UserRepositry userRepositry, StationaryTurnstileRepo stationaryTurnstileRepo, MovingTurnstileRepo movingTurnstileRepo, StationRepo stationRepo, OwnerService ownerService, StationeryTurnstileService stationeryTurnstileService, PassengersRepo passengersRepo, MovingTurnstileService movingTurnstileService, UserService userService, GraphService graphService, PasswordEncoder passwordEncoder, StationService stationService, TicketService ticketService, PrivilegeRepo privilegeRepo) {
+        this.analysisService = analysisService;
+        this.ownerRepo = ownerRepo;
+        this.lineService = lineService;
+        this.passengerService = passengerService;
+        this.userRepositry = userRepositry;
+        this.stationaryTurnstileRepo = stationaryTurnstileRepo;
+        this.movingTurnstileRepo = movingTurnstileRepo;
+        this.stationRepo = stationRepo;
+        this.ownerService = ownerService;
+        this.stationeryTurnstileService = stationeryTurnstileService;
+        this.passengersRepo = passengersRepo;
+        this.movingTurnstileService = movingTurnstileService;
+        this.userService = userService;
+        this.graphService = graphService;
+        this.passwordEncoder = passwordEncoder;
+        this.stationService = stationService;
+        this.ticketService = ticketService;
+        this.privilegeRepo = privilegeRepo;
+    }
 
     @Override
     public List<LineView> getAllLines() {
@@ -95,14 +96,23 @@ public class AdminServiceImplementation implements AdminService {
 
 
     @Override
-    public ResponseMessage deleteLine(String name) throws NotFoundException {
-        if (!lineService.deleteLine(name))
-            throw new NotFoundException("The Line Does Not Exist");
+    public ResponseMessage deleteLine(String name) {
+        boolean deleted;
+
+        try {
+            deleted = lineService.deleteLine(name);
+        } catch (BadRequestException e) {
+            return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!deleted)
+            return new ResponseMessage("The Line Does Not Exist", HttpStatus.NOT_FOUND);
+
         return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Override
-    public ResponseMessage addLine(AddLineModel addLineModel)  {
+    public ResponseMessage addLine(AddLineModel addLineModel) {
         return lineService.addLine(addLineModel);
     }
 
@@ -115,14 +125,17 @@ public class AdminServiceImplementation implements AdminService {
     public int getPassengersCountWithPrivilege(String privilege) {
         return passengerService.getPassengersCountWithPrivilege(privilege);
     }
+
     @Override
     public long getRevenue(TimePeriod timePeriod) {
         return analysisService.getRevenue(timePeriod);
     }
+
     @Override
     public List<Object> getRevenue(TimePeriod timePeriod, String groupBy) throws BadRequestException {
-        return analysisService.getRevenue(timePeriod,groupBy);
+        return analysisService.getRevenue(timePeriod, groupBy);
     }
+
     @Override
     public long getRevenueAvg(TimePeriod timePeriod) {
         return analysisService.getRevenueAvg(timePeriod);
@@ -178,16 +191,7 @@ public class AdminServiceImplementation implements AdminService {
         return ownerRepo.findALLBy(OwnerView.class);
     }
 
-    //TODO
-    /*@Override
-    public boolean addGraph(GraphModel graphModel) {
-        // TODO Graph Model Validation
-        if (!graphService.addGraph(graphModel.getGraph())) {
-            return false;
-        }
-        return graphEdgeService.addEdges(graphModel.getGraphEdgeList());
-    }
-*/
+
     @Override
     public GetGraphModel getGraph(String lineName) throws NotFoundException {
         Pair<List<Station>, List<Number>> orderedStation = graphService.getOrderedStationOfLine(lineName);
@@ -195,9 +199,9 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException {
+    public ResponseMessage addOwner(AddOwnerModel addOwnerModel) {
         if (!ownerService.addOwner(addOwnerModel)) {
-            throw new BadRequestException("The Owner Not Exists");
+            return new ResponseMessage("The Owner Not Found", HttpStatus.NOT_FOUND);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
@@ -251,27 +255,27 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage deleteStation(String name) throws BadRequestException {
+    public ResponseMessage deleteStation(String name) {
         return stationService.deleteStation(name);
     }
 
     @Override
-    public ResponseMessage flipUserActive(String username) throws NotFoundException {
+    public ResponseMessage flipUserActive(String username) {
         return userService.flipUserActive(username);
     }
 
     @Override
-    public ResponseMessage deleteStationeryMachine(String username) throws NotFoundException {
+    public ResponseMessage deleteStationeryMachine(String username) {
         return stationeryTurnstileService.deletMachine(username);
     }
 
     @Override
-    public ResponseMessage deleteMovingMachine(String username) throws NotFoundException {
+    public ResponseMessage deleteMovingMachine(String username) {
         return movingTurnstileService.deletMachine(username);
     }
 
     @Override
-    public ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException {
+    public ResponseMessage addTicket(TicketModel ticketModel) {
         return ticketService.addTicket(ticketModel);
     }
 
@@ -296,7 +300,7 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException {
+    public ResponseMessage setOwnerImage(String name, MultipartFile file) {
         Owner owner = ownerRepo.findByName(name);
         if (owner == null)
             return new ResponseMessage("this owner is not found", HttpStatus.BAD_REQUEST);
@@ -331,7 +335,7 @@ public class AdminServiceImplementation implements AdminService {
     public ResponseMessage deletePrivilege(String privilege) {
         Privilege temp = privilegeRepo.findPrivilegeByNameIgnoreCase(privilege);
         if (temp == null)
-            return new ResponseMessage("there is no privilege with this name", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("there is no privilege with this name", HttpStatus.NOT_FOUND);
         try {
             privilegeRepo.delete(temp);
         } catch (Exception e) {
@@ -487,7 +491,7 @@ public class AdminServiceImplementation implements AdminService {
     }
 
     @Override
-    public ResponseMessage deleteOwner(String username) throws BadRequestException {
+    public ResponseMessage deleteOwner(String username) {
         return ownerService.deleteOwner(username);
     }
 

@@ -1,6 +1,5 @@
 package com.example.easy_flow_backend.dto.Models;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

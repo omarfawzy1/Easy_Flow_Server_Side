@@ -1,18 +1,19 @@
 package com.example.easy_flow_backend.service.notification;
 
-import com.example.easy_flow_backend.entity.Passenger;
 import com.google.firebase.messaging.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FirebaseNotificationService {
-    @Autowired
-    private FirebaseMessaging firebaseMessaging;
+    private final FirebaseMessaging firebaseMessaging;
     public final PassengerNotification repurchaseNotification = new PassengerNotification("Subscription repurchased successfully", "Subscription Repurchased");
     public final PassengerNotification expiryNotification = new PassengerNotification("Your subscription has been expired", "Subscription Expired");
     public final PassengerNotification repurchaseSubscriptionNotification = new PassengerNotification("Couldn't repurchase subscription has been removed", "Auto Repurchase Fail");
     public final PassengerNotification repurchaseNoEnoughBalanceNotification = new PassengerNotification("No enough balance on wallet", "Auto Repurchase Fail");
+
+    public FirebaseNotificationService(FirebaseMessaging firebaseMessaging) {
+        this.firebaseMessaging = firebaseMessaging;
+    }
 
     public String sendAnyMessage(){
 //        Message message = Message.builder().setTopic("main_topic")

@@ -5,7 +5,6 @@ import com.example.easy_flow_backend.dto.Models.UpdatePassword;
 import com.example.easy_flow_backend.dto.Models.UpdateProfileModel;
 import com.example.easy_flow_backend.dto.Views.*;
 import com.example.easy_flow_backend.entity.Passenger;
-import com.example.easy_flow_backend.entity.Privilege;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
@@ -37,7 +36,6 @@ public interface PassengerService {
     public int getPassengersCountWithPrivilege(String privilege);
 
     void rechargePassenger(String name, double amount);
-    //ToDo edit profile - forget password
 
 
     List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException;
@@ -46,7 +44,7 @@ public interface PassengerService {
     ResponseMessage makeSubscription(String owner_name, String plan_name);
 
     List<SubscriptionView> getMySubscriptions() throws NotFoundException;
-    ResponseMessage sendResetPasswordToken(String email) throws NotFoundException;
+    ResponseMessage sendResetPasswordToken(String email) ;
 
 
     ResponseMessage resetPassengerPassword(String key, ResetPassword newPassword);

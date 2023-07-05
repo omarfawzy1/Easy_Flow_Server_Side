@@ -12,7 +12,6 @@ import com.example.easy_flow_backend.repos.StationRepo;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphProperties;
 import com.example.easy_flow_backend.service.graph_services.utils.GraphWithStations;
 import com.example.easy_flow_backend.service.station_line_services.LineService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,14 +21,17 @@ import java.util.*;
 @Service
 public class GraphServiceImpl implements GraphService {
 
-    @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
-    @Autowired
-    protected GraphEdgeService graphEdgeService;
-    @Autowired
-    private LineService lineService;
-    @Autowired
-    private StationRepo stationRepo;
+    private final RedisTemplate<Object, Object> redisTemplate;
+    protected final GraphEdgeService graphEdgeService;
+    private final LineService lineService;
+    private final StationRepo stationRepo;
+
+    public GraphServiceImpl(RedisTemplate<Object, Object> redisTemplate, GraphEdgeService graphEdgeService, LineService lineService, StationRepo stationRepo) {
+        this.redisTemplate = redisTemplate;
+        this.graphEdgeService = graphEdgeService;
+        this.lineService = lineService;
+        this.stationRepo = stationRepo;
+    }
 
     private GraphWithStations convertEdgesToGraphWithStations(List<GraphEdge> edges) {
 
@@ -56,6 +58,7 @@ public class GraphServiceImpl implements GraphService {
         return graph;
     }
 
+    //concatenate all the lines of the owner with each other like the metro
     public GraphWithStations getOwnerWeightedGraph(String ownerId) {
 
         if (Boolean.TRUE.equals(redisTemplate.hasKey(ownerId))) {
@@ -131,7 +134,7 @@ public class GraphServiceImpl implements GraphService {
         return new ResponseMessage("Added Successfully", HttpStatus.OK);
     }
 
-
+    // Get the Stations and weights of the line ordered, Suppose the line is one way with no loops
     @Override
     public Pair<List<Station>, List<Number>> getOrderedStationOfLine(String lineName) throws NotFoundException {
 
@@ -140,7 +143,6 @@ public class GraphServiceImpl implements GraphService {
             throw new NotFoundException("Invalid Line Name");
         }
         List<GraphEdge> edges = new ArrayList<>(line.getGraphEdges());
-        System.out.println(edges.size());
         if (edges.isEmpty()) {
             return new Pair<>(new ArrayList<>(), new ArrayList<>());
         }

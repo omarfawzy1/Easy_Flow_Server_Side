@@ -2,11 +2,17 @@ package com.example.easy_flow_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Setter

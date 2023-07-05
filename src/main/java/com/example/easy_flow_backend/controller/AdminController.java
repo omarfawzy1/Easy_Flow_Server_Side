@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.text.ParseException;
+
 import java.util.List;
 
 @RestController
@@ -60,7 +59,7 @@ public class AdminController {
     }
 
     @PutMapping("user/active/{username}")
-    public ResponseMessage flipUserActive(@PathVariable String username) throws NotFoundException {
+    public ResponseMessage flipUserActive(@PathVariable String username)  {
         return adminService.flipUserActive(username);
     }
 
@@ -75,12 +74,12 @@ public class AdminController {
     }
 
     @DeleteMapping("line/{name}")
-    public ResponseMessage deleteLine(@PathVariable String name) throws NotFoundException {
+    public ResponseMessage deleteLine(@PathVariable String name)  {
         return adminService.deleteLine(name);
     }
 
     @DeleteMapping("station/{name}")
-    public ResponseMessage deleteStation(@PathVariable String name) throws NotFoundException, BadRequestException {
+    public ResponseMessage deleteStation(@PathVariable String name)  {
         return adminService.deleteStation(name);
     }
 
@@ -136,7 +135,7 @@ public class AdminController {
     @PostMapping("line/tripAvgForBus/{lineName}/{timeUnit}")
     public Object getTripAvgByTimeUnitForBusLine(@Valid @RequestBody TimePeriod timePeriod,
                                                  @PathVariable String timeUnit,
-                                                 @PathVariable String lineName) throws ParseException, BadRequestException {
+                                                 @PathVariable String lineName) throws  BadRequestException {
         return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineName);
     }
 
@@ -160,12 +159,12 @@ public class AdminController {
     }
 
     @PostMapping("owner/add")
-    public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel) throws BadRequestException {
+    public ResponseMessage addOwner(@Valid @RequestBody AddOwnerModel addOwnerModel)  {
         return adminService.addOwner(addOwnerModel);
     }
 
     @DeleteMapping("owner/delete/{username}")
-    public ResponseMessage deleteOwner(@PathVariable String username) throws BadRequestException {
+    public ResponseMessage deleteOwner(@PathVariable String username)  {
         return adminService.deleteOwner(username);
     }
     @GetMapping("owner/getDetails/{ownerName}")
@@ -207,12 +206,12 @@ public class AdminController {
         }
     }
     @DeleteMapping("machine/stationery/{username}")
-    public ResponseMessage deleteStationeryMachine(@PathVariable String username) throws NotFoundException {
+    public ResponseMessage deleteStationeryMachine(@PathVariable String username)  {
         return adminService.deleteStationeryMachine(username);
     }
 
     @DeleteMapping("machine/moving/{username}")
-    public ResponseMessage deleteMovingMachine(@PathVariable String username) throws NotFoundException {
+    public ResponseMessage deleteMovingMachine(@PathVariable String username)  {
         return adminService.deleteMovingMachine(username);
     }
 
@@ -227,7 +226,7 @@ public class AdminController {
     }
 
     @PostMapping("tickets")
-    public ResponseMessage addTicket(@RequestBody TicketModel ticketModel) throws NotFoundException {
+    public ResponseMessage addTicket(@RequestBody TicketModel ticketModel)  {
         return adminService.addTicket(ticketModel);
     }
     @DeleteMapping("tickets/{id}")
@@ -251,7 +250,7 @@ public class AdminController {
     }
 
     @PostMapping("owners/setImage/{name}")
-    public ResponseMessage setOwnerImage(@PathVariable String name, @RequestBody MultipartFile file) throws IOException {
+    public ResponseMessage setOwnerImage(@PathVariable String name, @RequestBody MultipartFile file)  {
         return adminService.setOwnerImage(name, file);
     }
 

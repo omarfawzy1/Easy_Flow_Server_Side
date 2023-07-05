@@ -1,16 +1,15 @@
 package com.example.easy_flow_backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.engine.internal.Cascade;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 @Entity
 @Setter

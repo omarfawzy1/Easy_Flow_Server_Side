@@ -2,13 +2,13 @@ package com.example.easy_flow_backend.service.admin_services;
 
 import com.example.easy_flow_backend.dto.Models.*;
 import com.example.easy_flow_backend.dto.Views.*;
-import com.example.easy_flow_backend.entity.*;
+import com.example.easy_flow_backend.entity.Passenger;
+import com.example.easy_flow_backend.entity.Turnstile;
 import com.example.easy_flow_backend.error.BadRequestException;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface AdminService {
@@ -23,7 +23,7 @@ public interface AdminService {
 
     ResponseMessage deletePassenger(String username);
 
-    ResponseMessage deleteLine(String name) throws NotFoundException;
+    ResponseMessage deleteLine(String name) ;
 
     ResponseMessage addLine(AddLineModel addLineModel);
 
@@ -56,17 +56,15 @@ public interface AdminService {
     List<OwnerView> getAllOwners();
 
 
-//    boolean addGraph(GraphModel graphModel);
-
     GetGraphModel getGraph(String lineName) throws NotFoundException;
 
-    ResponseMessage addOwner(AddOwnerModel addOwnerModel) throws BadRequestException;
+    ResponseMessage addOwner(AddOwnerModel addOwnerModel) ;
 
     List<Object> getOwnerDetails(String ownerName) throws BadRequestException;
 
     LiveWithStationsView getLineDetails(String name);
 
-    ResponseMessage deleteOwner(String username) throws BadRequestException;
+    ResponseMessage deleteOwner(String username) ;
 
     OwnerViewDetails getOwner(String username) throws BadRequestException;
 
@@ -81,15 +79,15 @@ public interface AdminService {
 
     List<StationeryMachineView> getStationMachines();
 
-    ResponseMessage deleteStation(String name) throws BadRequestException;
+    ResponseMessage deleteStation(String name) ;
 
-    ResponseMessage flipUserActive(String username) throws NotFoundException;
+    ResponseMessage flipUserActive(String username) ;
 
-    ResponseMessage deleteStationeryMachine(String username) throws NotFoundException;
+    ResponseMessage deleteStationeryMachine(String username) ;
 
-    ResponseMessage deleteMovingMachine(String username) throws NotFoundException;
+    ResponseMessage deleteMovingMachine(String username) ;
 
-    ResponseMessage addTicket(TicketModel ticketModel) throws NotFoundException;
+    ResponseMessage addTicket(TicketModel ticketModel) ;
 
     void deleteTicket(String id);
 
@@ -100,7 +98,7 @@ public interface AdminService {
     List<TicketView> getLineTickets(String name);
 
 
-    ResponseMessage setOwnerImage(String name, MultipartFile file) throws IOException;
+    ResponseMessage setOwnerImage(String name, MultipartFile file) ;
 
     ResponseMessage addPrivilege(String privilege);
 

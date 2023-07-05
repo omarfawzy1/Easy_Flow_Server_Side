@@ -16,8 +16,6 @@ import com.example.easy_flow_backend.service.password_reset_services.ResetPasswo
 import com.example.easy_flow_backend.service.payment_services.SubscriptionService;
 import com.example.easy_flow_backend.service.payment_services.TripService;
 import com.example.easy_flow_backend.service.payment_services.WalletService;
-import com.google.api.Http;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,39 +25,41 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class PassengerServiceImplementation implements PassengerService {
 
-    @Autowired
-    private TripRepo tripRepo;
-    @Autowired
-    private PassengersRepo passengerRepo;
-    @Autowired
-    private WalletService walletService;
-    @Autowired
-    private TransactionRepo transactionRepo;
-    @Autowired
-    private TripService tripService;
-    @Autowired
-    private SubscriptionService subscriptionService;
-    @Autowired
-    private SubscriptionRepo subscriptionRepo;
-    @Autowired
-    private PlanRepository planRepository;
-    @Autowired
-    private FirebaseNotificationService firebaseNotificationService;
-    @Autowired
-    private ResetPasswordTokenService resetPasswordTokenService;
-    @Autowired
-    private ResetPasswordTokenRepo resetPasswordTokenRepo;
-    @Autowired
-    private PasswordManager passwordManager;
-    @Autowired
-    private OwnerRepo ownerRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final TripRepo tripRepo;
+    private final PassengersRepo passengerRepo;
+    private final WalletService walletService;
+    private final TransactionRepo transactionRepo;
+    private final TripService tripService;
+    private final SubscriptionService subscriptionService;
+    private final SubscriptionRepo subscriptionRepo;
+    private final PlanRepository planRepository;
+    private final FirebaseNotificationService firebaseNotificationService;
+    private final ResetPasswordTokenService resetPasswordTokenService;
+    private final ResetPasswordTokenRepo resetPasswordTokenRepo;
+    private final PasswordManager passwordManager;
+    private final OwnerRepo ownerRepo;
+    private final PasswordEncoder passwordEncoder;
+
+    public PassengerServiceImplementation(WalletService walletService, TripRepo tripRepo, PassengersRepo passengerRepo, PasswordEncoder passwordEncoder, TransactionRepo transactionRepo, TripService tripService, PasswordManager passwordManager, SubscriptionService subscriptionService, SubscriptionRepo subscriptionRepo, PlanRepository planRepository, FirebaseNotificationService firebaseNotificationService, OwnerRepo ownerRepo, ResetPasswordTokenService resetPasswordTokenService, ResetPasswordTokenRepo resetPasswordTokenRepo) {
+        this.walletService = walletService;
+        this.tripRepo = tripRepo;
+        this.passengerRepo = passengerRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.transactionRepo = transactionRepo;
+        this.tripService = tripService;
+        this.passwordManager = passwordManager;
+        this.subscriptionService = subscriptionService;
+        this.subscriptionRepo = subscriptionRepo;
+        this.planRepository = planRepository;
+        this.firebaseNotificationService = firebaseNotificationService;
+        this.ownerRepo = ownerRepo;
+        this.resetPasswordTokenService = resetPasswordTokenService;
+        this.resetPasswordTokenRepo = resetPasswordTokenRepo;
+    }
 
     public List<TripView> getMytrips(String username) throws BadRequestException {
         if (username == null || username.equalsIgnoreCase("anonymous"))
@@ -195,10 +195,10 @@ public class PassengerServiceImplementation implements PassengerService {
 
 
     @Override
-    public ResponseMessage sendResetPasswordToken(String email) throws NotFoundException {
+    public ResponseMessage sendResetPasswordToken(String email) {
         Passenger passenger = passengerRepo.findByEmailIgnoreCase(email);
         if (passenger == null) {
-            throw new NotFoundException("Incorrect email!");
+            return new ResponseMessage("Incorrect email", HttpStatus.NOT_FOUND);
         }
         return resetPasswordTokenService.sendResetPasswordToken(passenger);
     }
