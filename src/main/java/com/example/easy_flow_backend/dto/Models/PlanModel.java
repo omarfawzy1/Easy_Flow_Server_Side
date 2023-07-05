@@ -1,6 +1,5 @@
 package com.example.easy_flow_backend.dto.Models;
 
-import com.example.easy_flow_backend.entity.Privilege;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,21 +12,19 @@ import org.hibernate.validator.constraints.Range;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlanModel {
-    @NotBlank(message = "owner name must not null")
-    @NotNull(message = "owner name is mandatory")
+    @NotBlank(message = "owner name should not blank")
+    @NotNull(message = "owner name should not null")
     private String ownerName;
 
-    @NotNull(message = "privilege is mandatory")
-    private Privilege privilege;
+    @NotBlank(message = "privilege name should not blank")
+    @NotNull(message = "privilege name should not null")
+    private String privilegeName;
 
-    @NotNull(message = "price is mandatory")
     @Min(0)
     private float price;
-
-    @NotNull(message = "duration days is mandatory")
+    @Min(1)
     private int durationDays;
 
-    @NotNull(message = "Number of Trips is mandatory")
     @Min(1)
     private int trips;
 
@@ -38,7 +35,6 @@ public class PlanModel {
     @Min(1)
     private int maxCompanion;
 
-    @NotNull(message = "Discount Rate is mandatory")
     @Range(min = 0, max = 1)
     private float discountRate;
 

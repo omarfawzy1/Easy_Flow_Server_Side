@@ -4,10 +4,12 @@ import com.example.easy_flow_backend.dto.Models.PlanModel;
 import com.example.easy_flow_backend.dto.Views.PlanView;
 import com.example.easy_flow_backend.entity.Owner;
 import com.example.easy_flow_backend.entity.Plan;
+import com.example.easy_flow_backend.entity.Privilege;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.repos.OwnerRepo;
 import com.example.easy_flow_backend.repos.PlanRepository;
+import com.example.easy_flow_backend.repos.PrivilegeRepo;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +24,8 @@ public class PlanServiceImpl implements PlanService {
     PlanRepository planRepository;
     @Autowired
     OwnerRepo ownerRepo;
+    @Autowired
+    PrivilegeRepo privilegeRepo;
 
     @Override
     public List<PlanView> getAllPlans() {
@@ -40,7 +44,11 @@ public class PlanServiceImpl implements PlanService {
         if (owner == null) {
             return new ResponseMessage("Owner Name is invalid", HttpStatus.BAD_REQUEST);
         }
-        Plan newPlan = new Plan(plan.getPrivilege(), plan.getPrice(), plan.getDurationDays(), plan.getTrips(), plan.getName(), plan.getMaxCompanion(), owner, plan.getDiscountRate());
+        Privilege privilege = privilegeRepo.findPrivilegeByNameIgnoreCase(plan.getPrivilegeName());
+        if (privilege == null) {
+            return new ResponseMessage("Privilege Name is invalid", HttpStatus.BAD_REQUEST);
+        }
+        Plan newPlan = new Plan(privilege, plan.getPrice(), plan.getDurationDays(), plan.getTrips(), plan.getName(), plan.getMaxCompanion(), owner, plan.getDiscountRate());
         try {
             planRepository.save(newPlan);
         } catch (Exception ex) {
@@ -72,12 +80,16 @@ public class PlanServiceImpl implements PlanService {
         if (!planRepository.existsByNameAndOwnerName(planName, planModel.getOwnerName())) {
             return new ResponseMessage("Sorry, the Plan not available", HttpStatus.BAD_REQUEST);
         }
+        Privilege privilege = privilegeRepo.findPrivilegeByNameIgnoreCase(planModel.getPrivilegeName());
+        if (privilege == null) {
+            return new ResponseMessage("Privilege Name is invalid", HttpStatus.BAD_REQUEST);
+        }
         Plan plan = planRepository.findByNameAndOwnerName(planName, planModel.getOwnerName(), Plan.class);
         plan.setName(planModel.getName());
         plan.setDiscountRate(planModel.getDiscountRate());
         plan.setDurationDays(planModel.getDurationDays());
         plan.setMaxCompanion(planModel.getMaxCompanion());
-        plan.setPrivilege(planModel.getPrivilege());
+        plan.setPrivilege(privilege);
         plan.setNumberOfTrips(plan.getNumberOfTrips());
         plan.setPrice(planModel.getPrice());
 

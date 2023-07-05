@@ -5,6 +5,7 @@ import com.example.easy_flow_backend.dto.Views.PlanView;
 import com.example.easy_flow_backend.error.NotFoundException;
 import com.example.easy_flow_backend.error.ResponseMessage;
 import com.example.easy_flow_backend.service.owner_services.PlanService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class PlanController {
     }
 
     @PostMapping("plan")
-    public ResponseMessage addPlan(@RequestBody PlanModel plan) {
+    public ResponseMessage addPlan(@Valid @RequestBody PlanModel plan) {
         return planService.addPlan(plan);
     }
 
