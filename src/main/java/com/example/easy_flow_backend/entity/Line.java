@@ -44,7 +44,7 @@ public class Line {
     private Set<MovingTurnstile> movingTurnstiles= new HashSet<>();
     @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)
     private Set<Ticket> tickets= new HashSet<>();
-    @OneToMany(mappedBy = "line", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "line", cascade = CascadeType.REMOVE)//TODO i convert cascadeTypeALL to CascadeType Remove
     private Set<GraphEdge> graphEdges= new HashSet<>();
 
     public Line(String name, TransportationType type, Owner owner) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GraphEdgeServiceImpl implements GraphEdgeService {
@@ -18,9 +19,20 @@ public class GraphEdgeServiceImpl implements GraphEdgeService {
     }
 
     @Override
+    public void deleteEdges(Set<GraphEdge> graphEdges) {
+        graphEdgeRepo.deleteAll(graphEdges);
+
+    }
+
+    @Override
     public boolean addEdges(List<GraphEdge> edges) {
         graphEdgeRepo.saveAll(edges);
         return true;
+    }
+
+    @Override
+    public void deleteEdge(String id) {
+        graphEdgeRepo.deleteById(id);
     }
 
 

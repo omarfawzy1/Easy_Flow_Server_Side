@@ -50,7 +50,7 @@ public class AdminController {
     }
     //TODO
     @PostMapping("line/graph")
-    public ResponseMessage addGraph(@Valid @RequestBody GraphModel graphModel) throws NotFoundException {
+    public ResponseMessage addGraph(@Valid @RequestBody GraphModel graphModel)  {
         return adminService.addGraph(graphModel);
     }
 

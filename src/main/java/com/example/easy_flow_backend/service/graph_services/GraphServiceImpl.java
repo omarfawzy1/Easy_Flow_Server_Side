@@ -17,10 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GraphServiceImpl implements GraphService {
@@ -87,6 +84,8 @@ public class GraphServiceImpl implements GraphService {
 
         List<StationModel> modelStations = graphModel.getStations();
         List<Station> stations = new ArrayList<>();
+
+        //Create Stations if not exist
         for (StationModel stationModel : modelStations) {
             Station station;
             if (stationRepo.existsByStationNameIgnoreCase(stationModel.getName())) {
@@ -100,14 +99,24 @@ public class GraphServiceImpl implements GraphService {
             }
             stations.add(station);
         }
+
         stations = stationRepo.saveAll(stations);
-        ArrayList<GraphEdge> graphEdges = new ArrayList<>();
+
+        List<GraphEdge> graphEdges = new ArrayList<>();
+
         for (int i = 0; i < stations.size() - 1; i++) {
             graphEdges.add(new GraphEdge(line, stations.get(i), stations.get(i + 1), graphModel.getWeights().get(i)));
         }
 
+
         try {
+            Set<GraphEdge> oldGraphEdges = line.getGraphEdges();
+            for (GraphEdge graphEdge : oldGraphEdges) {
+                graphEdgeService.deleteEdge(graphEdge.getId()); //work
+            }
+            line.setStations(new HashSet<>(stations));
             graphEdgeService.addEdges(graphEdges);
+            lineService.saveLine(line);
         } catch (Exception ex) {
             return new ResponseMessage("Field, something wrong happen", HttpStatus.BAD_REQUEST);
         }
@@ -123,8 +132,9 @@ public class GraphServiceImpl implements GraphService {
             throw new NotFoundException("Invalid Line Name");
         }
         List<GraphEdge> edges = new ArrayList<>(line.getGraphEdges());
+        System.out.println(edges.size());
         if (edges.isEmpty()) {
-            return new Pair<>();
+            return new Pair<>(new ArrayList<>(), new ArrayList<>());
         }
         Map<Station, List<Pair<Station, Number>>> mp = new HashMap<>();
         for (GraphEdge edge : edges) {
@@ -161,7 +171,6 @@ public class GraphServiceImpl implements GraphService {
         List<Number> weights = new ArrayList<>();
 
         Pair<Station, Number> nxt = mp.get(rootStation).get(0);
-        int x = 0;
         while (true) {
             stationNames.add(nxt.getFirst());
             weights.add(nxt.getSecond());

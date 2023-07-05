@@ -88,4 +88,8 @@ public class LineService {
     public List<Line> getLinesByOwnerId(String ownerId) {
         return lineRepo.findAllByOwnerId(ownerId, Line.class);
     }
+
+    public void saveLine(Line line) {
+        lineRepo.save(line);
+    }
 }
