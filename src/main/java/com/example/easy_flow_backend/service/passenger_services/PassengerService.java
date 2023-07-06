@@ -58,4 +58,6 @@ public interface PassengerService {
     byte[] getOwnerImage(String ownerName) throws NotFoundException;
 
     ResponseMessage updatePassword(String name, UpdatePassword updatePassword);
+
+    ResponseMessage renewSubscription(String username, String ownerName, String planName);
 }

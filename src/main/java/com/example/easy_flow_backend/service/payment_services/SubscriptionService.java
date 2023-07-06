@@ -12,4 +12,6 @@ public interface SubscriptionService {
     Subscription getbestSubscription(List<Subscription> subscriptions, RideModel rideModel);
 
     ResponseMessage makeSubscription(Passenger passenger, Plan plan);
+
+    ResponseMessage renewSubscription(Passenger passenger, Plan plan);
 }
