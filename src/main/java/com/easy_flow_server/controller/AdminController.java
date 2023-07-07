@@ -19,8 +19,11 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("admin")
 public class AdminController {
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
+
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @GetMapping("owners")
     public List<OwnerView> getALlOwners() {

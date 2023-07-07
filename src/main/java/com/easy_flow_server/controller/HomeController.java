@@ -14,8 +14,11 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 public class HomeController {
-    @Autowired
-    private HomeService homeService;
+    private final HomeService homeService;
+
+    public HomeController(HomeService homeService) {
+        this.homeService = homeService;
+    }
 
     @GetMapping("index")
     public String index() throws UnknownHostException {

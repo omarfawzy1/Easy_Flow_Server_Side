@@ -63,6 +63,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (!plan.isAvailable()) {
             return new ResponseMessage("Sorry, The plan is closed", HttpStatus.FORBIDDEN);
         }
+        if (subscriptionRepo.existsByPassengerUsernameAndPlanOwnerNameAndPlanName(passenger.getUsername(), plan.getOwner().getName(), plan.getName())) {
+            return new ResponseMessage("You are Already subscribe this plan", HttpStatus.CONFLICT);
+        }
         walletService.withdraw(passenger.getWallet(), plan.getPrice());
         Date expirationDate = new Date();
         final long ONE_DAY_IN_MILLISECOND = 1000 * 60 * 60 * 24;
@@ -72,7 +75,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             subscriptionRepo.save(subscription);
         } catch (Exception ex) {
-            return new ResponseMessage("You are Already Subscribe this plan", HttpStatus.CONFLICT);
+            return new ResponseMessage("You are already subscribe this plan", HttpStatus.CONFLICT);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }

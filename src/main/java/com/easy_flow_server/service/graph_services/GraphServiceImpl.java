@@ -48,15 +48,15 @@ public class GraphServiceImpl implements GraphService {
     public GraphWithStations getLineWeightedGraph(String lineId) throws NotFoundException {
 
 
-      /*  if (Boolean.TRUE.equals(redisTemplate.hasKey(lineId))) {
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(lineId))) {
             return (GraphWithStations) redisTemplate.opsForValue().get(lineId);
-        }*/
+        }
 
         Line line = lineService.getLineById(lineId);
         List<GraphEdge> totalEdges = new ArrayList<>(line.getGraphEdges());
 
         GraphWithStations graph = convertEdgesToGraphWithStations(totalEdges);
-//        redisTemplate.opsForValue().set(lineId, graph);
+        redisTemplate.opsForValue().set(lineId, graph);
         return graph;
     }
 
@@ -84,7 +84,7 @@ public class GraphServiceImpl implements GraphService {
         try {
             line = lineService.getLineByName(graphModel.getLineName());
         } catch (NotFoundException e) {
-            return new ResponseMessage("Invalid Line Name", HttpStatus.NOT_FOUND);
+            return new ResponseMessage("Invalid line name", HttpStatus.NOT_FOUND);
         }
 
         List<StationModel> modelStations = graphModel.getStations();
@@ -130,7 +130,7 @@ public class GraphServiceImpl implements GraphService {
                 redisTemplate.delete(line.getId());
             }
         } catch (Exception ex) {
-            return new ResponseMessage("Field, something wrong happen", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Failed, something wrong happened", HttpStatus.BAD_REQUEST);
         }
         return new ResponseMessage("Added Successfully", HttpStatus.OK);
     }
@@ -141,7 +141,7 @@ public class GraphServiceImpl implements GraphService {
 
         Line line = lineService.getLineByName(lineName);
         if (line == null) {
-            throw new NotFoundException("Invalid Line Name");
+            throw new NotFoundException("Invalid line name");
         }
         List<GraphEdge> edges = new ArrayList<>(line.getGraphEdges());
         if (edges.isEmpty()) {

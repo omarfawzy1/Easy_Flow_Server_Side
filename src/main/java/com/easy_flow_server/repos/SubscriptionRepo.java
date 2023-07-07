@@ -14,5 +14,8 @@ public interface SubscriptionRepo extends JpaRepository<Subscription, String> {
     List<Subscription> getAllByExpireDateBefore(Date expireDate);
 
     <T> List<T> findAllByPassengerUsername(String passenger_username, Class<T> type);
+
     Subscription findByPassengerUsernameAndPlanOwnerNameAndPlanName(String passenger_username, String plan_owner_name, String plan_name);
+
+    boolean existsByPassengerUsernameAndPlanOwnerNameAndPlanName(String passenger_username, String plan_owner_name, String plan_name);
 }

@@ -15,8 +15,11 @@ import java.security.Principal;
 @CrossOrigin
 @RequestMapping("stationery-machine")
 public class StationeryTurnstileController {
-    @Autowired
-    StationeryTurnstileService stationeryTurnstileService;
+    private final StationeryTurnstileService stationeryTurnstileService;
+
+    public StationeryTurnstileController(StationeryTurnstileService stationeryTurnstileService) {
+        this.stationeryTurnstileService = stationeryTurnstileService;
+    }
 
     @PostMapping("in-ride")
     public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) {

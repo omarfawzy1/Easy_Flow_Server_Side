@@ -96,7 +96,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public PassagnerDetails getPassengerDetails(String username) throws NotFoundException {
         PassagnerDetails passenger = passengerRepo.findAllProjectedByUsername(username);
         if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+            throw new NotFoundException("Passenger not found");
         return passenger;
     }
 
@@ -105,7 +105,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public Passenger getPassenger(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+            throw new NotFoundException("Passenger not found");
         return passenger;
     }
 
@@ -113,7 +113,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public ResponseMessage deletePassenger(String username) {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
-            return new ResponseMessage("Passenger Not Found", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Passenger not found", HttpStatus.BAD_REQUEST);
         try {
             for (Trip t : passenger.getTrips())
                 t.setPassenger(null);
@@ -124,14 +124,14 @@ public class PassengerServiceImplementation implements PassengerService {
         } catch (Exception e) {
             return new ResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseMessage("Passenger deleted Successfully", HttpStatus.OK);
+        return new ResponseMessage("Passenger deleted successfully", HttpStatus.OK);
     }
 
     @Override
     public ResponseMessage passengerStatus(String username) throws NotFoundException {
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
         if (passenger == null)
-            throw new NotFoundException("Passenger Not Found");
+            throw new NotFoundException("Passenger not found");
         passenger.setActive(!passenger.isActive());
         passengerRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
@@ -187,7 +187,7 @@ public class PassengerServiceImplementation implements PassengerService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getPrincipal().toString();
         if (!passengerRepo.existsByUsernameIgnoreCase(username)) {
-            throw new NotFoundException("Sorry, The passenger Not found");
+            throw new NotFoundException("Sorry, The passenger not found");
         }
 
         return subscriptionRepo.findAllByPassengerUsername(username, SubscriptionView.class);
@@ -233,7 +233,7 @@ public class PassengerServiceImplementation implements PassengerService {
         } catch (Exception e) {
             return new ResponseMessage("invalid data", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseMessage("done", HttpStatus.OK);
+        return new ResponseMessage("Done", HttpStatus.OK);
 
     }
 
@@ -244,6 +244,7 @@ public class PassengerServiceImplementation implements PassengerService {
             return new ResponseMessage("The passenger not exist", HttpStatus.NOT_FOUND);
         }
         passenger.setPin(pin);
+        firebaseNotificationService.notifyPassenger(passenger.getUsername(), firebaseNotificationService.pinChangeNotification);
         passengerRepo.save(passenger);
         return new ResponseMessage("Success", HttpStatus.OK);
     }
@@ -275,7 +276,7 @@ public class PassengerServiceImplementation implements PassengerService {
     public ResponseMessage updatePassword(String name, UpdatePassword updatePassword) {
         User user = passengerRepo.findByUsernameIgnoreCase(name);
         if (user == null) {
-            return new ResponseMessage("Passenger Not found", HttpStatus.NOT_FOUND);
+            return new ResponseMessage("Passenger not found", HttpStatus.NOT_FOUND);
         }
         if (!passwordEncoder.matches(updatePassword.getOldPassword(), user.getPassword())) {
             return new ResponseMessage("The old password is incorrect", HttpStatus.BAD_REQUEST);

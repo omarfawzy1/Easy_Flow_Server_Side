@@ -91,14 +91,14 @@ public class TicketServiceImpl implements TicketService {
         try {
             owner = ownerService.getOwnerByUsername(ticketModel.getOwnerName());
         } catch (NotFoundException e) {
-            return new ResponseMessage("Owner Not found", HttpStatus.NOT_FOUND);
+            return new ResponseMessage("Owner not found", HttpStatus.NOT_FOUND);
         }
 
         Line line = null;
         try {
             line = lineService.getLineByName(ticketModel.getLineName());
             if (!line.getOwner().getId().equals(owner.getId())) {
-                return new ResponseMessage("Error, This Line not belong to this owner.", HttpStatus.BAD_REQUEST);
+                return new ResponseMessage("Error, This line not belong to this owner.", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception exception) {
             //donothing
@@ -111,7 +111,7 @@ public class TicketServiceImpl implements TicketService {
             ticketRepo.save(ticket);
 
         } catch (Exception ex) {
-            return new ResponseMessage("Can Not Save the ticket", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseMessage("Can not save the ticket", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseMessage("Success", HttpStatus.OK);

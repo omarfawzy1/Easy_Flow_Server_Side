@@ -39,7 +39,7 @@ public class LineService {
     public Line getLineById(String id) throws NotFoundException {
         Line line = lineRepo.findById(id, Line.class);
         if (line == null)
-            throw new NotFoundException("The Line Not Exist");
+            throw new NotFoundException("The line not exist");
 
         return line;
     }
@@ -47,7 +47,7 @@ public class LineService {
     public Line getLineByName(String name) throws NotFoundException {
         Line line = lineRepo.findByName(name, Line.class);
         if (line == null)
-            throw new NotFoundException("The Line Not Exist");
+            throw new NotFoundException("The line not exist");
         return line;
     }
 
@@ -69,7 +69,7 @@ public class LineService {
             lineRepo.delete(line);
 
         } catch (Exception ex) {
-            throw new BadRequestException("Can not delete Owner");
+            throw new BadRequestException("Can not delete owner");
         }
         return true;
     }
@@ -80,7 +80,7 @@ public class LineService {
         Owner owner = ownerRepo.findByName(addLineModel.getOwnerName());
 
         if (owner == null) {
-            return new ResponseMessage("Owner Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseMessage("Owner not found", HttpStatus.NOT_FOUND);
         }
 
         if (lineRepo.existsByName(addLineModel.getLineName())) {

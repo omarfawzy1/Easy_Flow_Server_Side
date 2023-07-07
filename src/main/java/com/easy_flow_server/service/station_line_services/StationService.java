@@ -39,7 +39,7 @@ public class StationService {
     public ResponseMessage deleteStation(String name) {
         Station temp = stationRepo.findByStationName(name);
         if (temp == null)
-            return new ResponseMessage("there is no station with this name", HttpStatus.NOT_FOUND);
+            return new ResponseMessage("There is no station with this name", HttpStatus.NOT_FOUND);
         Set<Line> lines = temp.getLines();
         for (Line line : lines) {
             line.removeStation(temp);

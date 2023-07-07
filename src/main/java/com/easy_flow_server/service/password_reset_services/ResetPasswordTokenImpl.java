@@ -57,7 +57,7 @@ public class ResetPasswordTokenImpl implements ResetPasswordTokenService {
             mailService.sendMail(passenger.getEmail(), subject, text);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            return new ResponseMessage("Sorry Something wrong,please try again letter.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseMessage("Sorry something wrong,please try again letter.", HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
         return new ResponseMessage("Check your mail.", HttpStatus.OK);

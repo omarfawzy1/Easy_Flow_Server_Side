@@ -42,7 +42,7 @@ public class OwnerServiceImplementation implements OwnerService {
     @Override
     public List<Object> getOwnerDetails(String ownerName) throws BadRequestException {
         Owner owner = ownerRepo.findByName(ownerName);
-        if (owner == null) throw new BadRequestException("there is no owner with this name.");
+        if (owner == null) throw new BadRequestException("There is no owner with this name.");
         List<Object> result = new ArrayList<>();
         result.add(owner.getName());
         result.add(owner.getMail());
@@ -59,7 +59,7 @@ public class OwnerServiceImplementation implements OwnerService {
     @Override
     public ResponseMessage deleteOwner(String username) {
         Owner temp = ownerRepo.findByName(username);
-        if (temp == null) return new ResponseMessage("there is no owner with this name.", HttpStatus.NOT_FOUND);
+        if (temp == null) return new ResponseMessage("There is no owner with this name.", HttpStatus.NOT_FOUND);
         for (Turnstile turnstile : temp.getTurnstiles())
             turnstile.setOwner(null);
 

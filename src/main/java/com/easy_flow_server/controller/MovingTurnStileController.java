@@ -15,8 +15,11 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("moving-machine")
 public class MovingTurnStileController {
-    @Autowired
-    MovingTurnstileService movingTurnstileService;
+    private final MovingTurnstileService movingTurnstileService;
+
+    public MovingTurnStileController(MovingTurnstileService movingTurnstileService) {
+        this.movingTurnstileService = movingTurnstileService;
+    }
 
     @PostMapping("in-ride")
     public ResponseMessage inRide(@Valid @RequestBody RideModel rideModel) {
