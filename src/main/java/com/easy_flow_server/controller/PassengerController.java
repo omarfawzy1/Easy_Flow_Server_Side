@@ -74,6 +74,11 @@ public class PassengerController {
         return passengerService.makeSubscription(subscriptionModel.getOwner_name(), subscriptionModel.getPlan_name());
     }
 
+    @PutMapping("subscribe/{owner-name}/{plan-name}")
+    public ResponseMessage renewSubscription(Principal principal, @PathVariable("owner-name") String ownerName, @PathVariable("plan-name") String planName) {
+        return passengerService.renewSubscription(principal.getName(), ownerName, planName);
+    }
+
     @GetMapping("subscriptions")
     public List<SubscriptionView> getMySubscriptions() throws NotFoundException {
         return passengerService.getMySubscriptions();

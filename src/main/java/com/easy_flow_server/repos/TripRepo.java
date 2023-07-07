@@ -18,7 +18,10 @@ public interface TripRepo extends JpaRepository<Trip, String> {
 
     <T> List<T> findAllByPassengerUsernameAndStatus(String passenger_username, Status status, Class<T> type);
 
-    <T>List<T>findAllByPassengerUsernameAndStatusAndStartTimeGreaterThanEqual(String passenger_username, Status status, Date startTime,Class<T>type);
+    <T> T findByPassengerUsernameAndStatus(String passenger_username, Status status, Class<T> type);
+
+    <T> List<T> findAllByPassengerUsernameAndStatusAndStartTimeGreaterThanEqual(String passenger_username, Status status, Date startTime, Class<T> type);
+
     boolean existsByPassengerUsernameAndStatus(String passengerUsername, Status status);
 
     Trip findByPassengerUsernameAndStatus(String passenger_username, Status status);
@@ -27,18 +30,21 @@ public interface TripRepo extends JpaRepository<Trip, String> {
             "FROM Trip trip " +
             "WHERE trip.startTime>= :start AND trip.endTime<= :end ")
     Optional<Long> getRevenue(@Param("start") Date start, @Param("end") Date end);
+
     @Query("SELECT day (trip.startTime), SUM (trip.price) " +
             "FROM Trip trip " +
             "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
             "GROUP BY day(trip.startTime) " +
             "order by day(trip.startTime) ASC")
     Optional<List<Object>> getRevenuePerDay(@Param("start") Date start, @Param("end") Date end);
+
     @Query("SELECT month(trip.startTime),SUM (trip.price) " +
             "FROM Trip trip " +
             "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
             "GROUP BY month(trip.startTime) " +
             "order by month(trip.startTime) ASC")
     Optional<List<Object>> getRevenuePerMonth(@Param("start") Date start, @Param("end") Date end);
+
     @Query("SELECT year(trip.startTime),SUM (trip.price) " +
             "FROM Trip trip " +
             "WHERE trip.startTime>= :start AND trip.endTime<= :end " +
@@ -75,7 +81,7 @@ public interface TripRepo extends JpaRepository<Trip, String> {
                                         @Param("end") Date end,
                                         @Param("lineName") String lineName);
 
-    @Query( "SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
+    @Query("SELECT hour(trip.startTime) , COUNT (trip.id) as number " +
             "From Trip trip Join MovingTurnstile mt " +
             "ON trip.startTurnstile.id = mt.id " +
             "WHERE trip.transportationType = 0 AND trip.startTime >= :start AND trip.startTime <= :end " +
@@ -90,11 +96,12 @@ public interface TripRepo extends JpaRepository<Trip, String> {
             "FROM Trip trip " +
             "WHERE trip.status = 1 AND trip.passenger.id= :passengerId ")
     Trip outRideForgetTicket(@Param("passengerId") String passengerId);
+
     @Query("SELECT hour(trip.startTime), COUNT (trip.id) " +
-            "From Trip trip "+
+            "From Trip trip " +
             "WHERE trip.startTime >= :start AND trip.startTime <= :end " +
             "GROUP BY hour(trip.startTime) " +
             "ORDER BY hour(trip.startTime) ASC")
-    List<Object>getTripPerHour(@Param("start") Date start,
-                               @Param("end") Date end);
+    List<Object> getTripPerHour(@Param("start") Date start,
+                                @Param("end") Date end);
 }

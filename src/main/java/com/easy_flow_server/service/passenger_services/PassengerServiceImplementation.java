@@ -280,4 +280,17 @@ public class PassengerServiceImplementation implements PassengerService {
         return passwordManager.resetPassword(user, updatePassword.getResetPassword());
     }
 
+    @Override
+    public ResponseMessage renewSubscription(String username, String ownerName, String planName) {
+        Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
+        if (passenger == null) {
+            return new ResponseMessage("Passenger not found", HttpStatus.NOT_FOUND);
+        }
+        Plan plan = planRepository.findByNameAndOwnerName(planName, ownerName, Plan.class);
+        if (plan == null) {
+            return new ResponseMessage("The plan not exist", HttpStatus.NOT_FOUND);
+        }
+       return subscriptionService.renewSubscription(passenger, plan);
+    }
+
 }

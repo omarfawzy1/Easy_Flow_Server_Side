@@ -47,8 +47,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (!passenger.getPrivileges().contains(plan.getPrivilege())) {
             return false;
         }
-        boolean canWithdraw = walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
-        return canWithdraw;
+        return walletService.canWithdraw(passenger.getWallet(), plan.getPrice());
     }
 
     @Override
@@ -73,13 +72,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             subscriptionRepo.save(subscription);
         } catch (Exception ex) {
-            return new ResponseMessage(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseMessage("You are Already Subscribe this plan", HttpStatus.CONFLICT);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void endSubscription() {
+    private void endSubscription() {
         System.out.println("I'm event end subscription");
         List<Subscription> expiredSubscriptions = subscriptionRepo.getAllByExpireDateBefore(new Date());
         for (Subscription subscription : expiredSubscriptions) {
@@ -98,6 +97,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscriptionRepo.delete(subscription);
         }
 
+    }
+
+    public ResponseMessage renewSubscription(Passenger passenger, Plan plan) {
+        Subscription oldSubscription = subscriptionRepo.findByPassengerUsernameAndPlanOwnerNameAndPlanName(passenger.getUsername(), plan.getOwner().getName(), plan.getName());
+
+        boolean canSubscribe = canSubscribe(passenger, plan);
+        if (canSubscribe) {
+            subscriptionRepo.delete(oldSubscription);
+            firebaseNotificationService.notifyPassenger(passenger.getUsername(), firebaseNotificationService.repurchaseNotification);
+            return makeSubscription(oldSubscription.getPassenger(), oldSubscription.getPlan());
+        }
+        firebaseNotificationService.notifyPassenger(passenger.getUsername(), firebaseNotificationService.repurchaseNoEnoughBalanceNotification);
+        return new ResponseMessage("Can not subscribe", HttpStatus.OK);
     }
 
 }

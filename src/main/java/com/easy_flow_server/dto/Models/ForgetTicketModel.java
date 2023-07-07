@@ -16,7 +16,9 @@ public class ForgetTicketModel {
     @NotBlank(message = "phone number should not be blank")
     @NotNull(message = "phone number should not be null")
     String phoneNumber;
-    int pin;
+    @NotBlank(message = "pin should not be blank")
+    @NotNull(message = "pin should not be null")
+    String pin;
     @NotNull(message = "Time should not be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     Date time;

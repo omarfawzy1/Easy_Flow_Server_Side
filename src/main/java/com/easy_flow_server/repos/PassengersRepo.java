@@ -15,7 +15,9 @@ import java.util.List;
 public interface PassengersRepo extends AbstractRepo<Passenger> {
 
     List<PassagnerBriefDetails> findAllProjectedBy();
-    Passenger findPassengerByPhoneNumberAndPin(String PhoneNumber, int pin);
+
+    Passenger findPassengerByPhoneNumberAndPin(String PhoneNumber, String pin);
+
     PassagnerDetails findAllProjectedByUsername(String username);
 
     Passenger findByUsernameIgnoreCase(String username);
@@ -29,9 +31,10 @@ public interface PassengersRepo extends AbstractRepo<Passenger> {
     void deleteByUsernameIgnoreCase(String username);
 
     PassagnerDetails findProjectedByUsername(String passenger_username);
+
     @Query(value = "SELECT count(pp.passenger_id) " +
-                    "from passenger_privilege pp join privilege p on p.privilege_id = pp.privilege_id " +
-                    "where p.name = :privilege ",
+            "from passenger_privilege pp join privilege p on p.privilege_id = pp.privilege_id " +
+            "where p.name = :privilege ",
             nativeQuery = true)
     int getPassengersCountWithPrivilege(@Param("privilege") String privilege);
 
