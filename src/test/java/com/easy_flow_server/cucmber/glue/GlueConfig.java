@@ -5,8 +5,6 @@ import com.easy_flow_server.entity.Gender;
 import com.easy_flow_server.entity.Passenger;
 import com.easy_flow_server.entity.Wallet;
 import com.easy_flow_server.repos.*;
-import com.example.easy_flow_backend.entity.*;
-import com.example.easy_flow_backend.repos.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DataTableType;
 import io.cucumber.messages.internal.com.google.gson.Gson;

@@ -3,7 +3,6 @@ package com.easy_flow_server.cucmber.glue;
 import com.easy_flow_server.entity.Administrator;
 import com.easy_flow_server.entity.Passenger;
 import com.easy_flow_server.entity.Wallet;
-import com.example.easy_flow_backend.entity.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
