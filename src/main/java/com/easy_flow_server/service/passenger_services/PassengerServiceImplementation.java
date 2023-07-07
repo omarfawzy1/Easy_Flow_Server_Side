@@ -16,6 +16,7 @@ import com.easy_flow_server.service.payment_services.TripService;
 import com.easy_flow_server.service.payment_services.WalletService;
 import com.easy_flow_server.dto.Models.UpdatePassword;
 import com.easy_flow_server.dto.Models.UpdateProfileModel;
+import com.easy_flow_server.service.utils.ImageUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -267,7 +268,7 @@ public class PassengerServiceImplementation implements PassengerService {
         }
         ImageData ownerImageData = owner.getImageData();
         if (ownerImageData == null) return null;
-        return ownerImageData.getImageData();
+        return ImageUtil.decompressImage(ownerImageData.getImageData());
     }
 
     @Override
