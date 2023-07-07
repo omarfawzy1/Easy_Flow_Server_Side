@@ -265,7 +265,9 @@ public class PassengerServiceImplementation implements PassengerService {
         if (owner == null) {
             throw new NotFoundException("The owner not found");
         }
-        return owner.getImageData().getImageData();
+        ImageData ownerImageData = owner.getImageData();
+        if (ownerImageData == null) return null;
+        return ownerImageData.getImageData();
     }
 
     @Override
@@ -290,7 +292,7 @@ public class PassengerServiceImplementation implements PassengerService {
         if (plan == null) {
             return new ResponseMessage("The plan not exist", HttpStatus.NOT_FOUND);
         }
-       return subscriptionService.renewSubscription(passenger, plan);
+        return subscriptionService.renewSubscription(passenger, plan);
     }
 
 }
