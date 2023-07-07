@@ -7,11 +7,13 @@ import com.easy_flow_server.entity.Line;
 import com.easy_flow_server.entity.Station;
 import com.easy_flow_server.error.NotFoundException;
 import com.easy_flow_server.error.ResponseMessage;
+import com.easy_flow_server.repos.GraphEdgeRepo;
 import com.easy_flow_server.repos.StationRepo;
 import com.easy_flow_server.dto.Models.StationModel;
 import com.easy_flow_server.service.graph_services.utils.GraphProperties;
 import com.easy_flow_server.service.graph_services.utils.GraphWithStations;
 import com.easy_flow_server.service.station_line_services.LineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,15 +24,15 @@ import java.util.*;
 public class GraphServiceImpl implements GraphService {
 
     private final RedisTemplate<Object, Object> redisTemplate;
-    protected final GraphEdgeService graphEdgeService;
     private final LineService lineService;
     private final StationRepo stationRepo;
+    private final GraphEdgeRepo graphEdgeRepo;
 
-    public GraphServiceImpl(RedisTemplate<Object, Object> redisTemplate, GraphEdgeService graphEdgeService, LineService lineService, StationRepo stationRepo) {
+    public GraphServiceImpl(RedisTemplate<Object, Object> redisTemplate, LineService lineService, StationRepo stationRepo, GraphEdgeRepo graphEdgeRepo) {
         this.redisTemplate = redisTemplate;
-        this.graphEdgeService = graphEdgeService;
         this.lineService = lineService;
         this.stationRepo = stationRepo;
+        this.graphEdgeRepo = graphEdgeRepo;
     }
 
     private GraphWithStations convertEdgesToGraphWithStations(List<GraphEdge> edges) {
@@ -46,15 +48,15 @@ public class GraphServiceImpl implements GraphService {
     public GraphWithStations getLineWeightedGraph(String lineId) throws NotFoundException {
 
 
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(lineId))) {
+      /*  if (Boolean.TRUE.equals(redisTemplate.hasKey(lineId))) {
             return (GraphWithStations) redisTemplate.opsForValue().get(lineId);
-        }
+        }*/
 
         Line line = lineService.getLineById(lineId);
         List<GraphEdge> totalEdges = new ArrayList<>(line.getGraphEdges());
 
         GraphWithStations graph = convertEdgesToGraphWithStations(totalEdges);
-        redisTemplate.opsForValue().set(lineId, graph);
+//        redisTemplate.opsForValue().set(lineId, graph);
         return graph;
     }
 
@@ -104,6 +106,8 @@ public class GraphServiceImpl implements GraphService {
         }
 
         stations = stationRepo.saveAll(stations);
+        line.setStations(new HashSet<>(stations));
+        line = lineService.saveLine(line);
 
         List<GraphEdge> graphEdges = new ArrayList<>();
 
@@ -114,13 +118,10 @@ public class GraphServiceImpl implements GraphService {
 
         try {
             Set<GraphEdge> oldGraphEdges = line.getGraphEdges();
-            for (GraphEdge graphEdge : oldGraphEdges) {
-                graphEdgeService.deleteEdge(graphEdge.getId()); //work
-            }
-            line.setStations(new HashSet<>(stations));
-            graphEdgeService.addEdges(graphEdges);
+            graphEdgeRepo.deleteAll(oldGraphEdges);
+            graphEdgeRepo.saveAll(new HashSet<>(graphEdges));
 
-            lineService.saveLine(line);
+
             if (Boolean.TRUE.equals(redisTemplate.hasKey(line.getOwner().getId()))) {
                 redisTemplate.delete(line.getOwner().getId());
             }

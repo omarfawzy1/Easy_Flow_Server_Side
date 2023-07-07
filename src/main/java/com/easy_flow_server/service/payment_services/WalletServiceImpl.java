@@ -24,6 +24,14 @@ public class WalletServiceImpl implements WalletService {
         return true;
     }
 
+    public boolean withdrawWithNegative(Wallet wallet, double value) {
+
+        wallet.setBalance(wallet.getBalance() - value);
+
+        walletRepo.save(wallet);
+        return true;
+    }
+
     public boolean canWithdraw(@NotNull Wallet wallet, double value) {
         return wallet.getBalance() >= value;
     }

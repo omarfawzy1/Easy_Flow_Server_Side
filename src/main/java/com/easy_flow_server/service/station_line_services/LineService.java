@@ -112,7 +112,7 @@ public class LineService {
         return lineRepo.findAllByOwnerId(ownerId, Line.class);
     }
 
-    public void saveLine(Line line) {
-        lineRepo.save(line);
+    public Line saveLine(Line line) {
+        return lineRepo.save(line);
     }
 }

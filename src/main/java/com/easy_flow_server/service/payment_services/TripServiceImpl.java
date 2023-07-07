@@ -164,7 +164,7 @@ public class TripServiceImpl implements TripService {
         if (bestSubscription != null) {
             price -= price * bestSubscription.getPlan().getDiscountRate();
         }
-        boolean can = walletService.withdraw(trip.getPassenger().getWallet(), price);
+        boolean can = walletService.withdrawWithNegative(trip.getPassenger().getWallet(), price);
         if (can) {
             trip.setPrice(price);
             trip.setEndTurnstile(machine);
