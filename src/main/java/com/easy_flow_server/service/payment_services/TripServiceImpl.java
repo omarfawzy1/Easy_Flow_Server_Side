@@ -84,9 +84,11 @@ public class TripServiceImpl implements TripService {
         Trip trip = tripRepo.findById(rideModel.getTripId(), Trip.class);
         try {
             validateTrip(trip);
-
         } catch (NotFoundException e) {
             return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        if (tripRepo.existsByPassengerUsernameAndStatus(trip.getPassenger().getUsername(), Status.Pending)) {
+            return new ResponseMessage("Unauthorized, You have an uncompleted trip", HttpStatus.FORBIDDEN);
         }
         Passenger passenger = trip.getPassenger();
 
@@ -183,11 +185,15 @@ public class TripServiceImpl implements TripService {
     }
 
     public ResponseMessage makeTrip(RideModel rideModel, String machineUsername) {
+
         Trip trip = tripRepo.findById(rideModel.getTripId(), Trip.class);
         try {
             validateTrip(trip);
         } catch (NotFoundException e) {
             return new ResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        if (tripRepo.existsByPassengerUsernameAndStatus(trip.getPassenger().getUsername(), Status.Pending)) {
+            return new ResponseMessage("Unauthorized, You have an uncompleted trip", HttpStatus.FORBIDDEN);
         }
         Passenger passenger = trip.getPassenger();
 

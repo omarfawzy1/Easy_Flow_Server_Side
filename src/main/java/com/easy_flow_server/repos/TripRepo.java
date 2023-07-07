@@ -24,7 +24,6 @@ public interface TripRepo extends JpaRepository<Trip, String> {
 
     boolean existsByPassengerUsernameAndStatus(String passengerUsername, Status status);
 
-    Trip findByPassengerUsernameAndStatus(String passenger_username, Status status);
 
     @Query("SELECT SUM (trip.price) " +
             "FROM Trip trip " +
