@@ -57,6 +57,9 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripId> getOpenTrips(int numOfTrips, String passengerUsername) throws NotFoundException {
         List<TripId> trips = tripRepo.findAllByPassengerUsernameAndStatus(passengerUsername, Status.Open, TripId.class);
+        TripId pendingTrip = tripRepo.findByPassengerUsernameAndStatus(passengerUsername, Status.Pending, TripId.class);
+        if (pendingTrip != null)
+            trips.add(0, pendingTrip);
         if (trips.size() == numOfTrips) return trips;
         else if (trips.size() > numOfTrips) {
             return trips.subList(0, numOfTrips);
@@ -69,7 +72,7 @@ public class TripServiceImpl implements TripService {
 
     void validateTrip(Trip trip) throws NotFoundException {
         if (trip == null || trip.getStatus() != Status.Open) {
-            throw new NotFoundException("The Ticket Not valid");
+            throw new NotFoundException("The ticket is invalid");
         }
     }
 
@@ -116,11 +119,11 @@ public class TripServiceImpl implements TripService {
     //For Stationery TurnStile
     void validateMakeFinalTrip(Trip trip, String inOwnerId) throws NotFoundException, BadRequestException {
         if (trip == null || trip.getStatus() != Status.Pending) {
-            throw new NotFoundException("The Ticket Not valid");
+            throw new NotFoundException("The ticket is invalid");
         }
         Owner outOwner = trip.getStartTurnstile().getOwner();
         if (!inOwnerId.equals(outOwner.getId())) {
-            throw new BadRequestException("Can not ending Trip, Not for the Same Owner!");
+            throw new BadRequestException("Can not ending Trip, Not for the Same owner!");
         }
     }
 
@@ -170,7 +173,7 @@ public class TripServiceImpl implements TripService {
             }
             tripRepo.save(trip);
         } else {
-            return new ResponseMessage("Can not End Trip", HttpStatus.BAD_REQUEST);
+            return new ResponseMessage("Can not end trip", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseMessage("Success", HttpStatus.OK);
