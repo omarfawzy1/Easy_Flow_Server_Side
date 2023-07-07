@@ -1,12 +1,11 @@
 package com.easy_flow_server.controller;
 
-import com.easy_flow_server.error.BadRequestException;
-import com.easy_flow_server.error.ResponseMessage;
 import com.easy_flow_server.dto.Models.ForgetTicketModel;
 import com.easy_flow_server.dto.Models.RideModel;
+import com.easy_flow_server.error.BadRequestException;
+import com.easy_flow_server.error.ResponseMessage;
 import com.easy_flow_server.service.tunstile_services.StationeryTurnstileService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
