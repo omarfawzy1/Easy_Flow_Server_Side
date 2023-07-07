@@ -56,10 +56,12 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<TripId> getOpenTrips(int numOfTrips, String passengerUsername) throws NotFoundException {
-        List<TripId> trips = tripRepo.findAllByPassengerUsernameAndStatus(passengerUsername, Status.Open, TripId.class);
         TripId pendingTrip = tripRepo.findByPassengerUsernameAndStatus(passengerUsername, Status.Pending, TripId.class);
+        List<TripId> trips = new ArrayList<>();
         if (pendingTrip != null)
-            trips.add(0, pendingTrip);
+            trips.add(pendingTrip);
+        trips.addAll(tripRepo.findAllByPassengerUsernameAndStatus(passengerUsername, Status.Open, TripId.class));
+
         if (trips.size() == numOfTrips) return trips;
         else if (trips.size() > numOfTrips) {
             return trips.subList(0, numOfTrips);
