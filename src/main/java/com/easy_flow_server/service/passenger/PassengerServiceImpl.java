@@ -154,7 +154,7 @@ public class PassengerServiceImpl implements PassengerService {
         transactionRepo.save(transaction);
         walletService.recharge(passenger.getWallet().getId(), amount);
         PassengerNotification passengerNotification = new PassengerNotification(
-                String.format("%f EGP have been successfully added to your wallet", amount),
+                String.format("%.2f EGP have been successfully added to your wallet", amount),
                 "Successful Recharge");
         firebaseNotificationService.notifyPassenger(username, passengerNotification);
     }

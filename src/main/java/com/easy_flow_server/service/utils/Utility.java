@@ -11,4 +11,9 @@ public class Utility {
         result += Long.parseLong(date.substring(17, 19)) * 1000L;
         return result;
     }
+
+
+    public static String getRandomTag() {
+        return String.valueOf((int) (System.currentTimeMillis() % 10000000 + 1));
+    }
 }
