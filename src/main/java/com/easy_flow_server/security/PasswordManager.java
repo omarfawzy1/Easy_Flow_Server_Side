@@ -1,9 +1,9 @@
 package com.easy_flow_server.security;
 
-import com.easy_flow_server.dto.Models.ResetPassword;
+import com.easy_flow_server.dto.model.ResetPassword;
 import com.easy_flow_server.entity.User;
 import com.easy_flow_server.error.ResponseMessage;
-import com.easy_flow_server.repos.UserRepositry;
+import com.easy_flow_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +14,7 @@ public class PasswordManager  {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepositry userRepositry;
+    private UserRepo userRepo;
 
     public boolean isValid(String password) {
         return (password.length() >= 8);
@@ -30,7 +30,7 @@ public class PasswordManager  {
         }
         user.setPassword(passwordEncoder.encode(resetPassword.getNewPassword()));
         try {
-            userRepositry.save(user);
+            userRepo.save(user);
         } catch (Exception ex) {
             return new ResponseMessage("Can not save the password!", HttpStatus.INTERNAL_SERVER_ERROR);
         }

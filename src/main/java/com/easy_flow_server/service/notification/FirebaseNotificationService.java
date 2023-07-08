@@ -25,7 +25,6 @@ public class FirebaseNotificationService {
                     ).build()).build());
             return true;
         } catch (FirebaseMessagingException e) {
-            // log
             return false;
         }
     }

@@ -1,8 +1,8 @@
 package com.easy_flow_server.service;
 
 import com.easy_flow_server.entity.*;
-import com.easy_flow_server.repos.*;
-import com.easy_flow_server.service.station_line_services.LineService;
+import com.easy_flow_server.repository.*;
+import com.easy_flow_server.service.station_line.LineService;
 import com.easy_flow_server.service.utils.Utility;
 import lombok.SneakyThrows;
 import org.springframework.boot.CommandLineRunner;
@@ -19,8 +19,8 @@ import java.util.List;
 @Service
 public class DbInit implements CommandLineRunner {
 
-    private final UserRepositry userRepositry;
-    private final PassengersRepo passengersRepo;
+    private final UserRepo userRepo;
+    private final PassengerRepo passengerRepo;
 
     private final PasswordEncoder passwordEncoder;
     private final OwnerRepo ownerRepo;
@@ -30,15 +30,15 @@ public class DbInit implements CommandLineRunner {
     private final GraphEdgeRepo graphEdgeRepo;
     private final TicketRepo ticketRepo;
     private final LineService lineService;
-    private final PlanRepository planRepository;
+    private final PlanRepo planRepo;
     private final PrivilegeRepo privilegeRepo;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     ArrayList<Privilege> privileges = new ArrayList<>();
 
-    public DbInit(PassengersRepo passengersRepo, UserRepositry userRepositry, PasswordEncoder passwordEncoder, OwnerRepo ownerRepo, LineRepo lineRepo, LineService lineService, PrivilegeRepo privilegeRepo, StationRepo stationRepo, TripRepo tripRepository, PlanRepository planRepository, GraphEdgeRepo graphEdgeRepo, TicketRepo ticketRepo) {
-        this.passengersRepo = passengersRepo;
-        this.userRepositry = userRepositry;
+    public DbInit(PassengerRepo passengerRepo, UserRepo userRepo, PasswordEncoder passwordEncoder, OwnerRepo ownerRepo, LineRepo lineRepo, LineService lineService, PrivilegeRepo privilegeRepo, StationRepo stationRepo, TripRepo tripRepository, PlanRepo planRepo, GraphEdgeRepo graphEdgeRepo, TicketRepo ticketRepo) {
+        this.passengerRepo = passengerRepo;
+        this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.ownerRepo = ownerRepo;
         this.lineRepo = lineRepo;
@@ -46,7 +46,7 @@ public class DbInit implements CommandLineRunner {
         this.privilegeRepo = privilegeRepo;
         this.stationRepo = stationRepo;
         this.tripRepository = tripRepository;
-        this.planRepository = planRepository;
+        this.planRepo = planRepo;
         this.graphEdgeRepo = graphEdgeRepo;
         this.ticketRepo = ticketRepo;
     }
@@ -64,7 +64,7 @@ public class DbInit implements CommandLineRunner {
 
         ArrayList<Line> lines = new ArrayList<>();
         ArrayList<User> users = usersInit();
-        userRepositry.saveAll(users);
+        userRepo.saveAll(users);
         //add passengers privlages
         ((Passenger) users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
         ((Passenger) users.get(1)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
@@ -74,7 +74,7 @@ public class DbInit implements CommandLineRunner {
         ((Passenger) users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Regular"));
         ((Passenger) users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("Army"));
         ((Passenger) users.get(4)).addPrivilege(privilegeRepo.findPrivilegeByNameIgnoreCase("journalist"));
-        userRepositry.saveAll(users);
+        userRepo.saveAll(users);
         //owner
         Owner owner1 = new Owner("ehab", "ehab@mail.com", "1148 1124 2247 2247");
         ownerRepo.save(owner1);
@@ -105,7 +105,7 @@ public class DbInit implements CommandLineRunner {
         m8Init();
         addplans();
         // test database
-        System.out.println(userRepositry.findUserByUsername("haridy").getUsername());
+        System.out.println(userRepo.findUserByUsername("haridy").getUsername());
     }
 
     ArrayList<User> usersInit() {
@@ -281,28 +281,28 @@ public class DbInit implements CommandLineRunner {
         // Create and save stationary turnstiles for each station
         HashMap<String, StationaryTurnstile> stationaryTurnstiles = new HashMap<>();
         for (Station station : line2Stations) {
-            String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
+            String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepo.count());
             String password = passwordEncoder.encode("1234");
             StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password, cairoGovernment);
             stationaryTurnstile.setStation(station);
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
-            userRepositry.save(stationaryTurnstile);
+            userRepo.save(stationaryTurnstile);
         }
         for (Station station : line1Stations) {
-            String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepositry.count());
+            String turnstileName = String.format("%s_%d_in", station.getStationName().toLowerCase().replaceAll(" ", ""), userRepo.count());
             String password = passwordEncoder.encode("1234");
             StationaryTurnstile stationaryTurnstile = new StationaryTurnstile(turnstileName, password, cairoGovernment);
             stationaryTurnstile.setStation(station);
             stationaryTurnstiles.put(station.getStationName(), stationaryTurnstile);
-            userRepositry.save(stationaryTurnstile);
+            userRepo.save(stationaryTurnstile);
         }
 
         // s1=elmonib_5_in    s2= giza_7_in
         // Create some passengers
-        Passenger omar = passengersRepo.findUserByUsername("omar");
-        Passenger waled = passengersRepo.findUserByUsername("waled");
-        Passenger aly = passengersRepo.findUserByUsername("aly");
-        Passenger mona = passengersRepo.findUserByUsername("mona");
+        Passenger omar = passengerRepo.findUserByUsername("omar");
+        Passenger waled = passengerRepo.findUserByUsername("waled");
+        Passenger aly = passengerRepo.findUserByUsername("aly");
+        Passenger mona = passengerRepo.findUserByUsername("mona");
 
         // Create some trips
         ArrayList<Trip> trips = new ArrayList<>();
@@ -465,13 +465,13 @@ public class DbInit implements CommandLineRunner {
             MovingTurnstile bus = new MovingTurnstile("m7_" + i, passwordEncoder.encode("1234"), mwasalatmisr);
             bus.setLine(m7);
             movingTurnstiles.put(i, bus);
-            userRepositry.save(bus);
+            userRepo.save(bus);
         }
 
-        Passenger omar = passengersRepo.findUserByUsername("omar");
-        Passenger waled = passengersRepo.findUserByUsername("waled");
-        Passenger aly = passengersRepo.findUserByUsername("aly");
-        Passenger mona = passengersRepo.findUserByUsername("mona");
+        Passenger omar = passengerRepo.findUserByUsername("omar");
+        Passenger waled = passengerRepo.findUserByUsername("waled");
+        Passenger aly = passengerRepo.findUserByUsername("aly");
+        Passenger mona = passengerRepo.findUserByUsername("mona");
 
         ArrayList<Trip> trips = new ArrayList<>();
         trips.add(new Trip(
@@ -578,13 +578,13 @@ public class DbInit implements CommandLineRunner {
             MovingTurnstile bus = new MovingTurnstile("m8_" + i, passwordEncoder.encode("1234"), mwasalatmisr);
             bus.setLine(m8);
             movingTurnstiles.put(i, bus);
-            userRepositry.save(bus);
+            userRepo.save(bus);
         }
 
-        Passenger omar = passengersRepo.findUserByUsername("omar");
-        Passenger waled = passengersRepo.findUserByUsername("waled");
-        Passenger aly = passengersRepo.findUserByUsername("aly");
-        Passenger mona = passengersRepo.findUserByUsername("mona");
+        Passenger omar = passengerRepo.findUserByUsername("omar");
+        Passenger waled = passengerRepo.findUserByUsername("waled");
+        Passenger aly = passengerRepo.findUserByUsername("aly");
+        Passenger mona = passengerRepo.findUserByUsername("mona");
 
         ArrayList<Trip> trips = new ArrayList<>();
         trips.add(new Trip(
@@ -655,6 +655,6 @@ public class DbInit implements CommandLineRunner {
         plans.add(plan2);
         plans.add(plan3);
         plans.add(plan4);
-        planRepository.saveAll(plans);
+        planRepo.saveAll(plans);
     }
 }

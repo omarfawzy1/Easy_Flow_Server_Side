@@ -1,6 +1,6 @@
 package com.easy_flow_server.security;
 
-import com.easy_flow_server.repos.UserRepositry;
+import com.easy_flow_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class SecurityConfiguration {
     private UserPrincipleDetailsService userPrincipleDetailsService;
 
     @Autowired
-    private UserRepositry userRepositry;
+    private UserRepo userRepo;
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, UserPrincipleDetailsService userPrincipleDetailsService)
@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                 .and()
                 // add jwt filters (first is authentication, second is Authorization)
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), this.userRepositry))
+                .addFilter(new JwtAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), this.userRepo))
                 .authorizeHttpRequests((requests) -> requests
 //                        .requestMatchers("/Register").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/login").permitAll()

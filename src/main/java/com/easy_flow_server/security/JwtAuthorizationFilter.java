@@ -3,7 +3,7 @@ package com.easy_flow_server.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.easy_flow_server.entity.User;
-import com.easy_flow_server.repos.UserRepositry;
+import com.easy_flow_server.repository.UserRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,12 +18,12 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private UserRepositry userRepositry;
+    private UserRepo userRepo;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager
-            , UserRepositry userRepositry) {
+            , UserRepo userRepo) {
         super(authenticationManager);
-        this.userRepositry = userRepositry;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             //If so,then grab user details and create spring auth using username, pass, authorities/roles
             if (userName != null) {
 
-                User user = userRepositry.findUserByUsername(userName);
+                User user = userRepo.findUserByUsername(userName);
                 UserPrinciple principle = new UserPrinciple(user);
                 return new UsernamePasswordAuthenticationToken(userName, null, principle.getAuthorities());
             }

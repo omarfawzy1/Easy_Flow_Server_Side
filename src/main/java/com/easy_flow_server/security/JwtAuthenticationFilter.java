@@ -1,6 +1,7 @@
 package com.easy_flow_server.security;
 
 import com.auth0.jwt.JWT;
+import com.easy_flow_server.dto.model.LoginModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -36,11 +37,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        LoginViewModel credential = null;
+        LoginModel credential = null;
 
         try {
             //Grab credential and map them to login ViewModel
-            credential = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
+            credential = new ObjectMapper().readValue(request.getInputStream(), LoginModel.class);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

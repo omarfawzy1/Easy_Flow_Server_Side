@@ -1,9 +1,9 @@
 package com.easy_flow_server.controller;
 
-import com.easy_flow_server.dto.Models.RegisterModel;
-import com.easy_flow_server.dto.Models.ResetPassword;
+import com.easy_flow_server.dto.model.ResetPassword;
 import com.easy_flow_server.error.ResponseMessage;
 import com.easy_flow_server.service.HomeService;
+import com.easy_flow_server.dto.model.RegisterModel;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

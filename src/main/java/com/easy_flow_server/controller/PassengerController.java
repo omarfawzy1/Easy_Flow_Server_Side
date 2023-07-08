@@ -1,17 +1,17 @@
 package com.easy_flow_server.controller;
 
-import com.easy_flow_server.dto.Models.SubscriptionModel;
+import com.easy_flow_server.dto.model.SubscriptionModel;
 import com.easy_flow_server.error.BadRequestException;
 import com.easy_flow_server.error.NotFoundException;
 import com.easy_flow_server.error.ResponseMessage;
-import com.easy_flow_server.dto.Models.PinModel;
-import com.easy_flow_server.dto.Models.UpdatePassword;
-import com.easy_flow_server.dto.Models.UpdateProfileModel;
-import com.easy_flow_server.dto.Views.PassagnerDetails;
-import com.easy_flow_server.dto.Views.SubscriptionView;
-import com.easy_flow_server.dto.Views.TripId;
-import com.easy_flow_server.dto.Views.TripView;
-import com.easy_flow_server.service.passenger_services.PassengerService;
+import com.easy_flow_server.dto.model.PinModel;
+import com.easy_flow_server.dto.model.UpdatePassword;
+import com.easy_flow_server.dto.model.UpdateProfileModel;
+import com.easy_flow_server.dto.view.PassagnerDetails;
+import com.easy_flow_server.dto.view.SubscriptionView;
+import com.easy_flow_server.dto.view.TripId;
+import com.easy_flow_server.dto.view.TripView;
+import com.easy_flow_server.service.passenger.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;

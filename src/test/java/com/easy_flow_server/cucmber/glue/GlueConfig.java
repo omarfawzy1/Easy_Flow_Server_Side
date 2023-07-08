@@ -4,7 +4,7 @@ import com.easy_flow_server.entity.Administrator;
 import com.easy_flow_server.entity.Gender;
 import com.easy_flow_server.entity.Passenger;
 import com.easy_flow_server.entity.Wallet;
-import com.easy_flow_server.repos.*;
+import com.easy_flow_server.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DataTableType;
 import io.cucumber.messages.internal.com.google.gson.Gson;
@@ -37,7 +37,7 @@ public class GlueConfig {
     protected PasswordEncoder passwordEncoder;
 
     @Autowired
-    protected AdminstratorsRepo adminstratorsRepo;
+    protected AdminRepo adminRepo;
     @Autowired
     protected LineRepo lineRepo;
     @Autowired
@@ -45,7 +45,7 @@ public class GlueConfig {
     @Autowired
     protected OwnerRepo ownerRepo;
     @Autowired
-    protected PassengersRepo passengersRepo;
+    protected PassengerRepo passengerRepo;
     @Autowired
     protected StationaryTurnstileRepo stationaryTurnstileRepo;
     @Autowired
@@ -53,7 +53,7 @@ public class GlueConfig {
     @Autowired
     protected TripRepo tripRepo;
     @Autowired
-    protected UserRepositry userRepositry;
+    protected UserRepo userRepo;
     @Autowired
     protected WalletRepo walletRepo;
 

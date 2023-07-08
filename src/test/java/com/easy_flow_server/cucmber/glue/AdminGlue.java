@@ -29,12 +29,12 @@ public class AdminGlue extends GlueConfig {
 
     @Given("^the admin table in the database contain are the following$")
     public void the_admin_in_the_database_are_the_following(io.cucumber.datatable.DataTable dataTable) {
-        adminstratorsRepo.deleteAll();
+        adminRepo.deleteAll();
         Administrator admin;
         for(int i=0;i<dataTable.height();i++){
             admin=new Administrator(dataTable.cell(i,0),
                     dataTable.cell(i,1), passwordEncoder.encode(dataTable.cell(i,2)));
-            adminstratorsRepo.save(admin);
+            adminRepo.save(admin);
         }
     }
     @When("^the admin try to log in with username (.*) and password (.*)$")
@@ -69,8 +69,8 @@ public class AdminGlue extends GlueConfig {
             passengerList.get(i).setWallet(wallets.get(i));
         }
         tripRepo.deleteAll();
-        passengersRepo.deleteAll();
-        passengersRepo.saveAll(passengerList);
+        passengerRepo.deleteAll();
+        passengerRepo.saveAll(passengerList);
         passengerList.clear();
     }
     @And("^the admin logged in with username (.*) and password (.*)$")

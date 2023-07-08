@@ -2,9 +2,9 @@ package com.easy_flow_server.controller;
 
 import com.easy_flow_server.error.NotFoundException;
 import com.easy_flow_server.error.ResponseMessage;
-import com.easy_flow_server.dto.Models.PlanModel;
-import com.easy_flow_server.dto.Views.PlanView;
-import com.easy_flow_server.service.owner_services.PlanService;
+import com.easy_flow_server.dto.model.PlanModel;
+import com.easy_flow_server.dto.view.PlanView;
+import com.easy_flow_server.service.owner.PlanService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

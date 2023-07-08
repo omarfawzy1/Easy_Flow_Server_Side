@@ -1,11 +1,11 @@
 package com.easy_flow_server.controller;
 
-import com.easy_flow_server.dto.Models.*;
-import com.easy_flow_server.dto.Views.*;
+import com.easy_flow_server.dto.model.*;
+import com.easy_flow_server.dto.view.*;
 import com.easy_flow_server.error.BadRequestException;
 import com.easy_flow_server.error.NotFoundException;
 import com.easy_flow_server.error.ResponseMessage;
-import com.easy_flow_server.service.admin_services.AdminService;
+import com.easy_flow_server.service.admin.AdminService;
 import com.easy_flow_server.service.utils.Utility;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -92,7 +92,7 @@ public class AdminController {
 
     @GetMapping("passengers/count")
     public int getPassengersCount() {
-        return adminService.getAllPassangersCount();
+        return adminService.getAllPassengersCount();
     }
 
     @GetMapping("passengers/count/{privilege}")
@@ -140,8 +140,7 @@ public class AdminController {
                                                  @PathVariable String lineName) throws  BadRequestException {
         return adminService.getTripAvgByTimeUnitForBusLine(timePeriod, Utility.stringToMilleSecond(timeUnit), lineName);
     }
-
-    //get the most (peekNumber) hours and them trip count for bus line
+    //get the most n(peekNumber) hours and there trip count for bus line
     @PostMapping("line/busPeek/{lineName}/{peekNumber}")
     public List<Object> getPeekHours(
             @Valid @RequestBody TimePeriod timePeriod,

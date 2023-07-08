@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.easy_flow_server'
-version = '2.0'
+version = '1.0'
 sourceCompatibility = '17'
 
 configurations {
