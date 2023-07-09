@@ -32,12 +32,12 @@ public class PassengerController {
     }
 
     @GetMapping("history")
-    public List<TripView> getMytrips(Principal principal) throws BadRequestException {
+    public List<TripView> getMyTrips(Principal principal) throws BadRequestException {
         return passengerService.getMytrips(principal.getName());
     }
 
     @GetMapping("history/{date}")
-    public List<TripView> getMytrips(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, Principal principal) throws BadRequestException {
+    public List<TripView> getMyTripsWithHistory(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, Principal principal) throws BadRequestException {
 
         return passengerService.getMytrips(date, principal.getName());
     }
