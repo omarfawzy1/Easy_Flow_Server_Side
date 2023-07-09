@@ -115,7 +115,7 @@ public class TripServiceImpl implements TripService {
 
             tripRepo.save(trip);
         } else {
-            return new ResponseMessage("No enough money", HttpStatus.OK);
+            return new ResponseMessage("No enough money", HttpStatus.BAD_REQUEST);
         }
         return new ResponseMessage("Success", HttpStatus.OK);
     }
@@ -172,7 +172,7 @@ public class TripServiceImpl implements TripService {
             trip.setStatus(Status.Closed);
             trip.setEndStation(machine.getStation().getStationName());
             if (bestSubscription != null) {
-                bestSubscription.withdrawTrips(rideModel.getCompanionCount());
+                bestSubscription.withdrawTrips(trip.getCompanionCount());
                 subscriptionRepo.save(bestSubscription);
             }
             tripRepo.save(trip);
@@ -232,7 +232,7 @@ public class TripServiceImpl implements TripService {
             tripRepo.save(closedTrip);
 
         } else {
-            return new ResponseMessage("No enough money", HttpStatus.OK);
+            return new ResponseMessage("No enough money", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseMessage("Success", HttpStatus.OK);
