@@ -1,19 +1,21 @@
 package com.easy_flow_server.controller;
 
-import com.easy_flow_server.dto.model.SubscriptionModel;
-import com.easy_flow_server.error.BadRequestException;
-import com.easy_flow_server.error.NotFoundException;
-import com.easy_flow_server.error.ResponseMessage;
 import com.easy_flow_server.dto.model.PinModel;
+import com.easy_flow_server.dto.model.SubscriptionModel;
 import com.easy_flow_server.dto.model.UpdatePassword;
 import com.easy_flow_server.dto.model.UpdateProfileModel;
 import com.easy_flow_server.dto.view.PassagnerDetails;
 import com.easy_flow_server.dto.view.SubscriptionView;
 import com.easy_flow_server.dto.view.TripId;
 import com.easy_flow_server.dto.view.TripView;
+import com.easy_flow_server.error.BadRequestException;
+import com.easy_flow_server.error.NotFoundException;
+import com.easy_flow_server.error.ResponseMessage;
 import com.easy_flow_server.service.passenger.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,8 +62,8 @@ public class PassengerController {
     // Dummy
     @PutMapping("recharge/{amount}")
     @Operation(summary = "Passenger Wallet Recharge", description = "Passenger Wallet Recharge")
-    public void recharge(@PathVariable double amount, Principal principal) {
-        passengerService.rechargePassenger(principal.getName(), amount);
+    public void recharge(@Valid @Min (value = 10,message = "The minimum amount to recharge is 10")@Max(value = 10000, message = "The maximum amount to recharge is 10000") @PathVariable double amount, Principal principal) throws BadRequestException {
+        passengerService.rechargePassenger(principal.getName(),  amount);
     }
 
     @GetMapping("Trips")

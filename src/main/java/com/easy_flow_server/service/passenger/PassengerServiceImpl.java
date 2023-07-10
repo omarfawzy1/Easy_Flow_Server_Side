@@ -148,10 +148,15 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public void rechargePassenger(String username, double amount) {
+    public void rechargePassenger(String username, double amount) throws BadRequestException {
+        final double MAX_IN_Wallet = 50000.0;
         Passenger passenger = passengerRepo.findByUsernameIgnoreCase(username);
-        Transaction transaction = new Transaction(passenger, amount);
+        if (passenger.getWallet().getBalance() + amount > MAX_IN_Wallet){
+            throw new BadRequestException("Balance limit exceeded");
+        }
+            Transaction transaction = new Transaction(passenger, amount);
         transactionRepo.save(transaction);
+
         walletService.recharge(passenger.getWallet().getId(), amount);
         PassengerNotification passengerNotification = new PassengerNotification(
                 String.format("%.2f EGP have been successfully added to your wallet", amount),
@@ -266,7 +271,7 @@ public class PassengerServiceImpl implements PassengerService {
         Owner owner = ownerRepo.findByName(ownerName);
         if (owner == null)
             throw new NotFoundException("The owner not found");
-        if (owner.getImageData()==null)
+        if (owner.getImageData() == null)
             return null;
         ImageData ownerImageData = owner.getImageData();
         if (ownerImageData == null) return null;

@@ -35,7 +35,7 @@ public interface PassengerService {
 
     public int getPassengersCountWithPrivilege(String privilege);
 
-    void rechargePassenger(String name, double amount);
+    void rechargePassenger(String name, double amount) throws BadRequestException;
 
 
     List<TripId> getOpenTrips(int numberOfTickets, String passengerUsername) throws NotFoundException;
